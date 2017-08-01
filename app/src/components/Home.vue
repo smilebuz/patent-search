@@ -62,6 +62,7 @@ export default {
       search_filter: '1'
     }
   },
+
   methods: {
 
   }

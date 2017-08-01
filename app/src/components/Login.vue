@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import state from './state'
+
 export default {
   name: 'Login',
   data () {
@@ -73,7 +75,9 @@ export default {
   },
   methods: {
     login () {
-      this.$router.push('Home')
+      this.$router.push('Home').then(() => {
+        state.set('isLogin', true)
+      })
     }
   }
 }
