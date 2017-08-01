@@ -6,7 +6,9 @@ import Home from '@/components/Home'
 
 Vue.use(Router)
 
-export default new Router({
+import state from '../state'
+
+let router = new Router({
   routes: [
     {
       path: '/',
@@ -30,7 +32,7 @@ export default new Router({
   ]
 })
 
-Router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
@@ -46,3 +48,5 @@ Router.beforeEach((to, from, next) => {
     next() // make sure to always call next()!
   }
 })
+
+export default router

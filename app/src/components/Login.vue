@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import state from './state'
+import state from '../state'
 
 export default {
   name: 'Login',
@@ -75,9 +75,8 @@ export default {
   },
   methods: {
     login () {
-      this.$router.push('Home').then(() => {
-        state.set('isLogin', true)
-      })
+      state.set('isLogin', true)
+      this.$router.push('Home')
     }
   }
 }
