@@ -114,8 +114,8 @@ export default {
     }
   },
   methods: {
-    register: (event) => {
-      alert('注册完成')
+    register: function () {
+      this.$router.push('Login')
     }
   }
 }
@@ -139,19 +139,6 @@ export default {
         width: 60%;
         & > .el-select {
           width: 100%;
-        }
-      }
-      #register-btn-group {
-        & > .el-form-item__content {
-          width: 100%;
-          #register {
-            position: absolute;
-            left: 10%;
-          }
-          #trial {
-            position: absolute;
-            right: 25%;
-          }
         }
       }
     }

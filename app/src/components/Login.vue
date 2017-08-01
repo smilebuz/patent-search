@@ -1,8 +1,8 @@
 <template>
   <div id="container">
     <h1>{{ header }}</h1>
-    <main>
-      <div id="main">
+    <el-row type='flex' justify='center'>
+      <el-col :span='14' id="main">
         <el-form ref='form' :model="form" label-width="80px">
           <el-form-item label='账号:'>
             <el-input v-model='form.account'></el-input>
@@ -19,31 +19,37 @@
             <el-button type="primary" @click="login">登录</el-button>
           </el-form-item>
         </el-form>
-      </div>
-      <div id="contact">
-        <div class="contact-item">
-          <img src="../assets/telephone.png" alt="电话">
-          <div class="contact-detail">
+      </el-col>
+      <el-col :span='10' id="contact">
+        <el-row class="contact-item">
+          <el-col :span='4'>
+            <img src="../assets/telephone.png" alt="电话">
+          </el-col>
+          <el-col :span='20' class="contact-detail">
             <p>客服电话:</p>
             <p>{{ contact.phone }}</p>
-          </div>
-        </div>
-        <div class="contact-item">
-          <img src="../assets/email.png" alt="邮箱">
-          <div class="contact-detail">
+          </el-col>
+        </el-row>
+        <el-row class="contact-item">
+          <el-col :span='4'>
+            <img src="../assets/email.png" alt="邮箱">
+          </el-col>
+          <el-col :span='20' class="contact-detail">
             <p>邮箱:</p>
             <p>{{ contact.email }}</p>
-          </div>
-        </div>
-        <div class="contact-item">
-          <img src="../assets/address.png" alt="地址">
-          <div class="contact-detail">
+          </el-col>
+        </el-row>
+        <el-row class="contact-item">
+          <el-col :span='4'>
+            <img src="../assets/address.png" alt="地址">
+          </el-col>
+          <el-col :span='20' class="contact-detail">
             <p>{{ company }}</p>
             <p>{{ contact.address }}</p>
-          </div>
-        </div>
-      </div>
-    </main>
+          </el-col>
+        </el-row>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -67,7 +73,7 @@ export default {
   },
   methods: {
     login () {
-      alert('登录')
+      this.$router.push('Home')
     }
   }
 }
@@ -85,36 +91,26 @@ export default {
     color: $head-color;
     font: $head-font;
   }
-  main {
-    display: flex;
-    & > div {
-      flex-basis: 50%;
+  #main {
+    .el-form {
+      width: 60%;
+      margin: 30px auto;
     }
-    #main {
-      .el-form {
-        width: 60%;
-        margin: 30px auto;
-      }
-    }
-    #contact {
+  }
+  #contact {
+    .contact-item {
       display: flex;
-      flex-direction: column;
-      .contact-item {
+      margin-bottom: 40px;
+      img {
+        height: 60px;
+      }
+      .contact-detail {
         display: flex;
-        margin-bottom: 40px;
-        img {
-          width: 60px;
-          height: 60px;
-        }
-        .contact-detail {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          align-items: flex-start;
-          margin-left: 20px;
-          p {
-            margin: 0;
-          }
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-start;
+        p {
+          margin: 0;
         }
       }
     }
