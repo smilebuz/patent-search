@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/components/Login'
-import Register from '@/components/Register'
-import Home from '@/components/Home'
+import Login from '@/views/Login'
+import Register from '@/views/Register'
+import Home from '@/views/Home'
+import AdvancedSearch from '@/views/AdvancedSearch'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ let router = new Router({
       path: '/Home',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/AdvancedSearch',
+      name: 'AdvancedSearch',
+      component: AdvancedSearch
     }
   ]
 })
