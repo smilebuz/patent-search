@@ -28,23 +28,26 @@ let router = new Router({
     {
       path: '/Home',
       name: 'Home',
-      component: Home
+      component: Home,
+      meta: { requiresAuth: true }
     },
     {
       path: '/AdvancedSearch',
       name: 'AdvancedSearch',
-      component: AdvancedSearch
+      component: AdvancedSearch,
+      meta: { requiresAuth: true }
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
+  console.log(to.matched)
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (!state.get('siLogin')) {
+    if (!state.get('isLogin')) {
       next({
-        path: '/login',
+        path: '/Login',
         query: { redirect: to.fullPath }
       })
     } else {

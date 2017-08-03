@@ -12,8 +12,8 @@
           </el-form-item>
           <el-form-item id="operation-group">
             <el-checkbox label="记住密码" name="rememberPw"></el-checkbox>
-            <span>忘记密码</span>
-            <router-link to="/Register">立即注册</router-link>
+            <router-link to='' id="forgetpw" tag='span' class="span-link">忘记密码</router-link>
+            <router-link to="/Register" tag='span' class="span-link">立即注册</router-link>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="login">登录</el-button>
@@ -76,6 +76,7 @@ export default {
   methods: {
     login () {
       state.set('isLogin', true)
+      alert(state.get('isLogin'))
       this.$router.push('Home')
     }
   }
@@ -117,5 +118,8 @@ export default {
         }
       }
     }
+  }
+  .span-link {
+    cursor: pointer;
   }
 </style>
