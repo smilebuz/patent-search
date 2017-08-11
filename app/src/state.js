@@ -3,7 +3,8 @@ import Vue from 'vue'
 export default new Vue({
   data () {
     return {
-      isLogin: ''
+      isLogin: '',
+      token: ''
     }
   },
   methods: {
@@ -12,6 +13,9 @@ export default new Vue({
     },
     get (key) {
       return this[key] // 为什么this.key取回undefined this[key]可以
+    },
+    setToken () {
+
     }
   }
 })

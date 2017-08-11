@@ -55,6 +55,7 @@
 
 <script>
 import state from '../state'
+import bus from '../Bus.js'
 
 export default {
   name: 'Login',
@@ -75,8 +76,9 @@ export default {
   },
   methods: {
     login () {
+      let token = '112233'
       state.set('isLogin', true)
-      alert(state.get('isLogin'))
+      bus.$emit('setToken', token)
       this.$router.push('Home')
     }
   }

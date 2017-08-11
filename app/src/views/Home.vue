@@ -9,21 +9,15 @@
           </el-col>
         </el-row>
         <el-row id="filter-group">
-          <el-col :span='8' class="filter-item">
-            <el-radio class='radio' v-model='search_filter' label='1'>发明专利</el-radio>
-          </el-col>
-          <el-col :span='8' class="filter-item">
-            <el-radio class='radio' v-model='search_filter' label='2'>实用新型专利</el-radio>
-          </el-col>
-          <el-col :span='8' class="filter-item">
-            <el-radio class='radio' v-model='search_filter' label='3'>外观专利</el-radio>
+          <el-col :span='8' class='filter-item' v-for='type, index in apply_type' :key='index'>
+            <el-radio class='radio' v-model='search_filter' v-bind:label='type.value'> {{ type.message }} </el-radio>
           </el-col>
         </el-row>
       </el-col>
       <el-col :span='8' :push='8'>
         <el-row type='flex' align='middle'>
           <el-col :span='4' :push='2'>
-            <el-button type='primary'>检索</el-button>
+            <el-button type='primary' v-on:click='search'>检索</el-button>
           </el-col>
           <el-col :span='8' :push='2'>
             <router-link to='AdvancedSearch' id='advanced-search' tag='span'>高级检索</router-link>
@@ -53,19 +47,46 @@
 </template>
 
 <script>
+// import state from '../state.js'
+import bus from '../Bus.js'
+
 export default {
   name: 'Home',
   data () {
     return {
       header: 'INNOPRO',
       keyword: '',
-      search_filter: '1'
+      search_filter: '1',
+      apply_type: [
+        {
+          message: '发明专利',
+          value: 'inventions'
+        },
+        {
+          message: '实用新型专利',
+          value: 'utility_medels'
+        },
+        {
+          message: '外观专利',
+          value: 'designs'
+        }
+      ]
     }
   },
   methods: {
     advancedSearch () {
       this.$router.push('AdvancedSearch')
+    },
+    search () {
+      // let keyword = this.keyword
+      // state.$emit('sendKeyword', keyword)
+      this.$router.push('Search')
     }
+  },
+  mounted: function () {
+    bus.$once('setToken', (token) => {
+      console.log('token:' + token)
+    })
   }
 }
 </script>

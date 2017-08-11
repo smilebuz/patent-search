@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import Login from '@/views/Login'
 import Register from '@/views/Register'
 import Home from '@/views/Home'
 import AdvancedSearch from '@/views/AdvancedSearch'
+import Search from '@/views/Search'
 
 Vue.use(Router)
 
@@ -36,12 +38,18 @@ let router = new Router({
       name: 'AdvancedSearch',
       component: AdvancedSearch,
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/Search',
+      name: 'Search',
+      component: Search,
+      meta: { requiresAuth: true }
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to.matched)
+  // console.log(to.matched)
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
