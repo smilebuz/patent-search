@@ -85,6 +85,7 @@
 
 <script>
 import myHeader from '../components/Header'
+
 export default {
   data () {
     return {

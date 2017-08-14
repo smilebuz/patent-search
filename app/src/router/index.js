@@ -6,6 +6,7 @@ import Register from '@/views/Register'
 import Home from '@/views/Home'
 import AdvancedSearch from '@/views/AdvancedSearch'
 import Search from '@/views/Search'
+import PatentInfo from '@/views/PatentInfo'
 
 Vue.use(Router)
 
@@ -44,6 +45,12 @@ let router = new Router({
       name: 'Search',
       component: Search,
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/PatentInfo',
+      name: 'PatentInfo',
+      component: PatentInfo
+      // meta: { requiresAuth: true }
     }
   ]
 })

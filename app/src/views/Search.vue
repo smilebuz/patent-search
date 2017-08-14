@@ -3,21 +3,7 @@
     <myheader></myheader>
 
     <div class='search'>
-      <el-row class='row'>
-        <el-col :span='8' :offset='8'>
-          <el-input v-model='keyword'></el-input>
-        </el-col>
-        <el-col :span='4'>
-          <el-button type='primary' v-on:click='search'>检索</el-button>
-          <router-link to='AdvancedSearch'>高级检索</router-link>
-        </el-col>
-      </el-row>
-      <el-row class='row'>
-        <el-col :span='8' :offset='8'>
-          <el-radio class='radio' v-model='search_classification' label='keyword'>关键词查询</el-radio>
-          <el-radio class='radio' v-model='search_classification' label='ipc'>分类号查询</el-radio>
-        </el-col>
-      </el-row>
+      <searchbar></searchbar>
       <el-row>
         <span>首页n条专利，共n条相关专利</span>
       </el-row>
@@ -75,43 +61,24 @@ import myheader from '../components/Header'
 import myfilter from '../components/Filter'
 import searchlist from '../components/SearchList'
 import recommend from '../components/Recommend'
+import searchbar from '../components/SearchBar'
 
 export default {
   data () {
     return {
-      keyword: 'aaa',
-      search_classification: ''
     }
   },
   mounted: function () {
-    /*
-    console.log('mounted')
-    state.$on('sendKeyword', (msg) => {
-      alert(msg)
-    })
-    */
   },
   methods: {
-    search () {
-      alert('检索')
-    }
   },
   components: {
-    myheader, myfilter, searchlist, recommend
+    myheader, myfilter, searchlist, recommend, searchbar
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .search {
-    .row {
-      margin-bottom: 20px;
-      button {
-        border-color: #008080;
-        background: #008080;
-      }
-    }
-  }
   .tab-group {
     display: flex;
     justify-content: space-between;

@@ -2,7 +2,7 @@
   <div>
     <div v-for='item, index in patents' :key='index' class='list-item'>
       <div>
-        <span>{{ item.invention_title }}</span>
+        <router-link to='PatentInfo' tag='span'>{{ item.invention_title }}</router-link>
         <span class="degree">价值度:{{ item.value_degree.value }} <i v-for='n in item.value_degree.degree' class='el-icon-star-off'></i> </span>
       </div>
       <div>
@@ -62,6 +62,15 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    fillList: (patents) => {
+      let patent = {
+      }
+      this.patents.push(patent)
+    }
+  },
+  mounted: function () {
   }
 }
 </script>
