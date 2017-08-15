@@ -3,69 +3,41 @@
     <p>相关推荐</p>
     <div>
       <p>关键词</p>
-      <el-tag type='gray' v-for='keyword, index in keyword_list' :key='index' class="recommend-item">{{ keyword.message }}</el-tag>
+      <el-tag type='gray' v-for='keyword, index in keyword_list' :key='index' class="recommend-item">{{ keyword }}</el-tag>
     </div>
     <div>
       <p>IPC</p>
-      <el-tag type='gray' v-for='ipc, index in ipc_main_classification_list' :key='index' class='recommend-item'>{{ ipc.message }}</el-tag>
+      <el-tag type='gray' v-for='ipc, index in ipc_main_classification_list' :key='index' class='recommend-item'>{{ ipc }}</el-tag>
     </div>
     <div>
       <p>申请人</p>
-      <el-tag type='gray' v-for='applicant, index in applicant_list' :key='index' class='recommend-item'>{{ applicant.message }}</el-tag>
+      <el-tag type='gray' v-for='applicant, index in applicant_list' :key='index' class='recommend-item'>{{ applicant }}</el-tag>
     </div>
     <div>
       <p>产品</p>
-      <el-tag type='gray' v-for='product, index in product_list' :key='index' class='recommend-item'>{{ product.message }}</el-tag>
+      <el-tag type='gray' v-for='product, index in product_list' :key='index' class='recommend-item'>{{ product }}</el-tag>
     </div>
   </div>
 </template>
 
 <script>
+import state from '../state.js'
+
 export default {
   data () {
     return {
-      product_list: [
-        {
-          message: '变频变压器'
-        },
-        {
-          message: '滤波装置'
-        }
-      ],
-      keyword_list: [
-        {
-          message: '电力载波'
-        },
-        {
-          message: '电力'
-        },
-        {
-          message: '电力设备'
-        }
-      ],
-      ipc_main_classification_list: [
-        {
-          message: 'G08C19/00'
-        },
-        {
-          message: 'H04B3/50'
-        },
-        {
-          message: 'G06F15/20'
-        },
-        {
-          message: 'H01H47/00'
-        }
-      ],
-      applicant_list: [
-        {
-          message: '国家电网'
-        },
-        {
-          message: '信息通信分公司'
-        }
-      ]
+      product_list: [],
+      keyword_list: [],
+      ipc_main_classification_list: [],
+      applicant_list: []
     }
+  },
+  mounted: function () {
+    let recommendList = state.get('recommendList')
+    this.product_list = recommendList.product_list
+    this.keyword_list = recommendList.keyword_list
+    this.ipc_main_classification_list = recommendList.ipc_main_classification_list
+    this.applicant_list = recommendList.applicant_list
   }
 }
 </script>
@@ -75,6 +47,7 @@ export default {
     text-align: left;
     .recommend-item {
       margin-right: 1em;
+      margin-bottom: 1em;
     }
   }
 </style>

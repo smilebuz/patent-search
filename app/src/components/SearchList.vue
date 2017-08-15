@@ -26,41 +26,12 @@
 </template>
 
 <script>
+import state from '../state.js'
+
 export default {
   data () {
     return {
-      patents: [
-        {
-          invention_title: '基于电力载波技术的电力设备远程监测系统',
-          applicant_name: '国网冀北电力有限公司信息通信分公司',
-          inventor_list: ['王思明', '王思宇'],
-          ipc_main_classification: 'G08C19/00',
-          apply_date: '2015-09-08',
-          apply_no: '201510601367.3',
-          publish_date: '2015-09-08',
-          publish_no: '2015-09-08',
-          abstract: '本发明涉及电力载波通信技术领域，特别是基于电力载波技术的电力设备远程监测系统，包括信号发生器和信号接收器，所述信号发生器通过信号调制模块与电力线一端相连接，所述电力线另一端通过信号解调模块与信号接收器相连接；所述电力线上间隔设置若干通信安全检测模块，所述通信安全检测模块与远程监控模块无线通信连接。采用上述结构后，本发明通过设置在电力线上的通信安全监测模块检测电力载波通信中信号的衰减，然后将检测到的数据发送给远程监控模块，从而判断信号衰减是否正常；另外，通过电力变送器检测判断电力载波通信是否正常。',
-          value_degree: {
-            value: 78.2,
-            degree: 3
-          }
-        },
-        {
-          invention_title: '基于电力载波技术的电力设备远程监测系统',
-          applicant_name: '国网冀北电力有限公司信息通信分公司',
-          inventor_list: ['王思明', '王思宇'],
-          ipc_main_classification: 'G08C19/00',
-          apply_date: '2015-09-08',
-          apply_no: '201510601367.3',
-          publish_date: '2015-09-08',
-          publish_no: '2015-09-08',
-          abstract: '本发明涉及电力载波通信技术领域，特别是基于电力载波技术的电力设备远程监测系统，包括信号发生器和信号接收器，所述信号发生器通过信号调制模块与电力线一端相连接，所述电力线另一端通过信号解调模块与信号接收器相连接；所述电力线上间隔设置若干通信安全检测模块，所述通信安全检测模块与远程监控模块无线通信连接。采用上述结构后，本发明通过设置在电力线上的通信安全监测模块检测电力载波通信中信号的衰减，然后将检测到的数据发送给远程监控模块，从而判断信号衰减是否正常；另外，通过电力变送器检测判断电力载波通信是否正常。',
-          value_degree: {
-            value: 83.4,
-            degree: 4
-          }
-        }
-      ]
+      patents: []
     }
   },
   methods: {
@@ -71,6 +42,22 @@ export default {
     }
   },
   mounted: function () {
+    let patentList = state.get('patentList')
+    for (let i = 0; i < patentList.length; i++) {
+      let patent = patentList[i]
+      this.patents.push({
+        invention_title: patent.invention_title,
+        applicant_name: patent.applicant_name,
+        inventor_list: patent.inventor_list.join(' '),
+        ipc_main_classification: patent.ipc_main_classification,
+        apply_date: patent.apply_date,
+        apply_no: patent.apply_no,
+        publish_date: patent.publish_date,
+        publish_no: patent.publish_no,
+        abstract: patent.abstract_info,
+        value_degree: patent.value_degreee
+      })
+    }
   }
 }
 </script>

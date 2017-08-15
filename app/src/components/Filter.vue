@@ -5,59 +5,53 @@
       <el-button>取消</el-button>
     </div class='btn-group'>
     <el-collapse v-model='filter'>
-      <el-collapse-item v-for='item, index in filters' :key='index' v-bind:title='item.message' class='filter-item'></el-collapse-item>
+      <el-collapse-item v-for='(value, key) in filters' :key='key' v-bind:title='value.title' class='filter-item'>
+        <div v-for='item, index in value.items' :key='item'>
+          <el-checkbox v-bind:label='item'></el-checkbox>
+        </div>
+      </el-collapse-item>
     </el-collapse>
   </div>
 </template>
 
 <script>
+import state from '../state.js'
+
 export default {
   data () {
     return {
       filter: ['1'],
-      filters: [
-        {
-          message: '专利类型',
-          value: ''
+      filters: {
+        ipc_classification_cn_name_list: {
+          title: 'IPC分类',
+          items: []
         },
-        {
-          message: '法律状态',
-          value: ''
+        product_type: {
+          title: '产品类型',
+          items: []
         },
-        {
-          message: 'IPC分类',
-          value: ''
+        national_economy_industry_list: {
+          title: '国民经济产业',
+          items: []
         },
-        {
-          message: '产品类型',
-          value: ''
+        applicant_name_list: {
+          title: '申请人',
+          items: []
         },
-        {
-          message: '国民经济产业',
-          value: ''
-        },
-        {
-          message: '申请人',
-          value: ''
-        },
-        {
-          message: '维持年限',
-          value: ''
-        },
-        {
-          message: '申请时间',
-          value: ''
-        },
-        {
-          message: '地区统计',
-          value: ''
-        },
-        {
-          message: '购买力',
-          value: ''
+        area_list: {
+          title: '地区统计',
+          items: []
         }
-      ]
+      }
     }
+  },
+  mounted: function () {
+    let filterList = state.get('filterList')
+    this.filters.ipc_classification_cn_name_list.items = filterList.ipc_classification_cn_name_list
+    this.filters.product_type.items = filterList.product_type_list
+    this.filters.national_economy_industry_list.items = filterList.national_economy_industry_list
+    this.filters.applicant_name_list.items = filterList.applicant_name_list
+    this.filters.area_list.items = filterList.area_list
   }
 }
 </script>
@@ -70,5 +64,8 @@ export default {
   }
   .el-collapse-item__header__arrow {
     display: none;
+  }
+  .filter-item {
+    text-align: left;
   }
 </style>

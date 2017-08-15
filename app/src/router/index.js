@@ -49,8 +49,8 @@ let router = new Router({
     {
       path: '/PatentInfo',
       name: 'PatentInfo',
-      component: PatentInfo
-      // meta: { requiresAuth: true }
+      component: PatentInfo,
+      meta: { requiresAuth: true }
     }
   ]
 })

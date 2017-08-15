@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import state from '../state.js'
+
 export default {
   data () {
     return {
@@ -28,6 +30,26 @@ export default {
   },
   methods: {
     search () {
+      let keyword = this.keyword
+      let request = {
+        query: keyword,
+        apply_type: 'inventions',
+        search_type: 'common',
+        field: 'keywords',
+        per_page: 3,
+        page: 1
+      }
+      // state.$emit('sendKeyword', keyword)
+      this.$http.post('/api/search', request)
+        .then((response) => {
+          state.set('patentList', response.data.result.patent_list)
+          state.set('filterList', response.data.result.filter_sidebar_list)
+          state.set('recommendList', response.data.result.recommend_list)
+          this.$router.push('Search')
+        })
+        .then((error) => {
+          console.log(error)
+        })
     }
   }
 }

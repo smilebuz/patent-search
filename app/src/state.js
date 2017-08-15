@@ -4,7 +4,10 @@ export default new Vue({
   data () {
     return {
       isLogin: '',
-      token: ''
+      token: '',
+      patentList: [],
+      filterList: [],
+      recommendList: []
     }
   },
   methods: {
