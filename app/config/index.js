@@ -31,7 +31,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         // target: 'www.baidu.com'
-        target: 'http://123.56.179.3:9080',
+        target: 'http://123.56.179.3:9080/v1/',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
