@@ -29,11 +29,7 @@
         </el-col>
         <el-col :span='8' :offset='1'>
           <div class='tab-group'>
-            <div class='tab tab-order'>相关度</div>
-            <div class='tab tab-order'>申请时间</div>
-            <div class='tab tab-order'>价值度</div>
-            <div class='tab tab-order'>潜在买卖数</div>
-            <div class='tab tab-order'>相似专利数</div>
+            <div class='tab tab-order' v-for='(value, key) in sorts' :key='key' @click='sort(key, value.direction)'>{{ value.message }}</div>
           </div>
         </el-col>
       </el-row>
@@ -55,7 +51,7 @@
 </template>
 
 <script>
-// import state from '../state.js'
+import state from '../state.js'
 
 import myheader from '../components/Header'
 import myfilter from '../components/Filter'
@@ -66,11 +62,50 @@ import searchbar from '../components/SearchBar'
 export default {
   data () {
     return {
+      sorts: {
+        relevance: {
+          message: '相关度',
+          direction: 'decending'
+        },
+        apply_type: {
+          message: '申请时间',
+          direction: 'decending'
+        },
+        value_degree: {
+          message: '价值度',
+          direction: 'decending'
+        },
+        potential_buyer_number: {
+          message: '潜在买家数',
+          direction: 'decending'
+        },
+        similar_patent_number: {
+          message: '相似专利数',
+          direction: 'decending'
+        }
+      }
     }
   },
-  mounted: function () {
-  },
   methods: {
+    sort (target, direction) {
+      let request = {
+        target: target,
+        direction: direction,
+        session_id: '',
+        per_page: 1,
+        page: 1
+      }
+      this.$http.post('/api/sort', request)
+        .then((response) => {
+          state.set('patentList', response.data.result.patent_list)
+          state.set('filterList', response.data.result.filter_sidebar_list)
+          state.set('recommendList', response.data.result.recommend_list)
+          direction === 'decending' ? direction = 'ascending' : direction = 'decending'
+        })
+        .then((error) => {
+          console.log(error)
+        })
+    }
   },
   components: {
     myheader, myfilter, searchlist, recommend, searchbar

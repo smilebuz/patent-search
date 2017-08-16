@@ -2,7 +2,7 @@
   <div>
     <div v-for='item, index in patents' :key='index' class='list-item'>
       <div>
-        <router-link to='PatentInfo' tag='span'>{{ item.invention_title }}</router-link>
+        <router-link v-bind:to="'PatentInfo/'+item.patent_id" tag='span'>{{ item.invention_title }}</router-link>
         <span class="degree">价值度:{{ item.value_degree.value }} <i v-for='n in item.value_degree.degree' class='el-icon-star-off'></i> </span>
       </div>
       <div>
@@ -46,6 +46,7 @@ export default {
     for (let i = 0; i < patentList.length; i++) {
       let patent = patentList[i]
       this.patents.push({
+        patent_id: patent.patent_id,
         invention_title: patent.invention_title,
         applicant_name: patent.applicant_name,
         inventor_list: patent.inventor_list.join(' '),

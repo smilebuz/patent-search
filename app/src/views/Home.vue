@@ -48,6 +48,7 @@
 
 <script>
 import state from '../state.js'
+import Api from '../Api'
 // import bus from '../Bus.js'
 
 export default {
@@ -88,7 +89,7 @@ export default {
         page: 1
       }
       // state.$emit('sendKeyword', keyword)
-      this.$http.post('/api/search', request)
+      this.$http.post(Api.search, request)
         .then((response) => {
           state.set('patentList', response.data.result.patent_list)
           state.set('filterList', response.data.result.filter_sidebar_list)

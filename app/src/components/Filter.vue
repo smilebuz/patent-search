@@ -22,6 +22,14 @@ export default {
     return {
       filter: ['1'],
       filters: {
+        patent_type: {
+          title: '专利类型',
+          items: []
+        },
+        legat_status: {
+          title: '法律状态',
+          items: []
+        },
         ipc_classification_cn_name_list: {
           title: 'IPC分类',
           items: []
@@ -38,8 +46,20 @@ export default {
           title: '申请人',
           items: []
         },
+        time_last: {
+          title: '维持年限',
+          items: []
+        },
+        apply_date: {
+          title: '申请时间',
+          items: []
+        },
         area_list: {
           title: '地区统计',
+          items: []
+        },
+        purchase_power: {
+          title: '购买力',
           items: []
         }
       }

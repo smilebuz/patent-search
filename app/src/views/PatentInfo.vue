@@ -55,6 +55,7 @@ export default {
   data () {
     return {
       activeTab: 'info',
+      patentId: '',
       tabs: [
         {
           message: '著录项目信息',
@@ -108,7 +109,7 @@ export default {
   methods: {
     switchTab (tab, event) {
       if (this.activeTab === 'similarPatent') {
-        this.$http.get('/api/patents/06efc0c4-5d51-4c26-b505-05e2b4b9ce54/similarities', {
+        this.$http.get('/api/patents/' + this.patentId + '/similarities', {
           params: {
             perPage: 5,
             page: 1
@@ -191,7 +192,8 @@ export default {
     }
   },
   mounted () {
-    this.$http.get('/api/patents/06efc0c4-5d51-4c26-b505-05e2b4b9ce54')
+    this.patentId = this.$route.params.id
+    this.$http.get('/api/patents/' + this.patentId)
       .then((response) => {
         this.fillInfo(response.data.result)
       })

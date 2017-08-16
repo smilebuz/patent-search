@@ -8,10 +8,10 @@
             <el-input v-model='form.account' placeholder='6-20位英文、数字或者常用符号'></el-input>
           </el-form-item>
           <el-form-item label="密码:" prop='password'>
-            <el-input v-model='form.password' placeholder='6-20位英文、数字或者常用符号'></el-input>
+            <el-input v-model='form.password' placeholder='6-20位英文、数字或者常用符号' type='password'></el-input>
           </el-form-item>
           <el-form-item label="确认密码:" prop='password_confirm'>
-            <el-input v-model='form.password_confirm'></el-input>
+            <el-input v-model='form.password_confirm' placeholder='请再次输入密码' type='password'></el-input>
           </el-form-item>
           <el-form-item label="姓名:" prop='name'>
             <el-input v-model='form.name'></el-input>
@@ -67,6 +67,8 @@
 </template>
 
 <script>
+import Api from '../Api'
+
 export default {
   name: 'Register',
   data: () => {
@@ -115,7 +117,30 @@ export default {
   },
   methods: {
     register: function () {
-      this.$router.push('Login')
+      let params = {
+        username: this.form.account,
+        password: this.form.password,
+        fullname: this.form.name,
+        landline_phone_number: this.form.telephone,
+        cell_phone_number: this.form.mobile,
+        email: this.form.email,
+        address: this.form.address,
+        job_title: this.form.post,
+        work_unit: this.form.organization,
+        industry: this.form.industry,
+        information_source: this.form.source,
+        area: this.form.district,
+        purchase_plan: this.form.purchase
+      }
+      console.log(JSON.stringify(params))
+      this.$http.post(Api.register, params)
+        .then((response) => {
+          console.log(response)
+          this.$router.push('Login')
+        })
+        .then((error) => {
+          console.log(error)
+        })
     }
   }
 }

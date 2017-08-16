@@ -55,7 +55,8 @@
 
 <script>
 import state from '../state'
-import bus from '../Bus.js'
+// import bus from '../Bus.js'
+import Api from '../Api'
 
 export default {
   name: 'Login',
@@ -76,10 +77,20 @@ export default {
   },
   methods: {
     login () {
-      let token = '112233'
-      state.set('isLogin', true)
-      bus.$emit('setToken', token)
-      this.$router.push('Home')
+      let params = {
+        username: this.form.account,
+        password: this.form.password
+      }
+      this.$http.post(Api.login, params)
+        .then((response) => {
+          state.set('isLogin', true)
+          state.set('token', response.data.result.access_token)
+          // bus.$emit('setToken', token)
+          this.$router.push('Home')
+        })
+        .then((error) => {
+          console.log(error)
+        })
     }
   }
 }
