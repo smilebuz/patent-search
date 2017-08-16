@@ -5,6 +5,7 @@ export default new Vue({
     return {
       isLogin: '',
       token: '',
+      session_id: '',
       patentList: [],
       filterList: [],
       recommendList: []

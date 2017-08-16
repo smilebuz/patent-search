@@ -94,6 +94,7 @@ export default {
           state.set('patentList', response.data.result.patent_list)
           state.set('filterList', response.data.result.filter_sidebar_list)
           state.set('recommendList', response.data.result.recommend_list)
+          state.set('session_id', response.data.result.session_id)
           this.$router.push('Search')
         })
         .then((error) => {

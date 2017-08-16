@@ -16,6 +16,9 @@
 </template>
 
 <script>
+import Api from '../Api'
+import state from '../state.js'
+
 export default {
   data () {
     return {
@@ -26,7 +29,20 @@ export default {
     handleCommand (command) {
       switch (command) {
         case 'exit':
-          this.$router.push('Home')
+          let param = {
+            params: {
+              access_token: state.get('token')
+            }
+          }
+          this.$http.get(Api.logout, param)
+            .then((response) => {
+              state.set('token', '')
+              state.set('isLogin', false)
+              this.$router.push('Home')
+            })
+            .then((error) => {
+              console.log(error)
+            })
           break
         default:
           break

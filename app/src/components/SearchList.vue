@@ -66,6 +66,7 @@ export default {
 <style lang="scss">
   .list-item {
     margin-bottom: 1em;
+    border-bottom: 1px solid #008080;
     text-align: left;
     > div {
       margin-bottom: .5em;

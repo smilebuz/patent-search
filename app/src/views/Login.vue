@@ -85,6 +85,7 @@ export default {
         .then((response) => {
           state.set('isLogin', true)
           state.set('token', response.data.result.access_token)
+          console.log(state.get('token'))
           // bus.$emit('setToken', token)
           this.$router.push('Home')
         })
