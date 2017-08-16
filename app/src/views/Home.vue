@@ -48,8 +48,8 @@
 
 <script>
 import state from '../state.js'
+import bus from '../bus.js'
 import Api from '../Api'
-// import bus from '../Bus.js'
 
 export default {
   name: 'Home',
@@ -57,7 +57,7 @@ export default {
     return {
       header: 'INNOPRO',
       keyword: '',
-      search_filter: '1',
+      search_filter: '',
       apply_type: [
         {
           message: '发明专利',
@@ -71,7 +71,9 @@ export default {
           message: '外观专利',
           value: 'designs'
         }
-      ]
+      ],
+      field: 'keywords',
+      search_type: 'common'
     }
   },
   methods: {
@@ -79,22 +81,24 @@ export default {
       this.$router.push('AdvancedSearch')
     },
     search () {
-      let keyword = this.keyword
-      let request = {
-        query: keyword,
-        apply_type: 'inventions',
-        search_type: 'common',
-        field: 'keywords',
+      let params = {
+        query: this.keyword,
+        apply_type: this.search_filter,
+        search_type: this.search_type,
+        field: this.field,
+        session_id: state.get('session_id'),
         per_page: 3,
         page: 1
       }
       // state.$emit('sendKeyword', keyword)
-      this.$http.post(Api.search, request)
+      this.$http.post(Api.search, params)
         .then((response) => {
           state.set('patentList', response.data.result.patent_list)
           state.set('filterList', response.data.result.filter_sidebar_list)
           state.set('recommendList', response.data.result.recommend_list)
           state.set('session_id', response.data.result.session_id)
+          // bus.$emit('loadPatentList', response.data.result)
+          bus.$emit('bustest', 'hello event bus')
           this.$router.push('Search')
         })
         .then((error) => {

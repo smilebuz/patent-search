@@ -11,8 +11,8 @@
     </el-row>
     <el-row class='row'>
       <el-col :span='8' :offset='8'>
-        <el-radio class='radio' v-model='search_classification' label='keyword'>关键词查询</el-radio>
-        <el-radio class='radio' v-model='search_classification' label='ipc'>分类号查询</el-radio>
+        <el-radio class='radio' v-model='search_type' label='keyword'>关键词查询</el-radio>
+        <el-radio class='radio' v-model='search_type' label='ipc'>分类号查询</el-radio>
       </el-col>
     </el-row>
   </div>
@@ -25,22 +25,23 @@ export default {
   data () {
     return {
       keyword: '',
-      search_classification: ''
+      search_type: '',
+      field: 'keywords'
     }
   },
   methods: {
     search () {
-      let keyword = this.keyword
-      let request = {
-        query: keyword,
+      let params = {
+        query: this.keyword,
         apply_type: 'inventions',
-        search_type: 'common',
-        field: 'keywords',
+        search_type: this.search_type,
+        field: this.field,
+        session: state.get('session_id'),
         per_page: 3,
         page: 1
       }
       // state.$emit('sendKeyword', keyword)
-      this.$http.post('/api/search', request)
+      this.$http.post('/api/search', params)
         .then((response) => {
           state.set('patentList', response.data.result.patent_list)
           state.set('filterList', response.data.result.filter_sidebar_list)

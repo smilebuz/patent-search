@@ -27,6 +27,7 @@
 
 <script>
 import state from '../state.js'
+import bus from '../bus.js'
 
 export default {
   data () {
@@ -41,7 +42,12 @@ export default {
       this.patents.push(patent)
     }
   },
-  mounted: function () {
+  created () {
+    bus.$on('bustest', (data) => {
+      alert(data)
+    })
+  },
+  mounted () {
     let patentList = state.get('patentList')
     for (let i = 0; i < patentList.length; i++) {
       let patent = patentList[i]
