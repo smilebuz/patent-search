@@ -13,15 +13,15 @@
       <el-row>
         <el-col :span='4'>
           <div class='tab-group'>
-            <div class='tab'>过滤</div>
-            <div class='tab'>最近搜索</div>
-            <div class='tab'>分类导航</div>
+            <div class='tab' @click='switchSidebar("filter")'>过滤</div>
+            <div class='tab' @click='switchSidebar("recentSearch")'>最近搜索</div>
+            <div class='tab' @click='switchSidebar("categoryNav")'>分类导航</div>
           </div>
         </el-col>
         <el-col :span='8' :offset='2'>
           <div class='tab-group'>
-            <div class='tab' v-on:click='toggleDisplayType("abstract")'>摘要式</div>
-            <div class='tab' v-on:click='toggleDisplayType("table")'>表格式</div>
+            <div class='tab' @click='toggleDisplayType("abstract")'>摘要式</div>
+            <div class='tab' @click='toggleDisplayType("table")'>表格式</div>
             <div class='tab'>保存</div>
             <div class='tab'>加入收藏</div>
             <div class='tab'>加入分析库</div>
@@ -38,7 +38,11 @@
     <div class='main'>
       <el-row>
         <el-col :span='4'>
-          <myfilter></myfilter>
+          <myfilter v-if='sideBarSelected === "filter"'></myfilter>
+          <div v-else-if='sideBarSelected === "recentSearch"' id="recentSearch">
+            <p v-for='item, index in recentSearch' @click=search(item)>{{ item.message }}</p>
+          </div>
+          <categoryNav></categoryNav>
         </el-col>
         <el-col :span='17' :offset='2'>
           <searchlist :displayType='displayType'></searchlist>
@@ -53,16 +57,19 @@
 <script>
 import bus from '../bus.js'
 import state from '../state.js'
+import Api from '../Api'
 
 import myheader from '../components/Header'
 import myfilter from '../components/Filter'
 import searchlist from '../components/SearchList'
 import recommend from '../components/Recommend'
 import searchbar from '../components/SearchBar'
+import categoryNav from '../components/categoryNav'
 
 export default {
   data () {
     return {
+      sideBarSelected: 'filter',
       displayType: 'abstract',
       sorts: {
         relevance: {
@@ -85,7 +92,18 @@ export default {
           message: '相似专利数',
           direction: 'decending'
         }
-      }
+      },
+      recentSearch: [
+        {
+          message: '电力载波技术'
+        },
+        {
+          message: '制冷装置'
+        },
+        {
+          message: '国网冀北电力'
+        }
+      ]
     }
   },
   methods: {
@@ -106,12 +124,45 @@ export default {
           console.log(error)
         })
     },
-    toggleDisplayType: type => {
+    toggleDisplayType: function (type) {
       this.displayType = type
+    },
+    switchSidebar: function (type) {
+      this.sideBarSelected = type
+    },
+    search: function (item) {
+      let params = {
+      }
+      this.$http.post(Api.search, params)
+        .then((response) => {
+          this.sideBarSelected = 'filter'
+          bus.$emit('search', response.data.result)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
+  },
+  watch: {
+    sideBarSelected: function (type) {
+      switch (type) {
+        case 'recentSearch':
+          let params = {}
+          this.$http.get(Api.recentSearch, params)
+            .then((response) => {
+
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+          break
+        default:
+          break
+      }
     }
   },
   components: {
-    myheader, myfilter, searchlist, recommend, searchbar
+    myheader, myfilter, searchlist, recommend, searchbar, categoryNav
   }
 }
 </script>
@@ -134,5 +185,10 @@ export default {
   .toolbar {
     margin-top: 2em;
     margin-bottom: 2em;
+  }
+  #recentSearch {
+    text-align: left;
+    padding-left: 1em;
+    border: 1px solid #000;
   }
 </style>

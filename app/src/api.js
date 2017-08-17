@@ -12,7 +12,9 @@ const Api = {
   'patentInfo': '/api/patents/patent_id', // get
   'similarPatent': '/api/patents/patent_id/similarities?perPage=5&page=1', // get
   'organization': '/api/organizations/organization_id', // get
-  'legatStatus': '/api/patents/patent_id/legal_statuses' // get
+  'legatStatus': '/api/patents/patent_id/legal_statuses', // get
+
+  'recentSearch': '/version/users/user_id/recent_queries' // get
 }
 
 export default Api

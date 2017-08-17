@@ -1,7 +1,6 @@
 <template lang="html">
   <div>
-    <!-- span @click='testprops'>aaa</span-->
-    <div v-if='displayType === "abstrac"'>
+    <div v-if='displayType === "abstract"'>
       <div v-for='item, index in patents' :key='index' class='list-item'>
         <div>
           <router-link v-bind:to="'PatentInfo/'+item.patent_id" tag='span'>{{ item.invention_title }}</router-link>
@@ -43,7 +42,6 @@ import state from '../state.js'
 export default {
   data () {
     return {
-      test: '',
       patents: []
     }
   },
@@ -68,17 +66,6 @@ export default {
           value_degree: patent.value_degreee
         })
       }
-    },
-    testprops: function () {
-      this.test = this.test + 'a'
-    }
-  },
-  watch: {
-    test: function (newValue) {
-      alert(newValue)
-    },
-    displayType: function (newValue) {
-      alert(newValue)
     }
   },
   mounted () {
