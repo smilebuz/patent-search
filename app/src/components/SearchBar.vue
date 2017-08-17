@@ -20,6 +20,7 @@
 
 <script>
 import state from '../state.js'
+import bus from '../bus.js'
 
 export default {
   data () {
@@ -43,12 +44,10 @@ export default {
       // state.$emit('sendKeyword', keyword)
       this.$http.post('/api/search', params)
         .then((response) => {
-          state.set('patentList', response.data.result.patent_list)
-          state.set('filterList', response.data.result.filter_sidebar_list)
-          state.set('recommendList', response.data.result.recommend_list)
+          bus.$emit('search', response.data.result)
           this.$router.push('Search')
         })
-        .then((error) => {
+        .catch((error) => {
           console.log(error)
         })
     }

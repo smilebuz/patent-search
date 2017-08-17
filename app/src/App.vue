@@ -6,8 +6,29 @@
 </template>
 
 <script>
+import bus from './bus.js'
+import state from './state.js'
+
 export default {
-  name: 'app'
+  name: 'app',
+  created () {
+    bus.$on('search', data => {
+      state.set('patentList', data.patent_list)
+      state.set('filterList', data.filter_sidebar_list)
+      state.set('recommendList', data.recommend_list)
+      state.set('session_id', data.session_id)
+    })
+    bus.$on('filter', data => {
+      state.set('patentList', data.patent_list)
+      state.set('filterList', data.filter_sidebar_list)
+      state.set('recommendList', data.recommend_list)
+    })
+    bus.$on('sort', data => {
+      state.set('patentList', data.patent_list)
+      state.set('filterList', data.filter_sidebar_list)
+      state.set('recommendList', data.recommend_list)
+    })
+  }
 }
 </script>
 

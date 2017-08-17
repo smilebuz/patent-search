@@ -138,7 +138,7 @@ export default {
           console.log(response)
           this.$router.push('Login')
         })
-        .then((error) => {
+        .catch((error) => {
           console.log(error)
         })
     }

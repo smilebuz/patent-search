@@ -36,35 +36,32 @@ export default {
     }
   },
   methods: {
-    fillList: (patents) => {
-      let patent = {
+    fillList: function (patentList) {
+      for (let i = 0; i < patentList.length; i++) {
+        let patent = patentList[i]
+        this.patents.push({
+          patent_id: patent.patent_id,
+          invention_title: patent.invention_title,
+          applicant_name: patent.applicant_name,
+          inventor_list: patent.inventor_list.join(' '),
+          ipc_main_classification: patent.ipc_main_classification,
+          apply_date: patent.apply_date,
+          apply_no: patent.apply_no,
+          publish_date: patent.publish_date,
+          publish_no: patent.publish_no,
+          abstract: patent.abstract_info,
+          value_degree: patent.value_degreee
+        })
       }
-      this.patents.push(patent)
     }
   },
   created () {
-    bus.$on('bustest', (data) => {
-      alert(data)
+    bus.$on('bustest', (text) => {
+      console.log('bus' + text)
     })
   },
   mounted () {
-    let patentList = state.get('patentList')
-    for (let i = 0; i < patentList.length; i++) {
-      let patent = patentList[i]
-      this.patents.push({
-        patent_id: patent.patent_id,
-        invention_title: patent.invention_title,
-        applicant_name: patent.applicant_name,
-        inventor_list: patent.inventor_list.join(' '),
-        ipc_main_classification: patent.ipc_main_classification,
-        apply_date: patent.apply_date,
-        apply_no: patent.apply_no,
-        publish_date: patent.publish_date,
-        publish_no: patent.publish_no,
-        abstract: patent.abstract_info,
-        value_degree: patent.value_degreee
-      })
-    }
+    this.fillList(state.get('patentList'))
   }
 }
 </script>

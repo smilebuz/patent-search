@@ -19,6 +19,7 @@
 
 <script>
 import state from '../state.js'
+import bus from '../bus.js'
 import Api from '../Api.js'
 
 export default {
@@ -187,11 +188,9 @@ export default {
       console.log(JSON.stringify(params))
       this.$http.post(Api.filter, params)
         .then((response) => {
-          state.set('patentList', response.data.result.patent_list)
-          state.set('filterList', response.data.result.filter_sidebar_list)
-          state.set('recommendList', response.data.result.recommend_list)
+          bus.$emit('filter', response.data.result)
         })
-        .then((error) => {
+        .catch((error) => {
           console.log(error)
         })
     },

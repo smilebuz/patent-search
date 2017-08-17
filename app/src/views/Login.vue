@@ -85,12 +85,12 @@ export default {
         .then((response) => {
           state.set('isLogin', true)
           state.set('token', response.data.result.access_token)
-          console.log(state.get('token'))
+          console.log('token', state.get('token'))
           // bus.$emit('setToken', token)
           this.$router.push('Home')
         })
-        .then((error) => {
-          console.log(error)
+        .catch((error) => {
+          console.log('error', error)
         })
     }
   }

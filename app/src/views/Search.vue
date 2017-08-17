@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import state from '../state.js'
+import bus from '../bus.js'
 
 import myheader from '../components/Header'
 import myfilter from '../components/Filter'
@@ -97,12 +97,10 @@ export default {
       }
       this.$http.post('/api/sort', request)
         .then((response) => {
-          state.set('patentList', response.data.result.patent_list)
-          state.set('filterList', response.data.result.filter_sidebar_list)
-          state.set('recommendList', response.data.result.recommend_list)
+          bus.$emit('sort', response.data.result)
           direction === 'decending' ? direction = 'ascending' : direction = 'decending'
         })
-        .then((error) => {
+        .catch((error) => {
           console.log(error)
         })
     }

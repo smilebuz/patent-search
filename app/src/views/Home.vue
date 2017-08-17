@@ -90,19 +90,13 @@ export default {
         per_page: 3,
         page: 1
       }
-      // state.$emit('sendKeyword', keyword)
       this.$http.post(Api.search, params)
         .then((response) => {
-          state.set('patentList', response.data.result.patent_list)
-          state.set('filterList', response.data.result.filter_sidebar_list)
-          state.set('recommendList', response.data.result.recommend_list)
-          state.set('session_id', response.data.result.session_id)
-          // bus.$emit('loadPatentList', response.data.result)
-          bus.$emit('bustest', 'hello event bus')
+          bus.$emit('search', response.data.result)
           this.$router.push('Search')
         })
-        .then((error) => {
-          console.log(error)
+        .catch((error) => {
+          console.log('error', error)
         })
     }
   },
