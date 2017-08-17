@@ -108,13 +108,14 @@ export default {
   },
   methods: {
     switchTab (tab, event) {
+      let params = {
+        params: {
+          perPage: 5,
+          page: 1
+        }
+      }
       if (this.activeTab === 'similarPatent') {
-        this.$http.get('/api/patents/' + this.patentId + '/similarities', {
-          params: {
-            perPage: 5,
-            page: 1
-          }
-        })
+        this.$http.get('/api/patents/' + this.patentId + '/similarities', params)
         .then((response) => {
           this.fillSimPanel(response.data.result)
         })

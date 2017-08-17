@@ -40,7 +40,7 @@ export default {
               state.set('isLogin', false)
               this.$router.push('Home')
             })
-            .then((error) => {
+            .catch((error) => {
               console.log(error)
             })
           break

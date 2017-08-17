@@ -20,8 +20,8 @@
         </el-col>
         <el-col :span='8' :offset='2'>
           <div class='tab-group'>
-            <div class='tab'>摘要式</div>
-            <div class='tab'>表格式</div>
+            <div class='tab' v-on:click='toggleDisplayType("abstract")'>摘要式</div>
+            <div class='tab' v-on:click='toggleDisplayType("table")'>表格式</div>
             <div class='tab'>保存</div>
             <div class='tab'>加入收藏</div>
             <div class='tab'>加入分析库</div>
@@ -41,7 +41,7 @@
           <myfilter></myfilter>
         </el-col>
         <el-col :span='17' :offset='2'>
-          <searchlist></searchlist>
+          <searchlist :displayType='displayType'></searchlist>
           <recommend></recommend>
         </el-col>
       </el-row>
@@ -52,6 +52,7 @@
 
 <script>
 import bus from '../bus.js'
+import state from '../state.js'
 
 import myheader from '../components/Header'
 import myfilter from '../components/Filter'
@@ -62,6 +63,7 @@ import searchbar from '../components/SearchBar'
 export default {
   data () {
     return {
+      displayType: 'abstract',
       sorts: {
         relevance: {
           message: '相关度',
@@ -88,14 +90,14 @@ export default {
   },
   methods: {
     sort (target, direction) {
-      let request = {
+      let params = {
         target: target,
         direction: direction,
-        session_id: '',
-        per_page: 1,
+        session_id: state.get('session_id'),
+        per_page: 5,
         page: 1
       }
-      this.$http.post('/api/sort', request)
+      this.$http.post('/api/sort?access_token=' + state.get('token'), params)
         .then((response) => {
           bus.$emit('sort', response.data.result)
           direction === 'decending' ? direction = 'ascending' : direction = 'decending'
@@ -103,6 +105,9 @@ export default {
         .catch((error) => {
           console.log(error)
         })
+    },
+    toggleDisplayType: type => {
+      this.displayType = type
     }
   },
   components: {

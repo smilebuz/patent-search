@@ -7,7 +7,12 @@ const Api = {
 
   'search': '/api/search', // post
   'filter': '/api/filter', // post
-  'similarPatent': '/api/' // get
+  'sort': '/api/sort', // post
+
+  'patentInfo': '/api/patents/patent_id', // get
+  'similarPatent': '/api/patents/patent_id/similarities?perPage=5&page=1', // get
+  'organization': '/api/organizations/organization_id', // get
+  'legatStatus': '/api/patents/patent_id/legal_statuses' // get
 }
 
 export default Api

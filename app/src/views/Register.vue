@@ -132,10 +132,8 @@ export default {
         area: this.form.district,
         purchase_plan: this.form.purchase
       }
-      console.log(JSON.stringify(params))
       this.$http.post(Api.register, params)
         .then((response) => {
-          console.log(response)
           this.$router.push('Login')
         })
         .catch((error) => {
