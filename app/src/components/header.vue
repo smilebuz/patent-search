@@ -58,6 +58,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 1em;
     padding-left: 20px;
     padding-right: 50px;
     .company-name {

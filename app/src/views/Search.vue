@@ -42,7 +42,7 @@
           <div v-else-if='sideBarSelected === "recentSearch"' id="recentSearch">
             <p v-for='item, index in recentSearch' @click=search(item)>{{ item.message }}</p>
           </div>
-          <categoryNav></categoryNav>
+          <categoryNav v-else></categoryNav>
         </el-col>
         <el-col :span='17' :offset='2'>
           <searchlist :displayType='displayType'></searchlist>

@@ -6,7 +6,7 @@
       </el-col>
       <el-col :span='4'>
         <el-button type='primary' v-on:click='search'>检索</el-button>
-        <router-link to='AdvancedSearch'>高级检索</router-link>
+        <router-link to='AdvancedSearch' tag='span' id="advanced-search">高级检索</router-link>
       </el-col>
     </el-row>
     <el-row class='row'>
@@ -41,7 +41,7 @@ export default {
         per_page: 3,
         page: 1
       }
-      // state.$emit('sendKeyword', keyword)
+      console.log(JSON.stringify(params))
       this.$http.post('/api/search', params)
         .then((response) => {
           bus.$emit('search', response.data.result)
@@ -57,10 +57,14 @@ export default {
 
 <style lang="scss">
   .row {
-    margin-bottom: 20px;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
     button {
       border-color: #008080;
       background: #008080;
     }
+  }
+  #advanced-search {
+    margin-left: 1em;
   }
 </style>

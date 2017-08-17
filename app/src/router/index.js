@@ -7,6 +7,9 @@ import Home from '@/views/Home'
 import AdvancedSearch from '@/views/AdvancedSearch'
 import Search from '@/views/Search'
 import PatentInfo from '@/views/PatentInfo'
+import ValueDegree from '@/views/ValueDegree'
+import ApplicantInfo from '@/views/ApplicantInfo'
+import PotentialBuyer from '@/views/PotentialBuyer'
 
 Vue.use(Router)
 
@@ -51,6 +54,24 @@ let router = new Router({
       path: '/PatentInfo/:id',
       name: 'PatentInfo',
       component: PatentInfo,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/ValueDegree/:id',
+      name: 'ValueDegree',
+      component: ValueDegree,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/ApplicantInfo/:id',
+      name: 'ApplicantInfo',
+      component: ApplicantInfo,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/PotentialBuyer/:id',
+      name: 'PotentialBuyer',
+      component: PotentialBuyer,
       meta: { requiresAuth: true }
     }
   ]

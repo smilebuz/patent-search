@@ -3,11 +3,11 @@
     <div v-if='displayType === "abstract"'>
       <div v-for='item, index in patents' :key='index' class='list-item'>
         <div>
-          <router-link v-bind:to="'PatentInfo/'+item.patent_id" tag='span'>{{ item.invention_title }}</router-link>
-          <span class="degree">价值度:{{ item.value_degree.value }} <i v-for='n in item.value_degree.degree' class='el-icon-star-off'></i> </span>
+          <router-link v-bind:to="'PatentInfo/'+item.patent_id" tag='span' class='link'>{{ item.invention_title }}</router-link>
+          <router-link v-bind:to="'ValueDegree/'+item.patent_id" tag='span' class="degree link">价值度:{{ item.value_degree.value }} <i v-for='n in item.value_degree.degree' class='el-icon-star-off'></i> </router-link>
         </div>
         <div>
-          申请人:<span>{{ item.applicant_name }}</span> 发明人:<span v-for='inventor, index in item.inventor_list' :key='index'>{{ inventor }} </span> IPC分类号:<span>{{ item.ipc_main_classification }}</span>
+          申请人:<span @click='search' class="search-span">{{ item.applicant_name }}</span> 发明人:<span v-for='inventor, index in item.inventor_list' :key='index' @click='search' class="search-span">{{ inventor }} </span @click='search' class="search-span"> IPC分类号:<span>{{ item.ipc_main_classification }}</span>
         </div>
         <div>
           申请日:<span>{{ item.apply_date }}</span> 申请号:<span>{{ item.apply_no }}</span> 公开日:<span>{{ item.publish_date }}</span> 公开号:<span>{{ item.publish_no }}</span>
@@ -16,11 +16,11 @@
           {{ item.abstract }}
         </div>
         <div>
-          <router-link to='home' tag='span'>申请人信息</router-link> ——
-          <router-link to='home' tag='span'>申请人购买力</router-link> ——
-          <router-link to='home' tag='span'>申请人主营产品</router-link> ——
-          <router-link to='home' tag='span'>相似专利</router-link> ——
-          <router-link to='home' tag='span'>潜在买家</router-link>
+          <router-link v-bind:to="'ApplicantInfo/'+item.patent_id" tag='span' class='link'>申请人信息</router-link> ——
+          <router-link v-bind:to="'ApplicantInfo/'+item.patent_id" tag='span' class='link'>申请人购买力</router-link> ——
+          <router-link v-bind:to="'ApplicantInfo/'+item.patent_id" tag='span' class='link'>申请人主营产品</router-link> ——
+          <router-link to='home' tag='span' class='link'>相似专利</router-link> ——
+          <router-link v-bind:to="'PotentialBuyer/'+item.patent_id" tag='span' class='link'>潜在买家</router-link>
         </div>
       </div>
     </div>
@@ -38,10 +38,12 @@
 
 <script>
 import state from '../state.js'
+import Api from '../Api'
 
 export default {
   data () {
     return {
+      keyword: '',
       patents: []
     }
   },
@@ -66,6 +68,17 @@ export default {
           value_degree: patent.value_degreee
         })
       }
+    },
+    search: function () {
+      let params = {
+      }
+      this.$http.post(Api.search, params)
+        .then((response) => {
+
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     }
   },
   mounted () {
@@ -81,6 +94,12 @@ export default {
     text-align: left;
     > div {
       margin-bottom: .5em;
+      .search-span {
+        cursor: pointer;
+      }
+      .link {
+        cursor: pointer;
+      }
     }
   }
 </style>
