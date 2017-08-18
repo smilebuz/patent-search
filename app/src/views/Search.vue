@@ -115,10 +115,11 @@ export default {
         per_page: 5,
         page: 1
       }
-      this.$http.post('/api/sort?access_token=' + state.get('token'), params)
-        .then((response) => {
+      this.sorts[target].direction === 'decending' ? this.sorts[target].direction = 'ascending' : this.sorts[target].direction = 'decending'
+      console.log(JSON.stringify(params))
+      this.$http.post(Api.sort + '?access_token=' + state.get('token'), params)
+        .then(function (response) {
           bus.$emit('sort', response.data.result)
-          direction === 'decending' ? direction = 'ascending' : direction = 'decending'
         })
         .catch((error) => {
           console.log(error)

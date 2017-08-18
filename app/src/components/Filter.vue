@@ -6,7 +6,7 @@
     </div class='btn-group'>
     <el-collapse v-model='activeFilters'>
       <el-collapse-item v-for='(value, key) in filters' :key='key' v-bind:title='value.title' class='filter-item'>
-        <el-checkbox-group v-if='key === "maintenance_period_list"|| key === "purchasing_power_list"' v-model='value.checkList' class="checkbox-group">
+        <el-checkbox-group v-if='key === "maintenance_period_list" || key === "application_time_list" || key === "purchasing_power_list"' v-model='value.checkList' class="checkbox-group">
           <el-checkbox v-for='label, index in value.labels' :key='index' v-bind:label='label' class='checkbox'></el-checkbox>
         </el-checkbox-group>
         <el-checkbox-group v-else v-model='value.checkList' class="checkbox-group">
@@ -63,34 +63,60 @@ export default {
           items: [
             {
               maintenance_period: 1,
-              operator: '='
+              operator: 'equal'
             },
             {
               maintenance_period: 2,
-              operator: '='
+              operator: 'equal'
             },
             {
               maintenance_period: 3,
-              operator: '='
+              operator: 'equal'
             },
             {
               maintenance_period: 5,
-              operator: '='
+              operator: 'equal'
             },
             {
               maintenance_period: 10,
-              operator: '='
+              operator: 'equal'
             },
             {
               maintenance_period: 10,
-              operator: '>'
+              operator: 'greater_than'
             }
           ],
           checkList: []
         },
         application_time_list: {
           title: '申请时间',
-          items: ['1年', '2年', '3年', '5年', '10年', '10年以上'],
+          labels: ['1年', '2年', '3年', '5年', '10年', '10年以上'],
+          items: [
+            {
+              time_span: 1,
+              operator: 'equal'
+            },
+            {
+              time_span: 2,
+              operator: 'equal'
+            },
+            {
+              time_span: 3,
+              operator: 'equal'
+            },
+            {
+              time_span: 5,
+              operator: 'equal'
+            },
+            {
+              time_span: 10,
+              operator: 'equal'
+            },
+            {
+              time_span: 10,
+              operator: 'greater_than'
+            }
+          ],
           checkList: []
         },
         area_list: {
@@ -104,22 +130,22 @@ export default {
           items: [
             {
               left: 0,
-              right: 1000
+              right: 10000000
             },
             {
-              left: 1000,
-              right: 2000
+              left: 10000000,
+              right: 20000000
             },
             {
-              left: 2000,
-              right: 5000
+              left: 20000000,
+              right: 50000000
             },
             {
-              left: 5000,
-              right: 8000
+              left: 50000000,
+              right: 80000000
             },
             {
-              left: 10000,
+              left: 100000000,
               right: -1
             }
           ],
@@ -135,44 +161,22 @@ export default {
         if (this.filters.hasOwnProperty(prop)) {
           switch (prop) {
             case 'maintenance_period_list':
-              let maintenanceList = this.filters[prop].checkList
-              let maintenanceIndex = []
-              let paramMaintenanceList = []
-              if (maintenanceList) {
-                for (let time of maintenanceList) {
+            case 'application_time_list':
+            case 'purchasing_power_list':
+              let checkList = this.filters[prop].checkList
+              let checkIndex = []
+              let paramList = []
+              if (checkList) {
+                for (let time of checkList) {
                   let index = this.filters[prop].labels.findIndex((value, i, arr) => {
                     return value === time
                   })
-                  maintenanceIndex.push(index)
+                  checkIndex.push(index)
                 }
-                for (let index of maintenanceIndex) {
-                  paramMaintenanceList.push(this.filters[prop].items[index])
+                for (let index of checkIndex) {
+                  paramList.push(this.filters[prop].items[index])
                 }
-                params[prop] = paramMaintenanceList
-              } else {
-                params[prop] = []
-              }
-              break
-            /*
-            case 'application_time_list':
-
-              break
-            */
-            case 'purchasing_power_list':
-              let purchaseList = this.filters[prop].checkList
-              let purchaseIndex = []
-              let paramPurchaseList = []
-              if (maintenanceList) {
-                for (let purchase of purchaseList) {
-                  let index = this.filters[prop].labels.findIndex((value, i, arr) => {
-                    return value === purchase
-                  })
-                  purchaseIndex.push(index)
-                }
-                for (let index of purchaseIndex) {
-                  paramPurchaseList.push(this.filters[prop].items[index])
-                }
-                params[prop] = paramPurchaseList
+                params[prop] = paramList
               } else {
                 params[prop] = []
               }
@@ -183,10 +187,9 @@ export default {
         }
       }
       params.session_id = state.get('session_id')
-      params.per_page = 30
+      params.per_page = 10
       params.page = 1
-      console.log(JSON.stringify(params))
-      this.$http.post(Api.filter, params)
+      this.$http.post(Api.filter + '?access_token=' + state.get('token'), params)
         .then((response) => {
           bus.$emit('filter', response.data.result)
         })

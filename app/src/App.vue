@@ -18,16 +18,6 @@ export default {
       state.set('recommendList', data.recommend_list)
       state.set('session_id', data.session_id)
     })
-    bus.$on('filter', data => {
-      state.set('patentList', data.patent_list)
-      state.set('filterList', data.filter_sidebar_list)
-      state.set('recommendList', data.recommend_list)
-    })
-    bus.$on('sort', data => {
-      state.set('patentList', data.patent_list)
-      state.set('filterList', data.filter_sidebar_list)
-      state.set('recommendList', data.recommend_list)
-    })
   }
 }
 </script>

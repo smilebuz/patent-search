@@ -38,6 +38,7 @@
 
 <script>
 import state from '../state.js'
+import bus from '../bus.js'
 import Api from '../Api'
 
 export default {
@@ -45,13 +46,16 @@ export default {
     return {
       keyword: '',
       patents: []
+      // patentList: []
     }
   },
   props: {
     displayType: String
   },
   methods: {
-    fillList: function (patentList) {
+    refreshList: function () {
+      this.patents.splice(0, this.patents.length)
+      let patentList = state.get('patentList')
       for (let i = 0; i < patentList.length; i++) {
         let patent = patentList[i]
         this.patents.push({
@@ -65,7 +69,7 @@ export default {
           publish_date: patent.publish_date,
           publish_no: patent.publish_no,
           abstract: patent.abstract_info,
-          value_degree: patent.value_degreee
+          value_degree: patent.value_degree
         })
       }
     },
@@ -81,8 +85,19 @@ export default {
         })
     }
   },
+  created () {
+    bus.$on('sort', data => {
+      state.set('patentList', data.patent_list)
+      this.refreshList()
+    })
+    bus.$on('filter', data => {
+      state.set('patentList', data.patent_list)
+      this.refreshList()
+      // state.set('recommendList', data.recommend_list)
+    })
+  },
   mounted () {
-    this.fillList(state.get('patentList'))
+    this.refreshList()
   }
 }
 </script>
