@@ -187,11 +187,16 @@ export default {
         }
       }
       params.session_id = state.get('session_id')
-      params.per_page = 10
-      params.page = 1
+      params.per_page = state.get('per_page')
+      params.page = state.get('page')
       this.$http.post(Api.filter + '?access_token=' + state.get('token'), params)
         .then((response) => {
           bus.$emit('filter', response.data.result)
+          for (let prop in this.filters) {
+            if (this.filters.hasOwnProperty(prop)) {
+              this.filters[prop].checkList.splice(0, this.filters[prop].checkList.length)
+            }
+          }
         })
         .catch((error) => {
           console.log(error)
@@ -212,13 +217,6 @@ export default {
         this.filters[prop].items = filterList[prop]
       }
     }
-    /*
-    this.filters.ipc_classification_cn_name_list.items = filterList.ipc_classification_cn_name_list
-    this.filters.product_type.items = filterList.product_type_list
-    this.filters.national_economy_industry_list.items = filterList.national_economy_industry_list
-    this.filters.applicant_name_list.items = filterList.applicant_name_list
-    this.filters.area_list.items = filterList.area_list
-    */
   }
 }
 </script>

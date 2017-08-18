@@ -6,6 +6,8 @@ export default new Vue({
       isLogin: '',
       token: '',
       session_id: '',
+      per_page: 10,
+      page: 1,
       patentList: [],
       filterList: [],
       recommendList: []
@@ -16,7 +18,7 @@ export default new Vue({
       this.$set(this, key, val)
     },
     get (key) {
-      return this[key] // 为什么this.key取回undefined this[key]可以
+      return this[key]
     }
   },
   watch: {

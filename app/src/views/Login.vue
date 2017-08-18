@@ -56,7 +56,8 @@
 <script>
 import state from '../state'
 // import bus from '../Bus.js'
-import Api from '../Api'
+// import Api from '../Api'
+import { sendRequest } from '../Api'
 
 export default {
   name: 'Login',
@@ -81,17 +82,24 @@ export default {
         username: this.form.account,
         password: this.form.password
       }
+      sendRequest.login.post(params).then(res => {
+        state.set('isLogin', true)
+        state.set('token', res.access_token)
+        console.log('token', state.get('token'))
+        this.$router.push('Home')
+      })
+      /*
       this.$http.post(Api.login, params)
         .then((response) => {
           state.set('isLogin', true)
           state.set('token', response.data.result.access_token)
           console.log('token', state.get('token'))
-          // bus.$emit('setToken', token)
           this.$router.push('Home')
         })
         .catch((error) => {
           console.log('error', error)
         })
+      */
     }
   }
 }

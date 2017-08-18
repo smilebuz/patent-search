@@ -1,4 +1,5 @@
 // import Vue from 'Vue'
+import axios from 'axios'
 
 const Api = {
   'login': '/api/users/login', // post
@@ -16,5 +17,34 @@ const Api = {
 
   'recentSearch': '/version/users/user_id/recent_queries' // get
 }
+
+export const sendRequest = ((apilist) => {
+  let list = {}
+
+  for (let api in apilist) {
+    list[api] = {
+      post: params => {
+        return axios.post(apilist[api], params)
+                .then(response => {
+                  return Promise.resolve(response.data.result)
+                })
+                .catch(error => {
+                  console.log(error)
+                })
+      },
+      get: params => {
+        return axios.get(apilist[api], params)
+                .then(response => {
+                  // list[api].result = response.data.result
+                  return Promise.resolve(response.data.result)
+                })
+                .catch(error => {
+                  console.log(error)
+                })
+      }
+    }
+  }
+  return list
+})(Api)
 
 export default Api

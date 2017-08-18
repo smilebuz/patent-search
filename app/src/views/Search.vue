@@ -29,7 +29,9 @@
         </el-col>
         <el-col :span='8' :offset='1'>
           <div class='tab-group'>
-            <div class='tab tab-order' v-for='(value, key) in sorts' :key='key' @click='sort(key, value.direction)'>{{ value.message }}</div>
+            <div class='tab tab-order' v-for='(value, key) in sorts' :key='key' @click='sort(key, value.direction)'>
+              {{ value.message }}
+            </div>
           </div>
         </el-col>
       </el-row>
@@ -112,8 +114,8 @@ export default {
         target: target,
         direction: direction,
         session_id: state.get('session_id'),
-        per_page: 5,
-        page: 1
+        per_page: state.get('per_page'),
+        page: state.get('page')
       }
       this.sorts[target].direction === 'decending' ? this.sorts[target].direction = 'ascending' : this.sorts[target].direction = 'decending'
       console.log(JSON.stringify(params))
@@ -178,9 +180,12 @@ export default {
       border-right: none;
       padding-top: .5em;
       padding-bottom: .5em;
+      cursor: default;
       &:last-child {
         border-right: 1px solid #000;
       }
+    }
+    .tab-order {
     }
   }
   .toolbar {

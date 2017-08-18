@@ -87,8 +87,8 @@ export default {
         search_type: this.search_type,
         field: this.field,
         session_id: state.get('session_id'),
-        per_page: 3,
-        page: 1
+        per_page: state.get('per_page'),
+        page: state.get('page')
       }
       this.$http.post(Api.search, params)
         .then((response) => {
@@ -99,13 +99,6 @@ export default {
           console.log('error', error)
         })
     }
-  },
-  mounted: function () {
-    /*
-    bus.$once('setToken', (token) => {
-      console.log('token:' + token)
-    })
-    */
   }
 }
 </script>

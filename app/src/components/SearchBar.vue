@@ -6,7 +6,7 @@
       </el-col>
       <el-col :span='4'>
         <el-button type='primary' v-on:click='search'>检索</el-button>
-        <router-link to='AdvancedSearch' tag='span' id="advanced-search">高级检索</router-link>
+        <router-link to='/AdvancedSearch' tag='span' id="advanced-search">高级检索</router-link>
       </el-col>
     </el-row>
     <el-row class='row'>
@@ -41,16 +41,20 @@ export default {
         per_page: 3,
         page: 1
       }
-      console.log(JSON.stringify(params))
       this.$http.post('/api/search', params)
         .then((response) => {
           bus.$emit('search', response.data.result)
-          this.$router.push('Search')
+          this.$router.push('/Search')
         })
         .catch((error) => {
           console.log(error)
         })
     }
+  },
+  created () {
+    bus.$on('setKeyword', function (keyword) {
+      this.keyword = keyword
+    })
   }
 }
 </script>
@@ -66,5 +70,6 @@ export default {
   }
   #advanced-search {
     margin-left: 1em;
+    cursor: pointer;
   }
 </style>
