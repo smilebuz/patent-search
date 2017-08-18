@@ -6,8 +6,10 @@ export default new Vue({
       isLogin: '',
       token: '',
       session_id: '',
-      per_page: 10,
-      page: 1,
+      searchParams: {
+        per_page: 10,
+        page: 1
+      },
       patentList: [],
       filterList: [],
       recommendList: []
@@ -19,6 +21,9 @@ export default new Vue({
     },
     get (key) {
       return this[key]
+    },
+    setSearchParams (key, val) {
+      this.$set(this, this.searchParams[key], val)
     }
   },
   watch: {

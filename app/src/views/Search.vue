@@ -66,7 +66,7 @@ import myfilter from '../components/Filter'
 import searchlist from '../components/SearchList'
 import recommend from '../components/Recommend'
 import searchbar from '../components/SearchBar'
-import categoryNav from '../components/categoryNav'
+import categoryNav from '../components/CategoryNav'
 
 export default {
   data () {

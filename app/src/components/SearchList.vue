@@ -25,7 +25,8 @@
       </div>
     </div>
 
-    <el-table v-else :data='patents' border>
+    <el-table v-else :data='patents' @selection-change='selectChange' ref='patentTable' border>
+      <el-table-column type='selection'></el-table-column>
       <el-table-column prop='publish_no' label='公开号'></el-table-column>
       <el-table-column prop='invention_title' label='专利名称'></el-table-column>
       <el-table-column prop='applicant_name' label='专利权人'></el-table-column>
@@ -48,7 +49,9 @@ import Api from '../Api'
 export default {
   data () {
     return {
-      patents: []
+      patents: [],
+      selectPatents: [],
+      selectPatentIds: []
     }
   },
   props: {
@@ -99,6 +102,18 @@ export default {
     },
     handleCurrentChange: function (val) {
       state.set('page', val)
+    },
+    selectChange: function (selection) {
+      this.selectPatents = selection
+    }
+  },
+  watch: {
+    selectPatents: function (newArr) {
+      this.selectPatentIds.splice(0, this.selectPatentIds.length)
+      for (let patent of newArr) {
+        this.selectPatentIds.push(patent.patent_id)
+      }
+      console.log(this.selectPatentIds)
     }
   },
   created () {

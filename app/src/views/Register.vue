@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import Api from '../Api'
+import sendRequest from '../Api'
 
 export default {
   name: 'Register',
@@ -132,13 +132,9 @@ export default {
         area: this.form.district,
         purchase_plan: this.form.purchase
       }
-      this.$http.post(Api.register, params)
-        .then((response) => {
-          this.$router.push('Login')
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      sendRequest.register.post(params).then(res => {
+        this.$router.push('Login')
+      })
     }
   }
 }

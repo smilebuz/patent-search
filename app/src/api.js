@@ -35,7 +35,6 @@ export const sendRequest = ((apilist) => {
       get: params => {
         return axios.get(apilist[api], params)
                 .then(response => {
-                  // list[api].result = response.data.result
                   return Promise.resolve(response.data.result)
                 })
                 .catch(error => {

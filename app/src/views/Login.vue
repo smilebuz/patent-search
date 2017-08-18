@@ -88,18 +88,6 @@ export default {
         console.log('token', state.get('token'))
         this.$router.push('Home')
       })
-      /*
-      this.$http.post(Api.login, params)
-        .then((response) => {
-          state.set('isLogin', true)
-          state.set('token', response.data.result.access_token)
-          console.log('token', state.get('token'))
-          this.$router.push('Home')
-        })
-        .catch((error) => {
-          console.log('error', error)
-        })
-      */
     }
   }
 }
