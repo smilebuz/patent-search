@@ -1,8 +1,10 @@
 <template lang="html">
   <div>
     <div v-if='displayType === "abstract"'>
+      <el-checkbox id='select-all' v-model='selectAll'>全选</el-checkbox>
       <div v-for='item, index in patents' :key='index' class='list-item'>
         <div>
+          <el-checkbox v-model='item.checked' @change='toggleChange(item)'></el-checkbox>
           <router-link v-bind:to="'PatentInfo/'+item.patent_id" tag='span' class='link'>{{ item.invention_title }}</router-link>
           <router-link v-bind:to="'ValueDegree/'+item.patent_id" tag='span' class="degree link">价值度:{{ item.value_degree.value }} <i v-for='n in item.value_degree.degree' class='el-icon-star-off'></i> </router-link>
         </div>
@@ -25,7 +27,7 @@
       </div>
     </div>
 
-    <el-table v-else :data='patents' @selection-change='selectChange' ref='patentTable' border>
+    <el-table v-else :data='patents' @selection-change='selectChange' border>
       <el-table-column type='selection'></el-table-column>
       <el-table-column prop='publish_no' label='公开号'></el-table-column>
       <el-table-column prop='invention_title' label='专利名称'></el-table-column>
@@ -51,7 +53,8 @@ export default {
     return {
       patents: [],
       selectPatents: [],
-      selectPatentIds: []
+      selectPatentIds: [],
+      selectAll: false
     }
   },
   props: {
@@ -74,7 +77,8 @@ export default {
           publish_date: patent.publish_date,
           publish_no: patent.publish_no,
           abstract: patent.abstract_info,
-          value_degree: patent.value_degree
+          value_degree: patent.value_degree,
+          checked: false
         })
       }
     },
@@ -105,15 +109,41 @@ export default {
     },
     selectChange: function (selection) {
       this.selectPatents = selection
+    },
+    toggleChange: function (patent) {
+      if (patent.checked) {
+        this.selectPatentIds.push(patent.patent_id)
+      } else {
+        let index = this.selectPatentIds.findIndex((el, i, arr) => {
+          el === patent.patent_id
+        })
+        this.selectPatentIds.splice(index, 1)
+      }
     }
   },
   watch: {
+    displayType: function (newArr) {
+      this.selectPatentIds.splice(0, this.selectPatentIds.length)
+    },
     selectPatents: function (newArr) {
       this.selectPatentIds.splice(0, this.selectPatentIds.length)
       for (let patent of newArr) {
         this.selectPatentIds.push(patent.patent_id)
       }
-      console.log(this.selectPatentIds)
+    },
+    selectAll: function (newVal) {
+      if (newVal) {
+        this.selectPatentIds.splice(0, this.selectPatentIds.length)
+        for (let patent of this.patents) {
+          patent.checked = true
+          this.selectPatentIds.push(patent.patent_id)
+        }
+      } else {
+        this.selectPatentIds.splice(0, this.selectPatentIds.length)
+        for (let patent of this.patents) {
+          patent.checked = false
+        }
+      }
     }
   },
   created () {
