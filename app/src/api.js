@@ -26,7 +26,7 @@ export const sendRequest = ((apilist) => {
       post: params => {
         return axios.post(apilist[api], params)
                 .then(response => {
-                  return Promise.resolve(response.data.result)
+                  return Promise.resolve(response.data.result) // 将response.data.result转成Promise对象
                 })
                 .catch(error => {
                   console.log(error)

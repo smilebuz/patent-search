@@ -18,15 +18,32 @@
             <div class='tab' @click='switchSidebar("categoryNav")'>分类导航</div>
           </div>
         </el-col>
+
         <el-col :span='8' :offset='2'>
           <div class='tab-group'>
             <div class='tab' @click='toggleDisplayType("abstract")'>摘要式</div>
             <div class='tab' @click='toggleDisplayType("table")'>表格式</div>
-            <div class='tab'>保存</div>
+            <el-popover ref='popoverSave' placement='top' width='400' trigger='click' v-model='savePopover' v-on:hide='resetSavePopover'>
+              <h3>保存范围:</h3>
+              <div class='save-choice'>
+                <el-checkbox v-model='savePatent.saveChecked'>勾选的专利</el-checkbox>
+              </div>
+              <div class='save-choice'>
+                <el-checkbox v-model='savePatent.savePage'>
+                  从<el-input class='page-input' size='mini' v-model='savePatent.pageStart' :disabled='!savePatent.savePage'></el-input>页到<el-input class='page-input' size='mini' v-model='savePatent.pageEnd' :disabled='!savePatent.savePage'></el-input>页
+                </el-checkbox>
+              </div>
+              <div class='save-button'>
+                <el-button size='small'>保存</el-button>
+                <el-button size='small' @click='hideSavePopover'>取消</el-button>
+              </div>
+            </el-popover>
+            <div class='tab' v-popover:popoverSave>保存</div>
             <div class='tab'>加入收藏</div>
             <div class='tab'>加入分析库</div>
           </div>
         </el-col>
+
         <el-col :span='8' :offset='1'>
           <div class='tab-group'>
             <div class='tab tab-order' v-for='(value, key) in sorts' :key='key' @click='sort(key, value.direction)'>
@@ -105,7 +122,14 @@ export default {
         {
           message: '国网冀北电力'
         }
-      ]
+      ],
+      savePopover: false,
+      savePatent: {
+        saveChecked: false,
+        savePage: false,
+        pageStart: '',
+        pageEnd: ''
+      }
     }
   },
   methods: {
@@ -144,6 +168,13 @@ export default {
         .catch((error) => {
           console.log(error)
         })
+    },
+    hideSavePopover: function () {
+      this.savePopover = false
+    },
+    resetSavePopover: function () {
+      this.savePatent.saveChecked = false
+      this.savePatent.savePage = false
     }
   },
   watch: {
@@ -170,7 +201,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .tab-group {
     display: flex;
     justify-content: space-between;
@@ -187,6 +218,16 @@ export default {
     }
     .tab-order {
     }
+  }
+  .page-input {
+    width: 10%;
+  }
+  .save-choice {
+    margin-top: 1em;
+  }
+  .save-button {
+    display: flex;
+    justify-content: flex-end;
   }
   .toolbar {
     margin-top: 2em;
