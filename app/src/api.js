@@ -7,9 +7,9 @@ const Api = {
   'logout': '/api/users/logout', // get
   'register': '/api/users/register', // post
 
-  'search': '/api/search/?', // post
-  'filter': '/api/filter?', // post
-  'sort': '/api/sort?', // post
+  'search': '/api/search/', // post
+  'filter': '/api/filter', // post
+  'sort': '/api/sort', // post
 
   'patentInfo': '/api/patents/patent_id', // get
   'similarPatent': '/api/patents/patent_id/similarities?perPage=5&page=1', // get
