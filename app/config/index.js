@@ -7,7 +7,7 @@ module.exports = {
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -27,11 +27,11 @@ module.exports = {
     // port: 9080,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
     proxyTable: {
       '/api': {
         // target: 'www.baidu.com'
-        target: 'http://123.56.179.3:9080/v1/',
+        target: 'http://123.56.179.3:9080/v1',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

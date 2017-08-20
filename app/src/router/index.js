@@ -16,7 +16,7 @@ Vue.use(Router)
 import state from '../state'
 
 let router = new Router({
-  mode: 'history',
+  // mode: 'history',
   routes: [
     {
       path: '/',

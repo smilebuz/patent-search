@@ -38,7 +38,7 @@
                 <el-button size='small' @click='hideSavePopover'>取消</el-button>
               </div>
             </el-popover>
-            <div class='tab' v-popover:popoverSave>保存</div>
+            <div class='tab'>保存</div>
             <div class='tab'>加入收藏</div>
             <div class='tab'>加入分析库</div>
           </div>

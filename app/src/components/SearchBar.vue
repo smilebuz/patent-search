@@ -10,9 +10,16 @@
       </el-col>
     </el-row>
     <el-row class='row'>
-      <el-col :span='8' :offset='8'>
+      <!--el-col :span='8' :offset='8'>
         <el-radio class='radio' v-model='search_type' label='keyword'>关键词查询</el-radio>
         <el-radio class='radio' v-model='search_type' label='ipc'>分类号查询</el-radio>
+      </el-col-->
+      <el-col :span='8' :offset='8'>
+        <el-row id='filter-group'>
+          <el-col :span='8' class='filter-item' v-for='type, index in apply_type' :key='index'>
+            <el-radio class='radio' v-model='search_filter' v-bind:label='type.value'> {{ type.message }} </el-radio>
+          </el-col>
+        </el-row>
       </el-col>
     </el-row>
   </div>
@@ -28,6 +35,21 @@ export default {
     return {
       keyword: '',
       search_type: '',
+      search_filter: '',
+      apply_type: [
+        {
+          message: '发明专利',
+          value: 'inventions'
+        },
+        {
+          message: '实用新型专利',
+          value: 'utility_medels'
+        },
+        {
+          message: '外观专利',
+          value: 'designs'
+        }
+      ],
       field: 'keywords'
     }
   },
@@ -44,7 +66,7 @@ export default {
       }
       sendRequest.search.post(params).then((data) => {
         bus.$emit('search', data)
-        this.$router.push('Search')
+        this.$router.push('/Search')
       })
     }
   },
@@ -64,6 +86,14 @@ export default {
     button {
       border-color: #008080;
       background: #008080;
+    }
+  }
+  #filter-group {
+    & .filter-item:first-child {
+      text-align: left;
+    }
+    & .filter-item:last-child {
+      text-align: right;
     }
   }
   #advanced-search {
