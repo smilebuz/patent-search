@@ -1,7 +1,10 @@
 <template lang="html">
   <div>
     <div v-if='displayType === "abstract"'>
-      <el-checkbox id='select-all' v-model='selectAll'>全选</el-checkbox>
+      <div class="select-all">
+        <el-checkbox v-model='selectAll'>全选</el-checkbox>
+      </div>
+      
       <div v-for='item, index in patents' :key='index' class='list-item'>
         <div>
           <el-checkbox v-model='item.checked' @change='toggleChange(item)'></el-checkbox>
@@ -170,6 +173,10 @@ export default {
 </script>
 
 <style lang="scss">
+  .select-all {
+    text-align: left;
+    margin-bottom: .5em;
+  }
   .list-item {
     margin-bottom: 1em;
     border-bottom: 1px solid #008080;

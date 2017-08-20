@@ -162,7 +162,6 @@ export default {
   }
   .formula-container {
     @include container;
-    margin: 10px auto;
     .el-textarea {
       width: 50%;
     }

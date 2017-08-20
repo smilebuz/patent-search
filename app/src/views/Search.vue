@@ -181,8 +181,7 @@ export default {
     sideBarSelected: function (type) {
       switch (type) {
         case 'recentSearch':
-          let params = {}
-          this.$http.get(Api.recentSearch, params)
+          this.$http.get('')
             .then((response) => {
 
             })
