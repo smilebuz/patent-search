@@ -1,13 +1,13 @@
 // import Vue from 'Vue'
 import axios from 'axios'
-// import state from './state.js'
+import bus from './bus.js'
 
 const Api = {
   'login': '/api/users/login', // post
   'logout': '/api/users/logout', // get
   'register': '/api/users/register', // post
 
-  'search': '/api/search/', // post
+  'search': '/api/search', // post
   'filter': '/api/filter', // post
   'sort': '/api/sort', // post
 
@@ -19,6 +19,13 @@ const Api = {
   'recentSearch': 'api/users/user_id/recent_queries' // get
 }
 
+bus.$on('setToken', (newToken) => {
+  Api.logout = Api.logout + '/?access_token=' + newToken
+  Api.search = Api.search + '/?access_token=' + newToken
+  Api.filter = Api.filter + '/?access_token=' + newToken
+  Api.sort = Api.sort + '/?access_token=' + newToken
+})
+
 export const sendRequest = ((apilist) => {
   let list = {}
 
@@ -27,6 +34,7 @@ export const sendRequest = ((apilist) => {
       post: params => {
         return axios.post(apilist[api], params)
                 .then(response => {
+                  console.log('api:', apilist[api])
                   return Promise.resolve(response.data.result) // 将response.data.result转成Promise对象
                 })
                 .catch(error => {

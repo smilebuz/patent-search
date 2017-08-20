@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import bus from './bus.js'
 
 export default new Vue({
   data () {
@@ -27,5 +28,8 @@ export default new Vue({
     }
   },
   watch: {
+    token: function (newToken) {
+      bus.$emit('setToken', newToken)
+    }
   }
 })

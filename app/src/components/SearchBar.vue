@@ -21,6 +21,7 @@
 <script>
 import state from '../state.js'
 import bus from '../bus.js'
+import { sendRequest } from '../Api'
 
 export default {
   data () {
@@ -41,19 +42,16 @@ export default {
         per_page: 3,
         page: 1
       }
-      this.$http.post('/api/search', params)
-        .then((response) => {
-          bus.$emit('search', response.data.result)
-          this.$router.push('/Search')
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      sendRequest.search.post(params).then((data) => {
+        bus.$emit('search', data)
+        this.$router.push('Search')
+      })
     }
   },
   created () {
     bus.$on('setKeyword', function (keyword) {
       this.keyword = keyword
+      // this.$set(this, 'keyword', keyword)
     })
   }
 }

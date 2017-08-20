@@ -4,7 +4,7 @@
       <div class="select-all">
         <el-checkbox v-model='selectAll'>全选</el-checkbox>
       </div>
-      
+
       <div v-for='item, index in patents' :key='index' class='list-item'>
         <div>
           <el-checkbox v-model='item.checked' @change='toggleChange(item)'></el-checkbox>
@@ -40,16 +40,16 @@
       <el-table-column prop='publish_date' label='公开日'></el-table-column>
     </el-table>
 
-    <div>
+    <!--div>
       <el-pagination @size-change='handleSizeChange' @current-change='handleCurrentChange' layout='sizes, prev, pager, next, jumper' class="pagination"></el-pagination>
-    </div>
+    </div-->
   </div>
 </template>
 
 <script>
 import state from '../state.js'
 import bus from '../bus.js'
-import Api from '../Api'
+import { sendRequest } from '../Api'
 
 export default {
   data () {
@@ -95,14 +95,10 @@ export default {
         per_page: state.get('per_page'),
         page: state.get('page')
       }
-      this.$http.post(Api.search, params)
-        .then((response) => {
-          bus.$emit('setKeyword', keyword)
-          bus.$emit('search', response.data.result)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      sendRequest.search.post(params).then((data) => {
+        bus.$emit('setKeyword', keyword)
+        bus.$emit('search', data)
+      })
     },
     handleSizeChange: function (val) {
       state.set('per_page', val)

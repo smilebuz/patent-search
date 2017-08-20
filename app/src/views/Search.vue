@@ -4,9 +4,9 @@
 
     <div class='search'>
       <searchbar></searchbar>
-      <el-row>
+      <!--el-row>
         <span>首页n条专利，共n条相关专利</span>
-      </el-row>
+      </el-row-->
     </div>
 
     <div class="toolbar">

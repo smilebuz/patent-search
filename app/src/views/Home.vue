@@ -49,8 +49,8 @@
 <script>
 import state from '../state.js'
 import bus from '../bus.js'
-// import { sendRequest } from '../Api'
-import Api from '../Api'
+import { sendRequest } from '../Api'
+// import Api from '../Api'
 
 export default {
   name: 'Home',
@@ -91,12 +91,11 @@ export default {
         per_page: state.get('per_page'),
         page: state.get('page')
       }
-      /*
       sendRequest.search.post(params).then((data) => {
         bus.$emit('search', data)
         this.$router.push('Search')
       })
-      */
+      /*
       this.$http.post(Api.search, params)
         .then((response) => {
           bus.$emit('search', response.data.result)
@@ -105,6 +104,7 @@ export default {
         .catch((error) => {
           console.log('error', error)
         })
+      */
     }
   }
 }
