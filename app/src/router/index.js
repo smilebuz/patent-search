@@ -63,7 +63,7 @@ let router = new Router({
       meta: { requiresAuth: true }
     },
     {
-      path: '/ApplicantInfo/:id',
+      path: '/ApplicantInfo',
       name: 'ApplicantInfo',
       component: ApplicantInfo,
       meta: { requiresAuth: true }

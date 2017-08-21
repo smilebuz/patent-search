@@ -13,7 +13,7 @@ export const Api = {
 
   'patentInfo': '/api/patents/patent_id', // get
   'similarPatent': '/api/patents/patent_id/similarities?perPage=5&page=1', // get
-  'organization': '/api/organizations/organization_id', // get
+  'applicant': '/api/organizations', // get
   'legatStatus': '/api/patents/patent_id/legal_statuses', // get
 
   'recentSearch': 'api/users/user_id/recent_queries' // get
@@ -24,6 +24,10 @@ bus.$on('setToken', (newToken) => {
   Api.search = Api.search + '/?access_token=' + newToken
   Api.filter = Api.filter + '/?access_token=' + newToken
   Api.sort = Api.sort + '/?access_token=' + newToken
+})
+
+bus.$on('setPatentId', (newId) => {
+  Api.applicant = Api.applicant + '/' + newId
 })
 
 export const sendRequest = ((apilist) => {
@@ -42,13 +46,25 @@ export const sendRequest = ((apilist) => {
                 })
       },
       get: params => {
-        return axios.get(apilist[api], params)
-                .then(response => {
-                  return Promise.resolve(response.data.result)
-                })
-                .catch(error => {
-                  console.log(error)
-                })
+        if (params) {
+          return axios.get(apilist[api], params)
+                  .then(response => {
+                    return Promise.resolve(response.data.result)
+                  })
+                  .catch(error => {
+                    console.log(error)
+                  })
+        } else {
+          return axios.get(apilist[api])
+                  .then(response => {
+                    console.log('api:', apilist[api])
+                    console.log(response)
+                    return Promise.resolve(response.data.result)
+                  })
+                  .catch(error => {
+                    console.log(error)
+                  })
+        }
       }
     }
   }

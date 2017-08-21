@@ -7,6 +7,7 @@ export default new Vue({
       isLogin: '',
       token: '',
       session_id: '',
+      patent_id: '', // 不同的信息读取 例如申请人信息 专利信息
       searchParams: {
         per_page: 10,
         page: 1
@@ -30,6 +31,9 @@ export default new Vue({
   watch: {
     token: function (newToken) {
       bus.$emit('setToken', newToken)
+    },
+    patent_id: function (newId) {
+      bus.$emit('setPatentId', newId)
     }
   }
 })

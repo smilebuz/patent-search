@@ -21,9 +21,9 @@
           {{ item.abstract }}
         </div>
         <div>
-          <router-link v-bind:to="'ApplicantInfo/'+item.patent_id" tag='span' class='link'>申请人信息</router-link> ——
-          <router-link v-bind:to="'ApplicantInfo/'+item.patent_id" tag='span' class='link'>申请人购买力</router-link> ——
-          <router-link v-bind:to="'ApplicantInfo/'+item.patent_id" tag='span' class='link'>申请人主营产品</router-link> ——
+          <span class='link' @click='searchApplicant(item.patent_id)'>申请人信息</span> ——
+          <span class='link'>申请人购买力</span> ——
+          <span class='link'>申请人主营产品</span> ——
           <router-link to='home' tag='span' class='link'>相似专利</router-link> ——
           <router-link v-bind:to="'PotentialBuyer/'+item.patent_id" tag='span' class='link'>潜在买家</router-link>
         </div>
@@ -99,6 +99,10 @@ export default {
         bus.$emit('setKeyword', keyword)
         bus.$emit('search', data)
       })
+    },
+    searchApplicant: function (patentId) {
+      state.set('patent_id', patentId)
+      this.$router.push('/ApplicantInfo')
     },
     handleSizeChange: function (val) {
       state.set('per_page', val)
