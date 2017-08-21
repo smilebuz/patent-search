@@ -57,7 +57,7 @@ let router = new Router({
       meta: { requiresAuth: true }
     },
     {
-      path: '/ValueDegree/:id',
+      path: '/ValueDegree',
       name: 'ValueDegree',
       component: ValueDegree,
       meta: { requiresAuth: true }
@@ -69,7 +69,7 @@ let router = new Router({
       meta: { requiresAuth: true }
     },
     {
-      path: '/PotentialBuyer/:id',
+      path: '/PotentialBuyer',
       name: 'PotentialBuyer',
       component: PotentialBuyer,
       meta: { requiresAuth: true }

@@ -117,7 +117,7 @@ export default {
       if (this.activeTab === 'similarPatent') {
         this.$http.get('/api/patents/' + this.patentId + '/similarities', params)
         .then((response) => {
-          this.fillSimPanel(response.data.result)
+          this.refreshSimPanel(response.data.result)
         })
         .catch((error) => {
           console.log(error)
@@ -178,7 +178,8 @@ export default {
         this.legalTable.push(item)
       }
     },
-    fillSimPanel (similarities) {
+    refreshSimPanel (similarities) {
+      this.patentTable.splice(0, this.patentTable.length)
       for (let i = 0; i < similarities.length; i++) {
         this.patentTable.push({
           applyType: similarities[i].applyType,

@@ -9,7 +9,7 @@
         <div>
           <el-checkbox v-model='item.checked' @change='toggleChange(item)'></el-checkbox>
           <router-link v-bind:to="'PatentInfo/'+item.patent_id" tag='span' class='link'>{{ item.invention_title }}</router-link>
-          <router-link v-bind:to="'ValueDegree/'+item.patent_id" tag='span' class="degree link">价值度:{{ item.value_degree.value }} <i v-for='n in item.value_degree.degree' class='el-icon-star-off'></i> </router-link>
+          <span class="degree link" @click='loadDegreeValue(item.patent_id)'>价值度:{{ item.value_degree.value }} <i v-for='n in item.value_degree.degree' class='el-icon-star-off'></i> </span>
         </div>
         <div>
           申请人:<span @click='search(item.applicant_name, "applicant")' class='search-span'>{{ item.applicant_name }}</span> 发明人:<span v-for='inventor, index in item.inventor_list' :key='index' @click='search(inventor, "inventor")' class='search-span'>{{ inventor }} </span @click='search(item.ipc_main_classification, "ipc_main_classification")' class='search-span'> IPC分类号:<span>{{ item.ipc_main_classification }}</span>
@@ -25,7 +25,7 @@
           <span class='link'>申请人购买力</span> ——
           <span class='link'>申请人主营产品</span> ——
           <router-link to='home' tag='span' class='link'>相似专利</router-link> ——
-          <router-link v-bind:to="'PotentialBuyer/'+item.patent_id" tag='span' class='link'>潜在买家</router-link>
+          <span class='link' @click='loadPotentialBuyer(item.patent_id)'>潜在买家</span>
         </div>
       </div>
     </div>
@@ -100,9 +100,17 @@ export default {
         bus.$emit('search', data)
       })
     },
+    loadDegreeValue: function (patentId) {
+      state.set('patent_id', patentId)
+      this.$router.push('/ValueDegree')
+    },
     searchApplicant: function (patentId) {
       state.set('patent_id', patentId)
       this.$router.push('/ApplicantInfo')
+    },
+    loadPotentialBuyer: function (patentId) {
+      state.set('patent_id', patentId)
+      this.$router.push('/PotentialBuyer')
     },
     handleSizeChange: function (val) {
       state.set('per_page', val)

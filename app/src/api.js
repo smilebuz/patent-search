@@ -14,6 +14,7 @@ export const Api = {
   'patentInfo': '/api/patents/patent_id', // get
   'similarPatent': '/api/patents/patent_id/similarities?perPage=5&page=1', // get
   'applicant': '/api/organizations', // get
+  'valuedegree': '/api/patents',
   'legatStatus': '/api/patents/patent_id/legal_statuses', // get
 
   'recentSearch': 'api/users/user_id/recent_queries' // get
@@ -28,6 +29,7 @@ bus.$on('setToken', (newToken) => {
 
 bus.$on('setPatentId', (newId) => {
   Api.applicant = Api.applicant + '/' + newId
+  Api.valuedegree = Api.valuedegree + '/' + newId + '/values'
 })
 
 export const sendRequest = ((apilist) => {
