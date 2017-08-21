@@ -14,12 +14,12 @@
         </el-table>
         <el-table :data='mainProductTable.products' border align='left'>
           <el-table-column label='申请人名称'>
-            <el-table-column prop='firstClassMenu' label='一级目录'></el-table-column>
+            <el-table-column prop='productName' label='产品名称'></el-table-column>
           </el-table-column>
           <el-table-column v-bind:label='mainProductTable.name'>
+            <el-table-column prop='firstClassMenu' label='一级目录'></el-table-column>
             <el-table-column prop='secondClassMenu' label='二级目录'></el-table-column>
             <el-table-column prop='thirdClassMenu' label='三级目录'></el-table-column>
-            <el-table-column prop='productName' label='产品名称'></el-table-column>
           </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -57,7 +57,9 @@ export default {
       mainProductTable: {
         name: '',
         products: []
-      }
+      },
+      mockProduct: [],
+      recLevel: 0
     }
   },
   methods: {
@@ -158,6 +160,20 @@ export default {
         */
       }
       // console.log('产品', aaa)
+    },
+    loadProducts: function (productObj) {
+      let keys = Object.keys(productObj)
+      if (productObj.constructor === Object && keys !== []) {
+        console.log(keys)
+        this.recLevel += 1
+        for (let key of keys) {
+          this.mockProduct.push({ caonima: key })
+          this.loadProducts(productObj[key]) // 递归
+        }
+      } else {
+        // 最后一层 产品数组
+        console.log(this.mockProduct)
+      }
     }
   },
   mounted () {
@@ -165,6 +181,7 @@ export default {
     this.$http.get(url)
       .then((response) => {
         this.fillInfo(response.data)
+        this.loadProducts(JSON.parse(response.data.mainProductsInJson))
       })
       .catch((error) => {
         console.log(error)

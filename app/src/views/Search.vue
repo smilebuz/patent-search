@@ -23,6 +23,7 @@
           <div class='tab-group'>
             <div class='tab' @click='toggleDisplayType("abstract")'>摘要式</div>
             <div class='tab' @click='toggleDisplayType("table")'>表格式</div>
+
             <el-popover ref='popoverSave' placement='top' width='400' trigger='click' v-model='savePopover' v-on:hide='resetSavePopover'>
               <h3>保存范围:</h3>
               <div class='save-choice'>
@@ -33,13 +34,45 @@
                   从<el-input class='page-input' size='mini' v-model='savePatent.pageStart' :disabled='!savePatent.savePage'></el-input>页到<el-input class='page-input' size='mini' v-model='savePatent.pageEnd' :disabled='!savePatent.savePage'></el-input>页
                 </el-checkbox>
               </div>
-              <div class='save-button'>
+              <div class='popover-button'>
                 <el-button size='small'>保存</el-button>
                 <el-button size='small' @click='hideSavePopover'>取消</el-button>
               </div>
             </el-popover>
-            <div class='tab'>保存</div>
-            <div class='tab'>加入收藏</div>
+
+            <el-popover ref='popoverFavor' placement='top' width='400' trigger='click' v-model='favorPopover' v-on:hide='resetFavorPopover'>
+              <el-row type='flex' justify='space-between' align='middle'>
+                <el-col :span='6'>
+                  <h3>收藏夹名称:</h3>
+                </el-col>
+                <el-col :span='10'>
+                  <el-input size='small'></el-input>
+                </el-col>
+                <el-col :span='6' :offset='2'>
+                  <el-button size='small'>创建并加入</el-button>
+                </el-col>
+              </el-row>
+              <el-table :data='favorTable' border class="popover-table">
+                <el-table-column type='selection'></el-table-column>
+                <el-table-column prop='collection' label='收藏夹'></el-table-column>
+                <el-table-column prop='createTime' label='创建时间'></el-table-column>
+                <el-table-column label='编辑'>
+                  <template scope='scope'>
+                    <div class="popover-cell">
+                      <el-button size='mini'>收藏</el-button>
+                      <el-button size='mini'>删除</el-button>
+                    </div>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class='popover-button'>
+                <el-button size='small'>保存</el-button>
+                <el-button size='small' @click='hideFavorPopover'>取消</el-button>
+              </div>
+            </el-popover>
+
+            <div class='tab' v-popover:popoverSave>保存</div>
+            <div class='tab' v-popover:popoverFavor>加入收藏</div>
             <div class='tab'>加入分析库</div>
           </div>
         </el-col>
@@ -129,7 +162,18 @@ export default {
         savePage: false,
         pageStart: '',
         pageEnd: ''
-      }
+      },
+      favorPopover: false,
+      favorTable: [
+        {
+          collection: 'vue',
+          createTime: '2016-02-18'
+        },
+        {
+          collection: 'react',
+          createTime: '2016-02-18'
+        }
+      ]
     }
   },
   methods: {
@@ -171,6 +215,12 @@ export default {
     resetSavePopover: function () {
       this.savePatent.saveChecked = false
       this.savePatent.savePage = false
+    },
+    hideFavorPopover: function () {
+      this.favorPopover = false
+    },
+    resetFavorPopover: function () {
+
     }
   },
   watch: {
@@ -196,7 +246,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .tab-group {
     display: flex;
     justify-content: space-between;
@@ -220,9 +270,23 @@ export default {
   .save-choice {
     margin-top: 1em;
   }
-  .save-button {
+  .popover-header {
+    display: flex;
+    input {
+      width: 50%;
+    }
+  }
+  .popover-button {
     display: flex;
     justify-content: flex-end;
+  }
+  .popover-cell {
+    display: flex;
+    justify-content: space-around;
+  }
+  .popover-table {
+    margin-top: 1em;
+    margin-bottom: 1em;
   }
   .toolbar {
     margin-top: 2em;
