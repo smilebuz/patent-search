@@ -2,7 +2,7 @@
 import axios from 'axios'
 import bus from './bus.js'
 
-const Api = {
+export const Api = {
   'login': '/api/users/login', // post
   'logout': '/api/users/logout', // get
   'register': '/api/users/register', // post

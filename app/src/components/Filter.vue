@@ -20,7 +20,7 @@
 <script>
 import state from '../state.js'
 import bus from '../bus.js'
-import Api from '../Api.js'
+import { sendRequest } from '../Api.js'
 
 export default {
   data () {
@@ -189,18 +189,14 @@ export default {
       params.session_id = state.get('session_id')
       params.per_page = state.get('per_page')
       params.page = state.get('page')
-      this.$http.post(Api.filter + '?access_token=' + state.get('token'), params)
-        .then((response) => {
-          bus.$emit('filter', response.data.result)
-          for (let prop in this.filters) {
-            if (this.filters.hasOwnProperty(prop)) {
-              this.filters[prop].checkList.splice(0, this.filters[prop].checkList.length)
-            }
+      sendRequest.filter.post(params).then((data) => {
+        bus.$emit('filter', data)
+        for (let prop in this.filters) {
+          if (this.filters.hasOwnProperty(prop)) {
+            this.filters[prop].checkList.splice(0, this.filters[prop].checkList.length)
           }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+        }
+      })
     },
     cancel: function () {
       for (let prop in this.filters) {

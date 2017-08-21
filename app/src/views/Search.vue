@@ -76,7 +76,7 @@
 <script>
 import bus from '../bus.js'
 import state from '../state.js'
-import Api from '../Api'
+import {sendRequest, Api} from '../Api'
 
 import myheader from '../components/Header'
 import myfilter from '../components/Filter'
@@ -142,14 +142,9 @@ export default {
         page: state.get('page')
       }
       this.sorts[target].direction === 'decending' ? this.sorts[target].direction = 'ascending' : this.sorts[target].direction = 'decending'
-      console.log(JSON.stringify(params))
-      this.$http.post(Api.sort + '?access_token=' + state.get('token'), params)
-        .then(function (response) {
-          bus.$emit('sort', response.data.result)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      sendRequest.sort.post(params).then((data) => {
+        bus.$emit('sort', data)
+      })
     },
     toggleDisplayType: function (type) {
       this.displayType = type
@@ -160,6 +155,7 @@ export default {
     search: function (item) {
       let params = {
       }
+      // 点击最近搜索
       this.$http.post(Api.search, params)
         .then((response) => {
           this.sideBarSelected = 'filter'

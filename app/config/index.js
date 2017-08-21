@@ -27,7 +27,7 @@ module.exports = {
     // port: 9080,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+    assetsPublicPath: '/',
     proxyTable: {
       '/api': {
         // target: 'www.baidu.com'
