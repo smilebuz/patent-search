@@ -198,7 +198,7 @@ export default {
       }
       this.sorts[target].direction === 'decending' ? this.sorts[target].direction = 'ascending' : this.sorts[target].direction = 'decending'
       sendRequest.sort.post(params).then((data) => {
-        bus.$emit('sort', data)
+        state.set('patentList', data.patent_list)
       })
     },
     toggleDisplayType: function (type) {

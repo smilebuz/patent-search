@@ -42,6 +42,15 @@ export default new Vue({
         bus.$emit('setSearchParams', newParams)
       },
       deep: true
+    },
+    patentList (newList) {
+      bus.$emit('updatePatentList', newList)
+    },
+    filterList (newList) {
+      bus.$emit('updateFilterList', newList)
+    },
+    recommendList (newList) {
+      bus.$emit('updateRecommendList', newList)
     }
   }
 })

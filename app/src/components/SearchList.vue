@@ -64,9 +64,9 @@ export default {
     displayType: String
   },
   methods: {
-    refreshList: function () {
+    refreshList: function (patentList) {
       this.patents.splice(0, this.patents.length)
-      let patentList = state.get('patentList')
+      // let patentList = state.get('patentList')
       for (let i = 0; i < patentList.length; i++) {
         let patent = patentList[i]
         this.patents.push({
@@ -154,24 +154,12 @@ export default {
     }
   },
   created () {
-    bus.$on('sort', data => {
-      state.set('patentList', data.patent_list)
-      this.refreshList()
-    })
-    bus.$on('filter', data => {
-      state.set('patentList', data.patent_list)
-      this.refreshList()
-    })
-    bus.$on('search', data => {
-      state.set('patentList', data.patent_list)
-      state.set('filterList', data.filter_sidebar_list)
-      state.set('recommendList', data.recommend_list)
-      state.set('session_id', data.session_id)
-      this.refreshList()
+    bus.$on('updatePatentList', newList => {
+      this.refreshList(newList)
     })
   },
   mounted () {
-    this.refreshList()
+    this.refreshList(state.get('patentList'))
   }
 }
 </script>

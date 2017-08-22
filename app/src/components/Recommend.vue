@@ -49,12 +49,11 @@ export default {
         bus.$emit('search', data)
       })
     },
-    refreshList () {
+    refreshList (recommendList) {
       this.product_list.splice(0, this.product_list.length)
       this.keyword_list.splice(0, this.keyword_list.length)
       this.ipc_main_classification_list.splice(0, this.ipc_main_classification_list.length)
       this.applicant_list.splice(0, this.applicant_list.length)
-      let recommendList = state.get('recommendList')
       this.product_list = recommendList.product_list
       this.keyword_list = recommendList.keyword_list
       this.ipc_main_classification_list = recommendList.ipc_main_classification_list
@@ -62,16 +61,12 @@ export default {
     }
   },
   created () {
-    bus.$on('search', data => {
-      state.set('patentList', data.patent_list)
-      state.set('filterList', data.filter_sidebar_list)
-      state.set('recommendList', data.recommend_list)
-      state.set('session_id', data.session_id)
-      this.refreshList()
+    bus.$on('updateRecommendList', newList => {
+      this.refreshList(newList)
     })
   },
   mounted () {
-    this.refreshList()
+    this.refreshList(state.get('recommendList'))
   }
 }
 </script>

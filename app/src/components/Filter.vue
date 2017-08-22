@@ -157,6 +157,13 @@ export default {
     }
   },
   methods: {
+    refreshFilterList: function (filterList) {
+      for (var prop in filterList) {
+        if (filterList.hasOwnProperty(prop)) {
+          this.filters[prop].items = filterList[prop]
+        }
+      }
+    },
     filter: function () {
       let params = {}
       for (let prop in this.filters) {
@@ -192,7 +199,7 @@ export default {
       params.per_page = state.get('per_page')
       params.page = state.get('page')
       sendRequest.filter.post(params).then((data) => {
-        bus.$emit('filter', data)
+        state.set('patentList', data.patent_list)
         for (let prop in this.filters) {
           if (this.filters.hasOwnProperty(prop)) {
             this.filters[prop].checkList.splice(0, this.filters[prop].checkList.length)
@@ -208,13 +215,13 @@ export default {
       }
     }
   },
+  created: function () {
+    bus.$on('updateFilterList', newList => {
+      this.refreshFilterList(newList)
+    })
+  },
   mounted: function () {
-    let filterList = state.get('filterList')
-    for (var prop in filterList) {
-      if (filterList.hasOwnProperty(prop)) {
-        this.filters[prop].items = filterList[prop]
-      }
-    }
+    this.refreshFilterList(state.get('filterList'))
   }
 }
 </script>

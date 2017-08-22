@@ -64,12 +64,14 @@ export default {
     }
   },
   created () {
-    this.keyword = state.get('searchParams').query // 从Home页进行的搜索
-    this.applyTypeSelected = state.get('searchParams').apply_type
     bus.$on('setSearchParams', searchParams => {
       this.keyword = searchParams.query // 需要箭头函数的this
       this.applyTypeSelected = searchParams.apply_type
     })
+  },
+  mounted () {
+    this.keyword = state.get('searchParams').query // 从Home页进行的搜索
+    this.applyTypeSelected = state.get('searchParams').apply_type
   }
 }
 </script>
