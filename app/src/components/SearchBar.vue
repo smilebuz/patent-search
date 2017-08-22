@@ -64,7 +64,7 @@ export default {
     }
   },
   created () {
-    bus.$on('setSearchParams', searchParams => {
+    bus.$on('updateSearchParams', searchParams => {
       this.keyword = searchParams.query // 需要箭头函数的this
       this.applyTypeSelected = searchParams.apply_type
     })

@@ -8,11 +8,8 @@ export default new Vue({
       token: '',
       session_id: '',
       patent_id: '', // 不同的信息读取 例如申请人信息 专利信息
-      searchParams: {
-        query: '',
-        per_page: 10,
-        page: 1
-      },
+      searchParams: {},
+      // sortParams: {},
       patentList: [],
       filterList: [],
       recommendList: []
@@ -27,6 +24,9 @@ export default new Vue({
     },
     setSearchParams (key, val) {
       this.$set(this.searchParams, key, val)
+    },
+    setSortParams (key, vale) {
+      this.$set(this.sortParams, key, vale)
     }
   },
   watch: {
@@ -38,11 +38,18 @@ export default new Vue({
     },
     searchParams: {
       handler: function (newParams, oldParams) {
-        console.log('拥抱变化')
-        bus.$emit('setSearchParams', newParams)
+        bus.$emit('updateSearchParams', newParams)
       },
       deep: true
     },
+    /*
+    sortParams: {
+      handler: function (newParams, oldParams) {
+        bus.$emit('updateSortParams', newParams)
+      },
+      deep: true
+    }
+    */
     patentList (newList) {
       bus.$emit('updatePatentList', newList)
     },

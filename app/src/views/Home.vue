@@ -88,12 +88,12 @@ export default {
         apply_type: this.applyTypeSelected,
         search_type: this.search_type,
         field: this.field,
-        session_id: state.get('session_id'),
-        per_page: state.get('per_page'),
-        page: state.get('page')
+        session_id: state.get('session_id')
+        // per_page: state.get('per_page'),
+        // page: state.get('page')
       }
-      sendRequest.search.post(params).then((data) => {
-        state.set('searchParams', params)
+      state.set('searchParams', params)
+      sendRequest.search.post(state.get('searchParams')).then((data) => {
         bus.$emit('search', data)
         this.$router.push('Search')
       })
