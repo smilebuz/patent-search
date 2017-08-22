@@ -9,9 +9,11 @@
         <el-checkbox-group v-if='key === "maintenance_period_list" || key === "application_time_list" || key === "purchasing_power_list"' v-model='value.checkList' class="checkbox-group">
           <el-checkbox v-for='label, index in value.labels' :key='index' v-bind:label='label' class='checkbox'></el-checkbox>
         </el-checkbox-group>
-        <el-checkbox-group v-else v-model='value.checkList' class="checkbox-group">
-          <el-checkbox v-for='item, index in value.items' :key='index' v-bind:label='item' class="checkbox"></el-checkbox>
-        </el-checkbox-group>
+        <div v-else>
+          <el-checkbox-group v-model='value.checkList' class="checkbox-group">
+            <el-checkbox v-for='item, index in value.items' :key='index' v-bind:label='item' class="checkbox"></el-checkbox>
+          </el-checkbox-group>
+        </div>
       </el-collapse-item>
     </el-collapse>
   </div>

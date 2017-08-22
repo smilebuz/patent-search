@@ -19,7 +19,7 @@
           </div>
         </el-col>
 
-        <el-col :span='8' :offset='2'>
+        <el-col :span='8' :offset='2' v-if='sideBarSelected !== "categoryNav"'>
           <div class='tab-group'>
             <div class='tab' @click='toggleDisplayType("abstract")'>摘要式</div>
             <div class='tab' @click='toggleDisplayType("table")'>表格式</div>
@@ -77,7 +77,7 @@
           </div>
         </el-col>
 
-        <el-col :span='8' :offset='1'>
+        <el-col :span='8' :offset='1' v-if='sideBarSelected !== "categoryNav"'>
           <div class='tab-group'>
             <div class='tab tab-order' v-for='(value, key) in sorts' :key='key' @click='sort(key, value.direction)'>
               {{ value.message }}
@@ -96,9 +96,15 @@
           </div>
           <categoryNav v-else></categoryNav>
         </el-col>
+
         <el-col :span='17' :offset='2'>
-          <searchlist :displayType='displayType'></searchlist>
-          <recommend></recommend>
+          <div v-if='sideBarSelected === "categoryNav"'>
+            <el-tree :data='navObj' :props='navProps' @node-click='searchFromNode' class="nav-tree"></el-tree>
+          </div>
+          <div v-else>
+            <searchlist :displayType='displayType'></searchlist>
+            <recommend></recommend>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -109,7 +115,7 @@
 <script>
 import bus from '../bus.js'
 import state from '../state.js'
-import {sendRequest, Api} from '../Api'
+import {sendRequest} from '../Api'
 
 import myheader from '../components/Header'
 import myfilter from '../components/Filter'
@@ -173,7 +179,12 @@ export default {
           collection: 'react',
           createTime: '2016-02-18'
         }
-      ]
+      ],
+      navObj: [],
+      navProps: {
+        label: 'label',
+        children: 'children'
+      }
     }
   },
   methods: {
@@ -196,18 +207,19 @@ export default {
     switchSidebar: function (type) {
       this.sideBarSelected = type
     },
+    searchFromNode: function (data) {
+      // 根据expanded和有没有expanded判断是否进行搜索
+      data.expanded = !data.expanded
+      console.log(this.navObj)
+    },
     search: function (item) {
       let params = {
       }
       // 点击最近搜索
-      this.$http.post(Api.search, params)
-        .then((response) => {
-          this.sideBarSelected = 'filter'
-          bus.$emit('search', response.data.result)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      sendRequest.search.post(params).then((data) => {
+        this.sideBarSelected = 'filter'
+        bus.$emit('search', data)
+      })
     },
     hideSavePopover: function () {
       this.savePopover = false
@@ -227,6 +239,7 @@ export default {
     sideBarSelected: function (type) {
       switch (type) {
         case 'recentSearch':
+          /*
           this.$http.get('')
             .then((response) => {
 
@@ -234,11 +247,32 @@ export default {
             .catch((error) => {
               console.log(error)
             })
+          */
           break
         default:
           break
       }
     }
+  },
+  created () {
+    bus.$on('getNavObj', (root) => {
+      this.navObj.splice(0, this.navObj.length)
+      this.navObj.push({
+        label: '国网江苏省供电公司',
+        expanded: false,
+        children: [
+          {
+            label: '国网江苏省电力公司南京供电公司'
+          },
+          {
+            label: '国网江苏省电力公司苏州供电公司'
+          },
+          {
+            label: '国网江苏省电力公司徐州供电公司'
+          }
+        ]
+      })
+    })
   },
   components: {
     myheader, myfilter, searchlist, recommend, searchbar, categoryNav
@@ -296,5 +330,11 @@ export default {
     text-align: left;
     padding-left: 1em;
     border: 1px solid #000;
+    p {
+      cursor: pointer;
+    }
+  }
+  .nav-tree {
+    text-align: left;
   }
 </style>
