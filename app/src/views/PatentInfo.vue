@@ -51,6 +51,8 @@
 import myHeader from '../components/Header'
 import searchbar from '../components/SearchBar'
 
+import { sendRequest } from '../Api'
+
 export default {
   data () {
     return {
@@ -194,6 +196,10 @@ export default {
     }
   },
   mounted () {
+    sendRequest.patentInfo.get().then(data => {
+      this.fillInfo(data)
+    })
+    /*
     this.patentId = this.$route.params.id
     this.$http.get('/api/patents/' + this.patentId)
       .then((response) => {
@@ -202,6 +208,7 @@ export default {
       .catch((error) => {
         console.log(error)
       })
+    */
   },
   components: {
     myHeader, searchbar

@@ -4,31 +4,31 @@ import bus from './bus.js'
 
 export const Api = {
   'login': '/api/users/login', // post
-  'logout': '/api/users/logout', // get
+  'logout': '/api/users/logout/?access_token={token}', // get
   'register': '/api/users/register', // post
 
-  'search': '/api/search', // post
-  'filter': '/api/filter', // post
-  'sort': '/api/sort', // post
+  'search': '/api/search/?access_token={token}', // post
+  'filter': '/api/filter/?access_token={token}', // post
+  'sort': '/api/sort/?access_token={token}', // post
 
-  'patentInfo': '/api/patents/patent_id', // get
+  'patentInfo': '/api/patents/{patentId}', // get
   'similarPatent': '/api/patents/patent_id/similarities?perPage=5&page=1', // get
-  'applicant': '/api/organizations', // get
+  'applicant': '/api/organizations/{patentId}', // get
   'valuedegree': '/api/patents',
   'legatStatus': '/api/patents/patent_id/legal_statuses', // get
 
   'recentSearch': 'api/users/user_id/recent_queries' // get
 }
 
-bus.$on('setToken', (newToken) => {
-  Api.logout = Api.logout + '/?access_token=' + newToken
-  Api.search = Api.search + '/?access_token=' + newToken
-  Api.filter = Api.filter + '/?access_token=' + newToken
-  Api.sort = Api.sort + '/?access_token=' + newToken
+export let token = ''
+export let patentId = ''
+
+bus.$on('setToken', function (newToken) {
+  token = newToken
 })
 
 bus.$on('setPatentId', (newId) => {
-  Api.applicant = Api.applicant + '/' + newId
+  patentId = newId
   Api.valuedegree = Api.valuedegree + '/' + newId + '/values'
 })
 
@@ -38,34 +38,46 @@ export const sendRequest = ((apilist) => {
   for (let api in apilist) {
     list[api] = {
       post: params => {
+        if (apilist[api].includes('{token}')) {
+          apilist[api] = apilist[api].replace('{token}', token)
+        }
+        if (apilist[api].includes('{patentId}')) {
+          console.log('patentId', patentId)
+          apilist[api] = apilist[api].replace('{patentId}', patentId)
+        }
+        console.log('api:', apilist[api])
         return axios.post(apilist[api], params)
-                .then(response => {
-                  console.log('api:', apilist[api])
-                  return Promise.resolve(response.data.result) // 将response.data.result转成Promise对象
-                })
-                .catch(error => {
-                  console.log(error)
-                })
+          .then(response => {
+            return Promise.resolve(response.data.result) // 将response.data.result转成Promise对象
+          })
+          .catch(error => {
+            console.log(error)
+          })
       },
       get: params => {
+        if (apilist[api].includes('{token}')) {
+          apilist[api] = apilist[api].replace('{token}', token)
+        }
+        if (apilist[api].includes('{patentId}')) {
+          apilist[api] = apilist[api].replace('{patentId}', patentId)
+        }
+        console.log('api:', apilist[api])
         if (params) {
           return axios.get(apilist[api], params)
-                  .then(response => {
-                    return Promise.resolve(response.data.result)
-                  })
-                  .catch(error => {
-                    console.log(error)
-                  })
+            .then(response => {
+              return Promise.resolve(response.data.result)
+            })
+            .catch(error => {
+              console.log(error)
+            })
         } else {
           return axios.get(apilist[api])
-                  .then(response => {
-                    console.log('api:', apilist[api])
-                    console.log(response)
-                    return Promise.resolve(response.data.result)
-                  })
-                  .catch(error => {
-                    console.log(error)
-                  })
+            .then(response => {
+              return Promise.resolve(response.data.result)
+            })
+            .catch(error => {
+              console.log(error)
+            })
         }
       }
     }

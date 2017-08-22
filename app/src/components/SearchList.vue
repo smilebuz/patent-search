@@ -8,7 +8,7 @@
       <div v-for='item, index in patents' :key='index' class='list-item'>
         <div>
           <el-checkbox v-model='item.checked' @change='toggleChange(item)'></el-checkbox>
-          <router-link v-bind:to="'PatentInfo/'+item.patent_id" tag='span' class='link'>{{ item.invention_title }}</router-link>
+          <span class='link' @click="loadPatentInfo(item.patent_id)">{{ item.invention_title }}</span>
           <span class="degree link" @click='loadDegreeValue(item.patent_id)'>价值度:{{ item.value_degree.value }} <i v-for='n in item.value_degree.degree' class='el-icon-star-off'></i> </span>
         </div>
         <div>
@@ -99,6 +99,10 @@ export default {
         bus.$emit('setKeyword', keyword)
         bus.$emit('search', data)
       })
+    },
+    loadPatentInfo (patentId) {
+      state.set('patent_id', patentId)
+      this.$router.push('/PatentInfo')
     },
     loadDegreeValue: function (patentId) {
       state.set('patent_id', patentId)
