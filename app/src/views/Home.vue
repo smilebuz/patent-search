@@ -27,19 +27,19 @@
     </el-row>
     <el-row>
       <el-col :span='4' :offset='4' class="search-special">
-        <img src="../assets/category_navigation.png" alt="" class="">
+        <img src="../assets/images/category_navigation.png" alt="" class="">
         <span>分类导航</span>
       </el-col>
       <el-col :span='4' class="search-special">
-        <img src="../assets/advanced_search.png" alt="" class="" v-on:click='advancedSearch'>
+        <img src="../assets/images/advanced_search.png" alt="" class="" v-on:click='advancedSearch'>
         <span v-on:click='advancedSearch'>高级检索</span>
       </el-col>
       <el-col :span='4' class="search-special">
-        <img src="../assets/my_collection.png" alt="" id="my-collection-img">
+        <img src="../assets/images/my_collection.png" alt="" id="my-collection-img">
         <span>我的收藏</span>
       </el-col>
       <el-col :span='4' class="search-special">
-        <img src="../assets/user_management.png" alt="" class="">
+        <img src="../assets/images/user_management.png" alt="" class="">
         <span>用户管理</span>
       </el-col>
     </el-row>

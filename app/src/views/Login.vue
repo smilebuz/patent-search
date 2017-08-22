@@ -23,7 +23,7 @@
       <el-col :span='10' id="contact">
         <el-row class="contact-item">
           <el-col :span='4'>
-            <img src="../assets/telephone.png" alt="电话">
+            <img src="../assets/images/telephone.png" alt="电话">
           </el-col>
           <el-col :span='20' class="contact-detail">
             <p>客服电话:</p>
@@ -32,7 +32,7 @@
         </el-row>
         <el-row class="contact-item">
           <el-col :span='4'>
-            <img src="../assets/email.png" alt="邮箱">
+            <img src="../assets/images/email.png" alt="邮箱">
           </el-col>
           <el-col :span='20' class="contact-detail">
             <p>邮箱:</p>
@@ -41,7 +41,7 @@
         </el-row>
         <el-row class="contact-item">
           <el-col :span='4'>
-            <img src="../assets/address.png" alt="地址">
+            <img src="../assets/images/address.png" alt="地址">
           </el-col>
           <el-col :span='20' class="contact-detail">
             <p>{{ company }}</p>
