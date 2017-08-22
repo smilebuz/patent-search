@@ -17,7 +17,7 @@
       <el-col :span='8' :offset='8'>
         <el-row id='filter-group'>
           <el-col :span='8' class='filter-item' v-for='type, index in apply_type' :key='index'>
-            <el-radio class='radio' v-model='search_filter' v-bind:label='type.value'> {{ type.message }} </el-radio>
+            <el-radio class='radio' v-model='applyTypeSelected' v-bind:label='type.value'> {{ type.message }} </el-radio>
           </el-col>
         </el-row>
       </el-col>
@@ -34,8 +34,7 @@ export default {
   data () {
     return {
       keyword: '',
-      search_type: '',
-      search_filter: '',
+      applyTypeSelected: '',
       apply_type: [
         {
           message: '发明专利',
@@ -50,34 +49,26 @@ export default {
           value: 'designs'
         }
       ],
-      field: 'keywords'
+      searchType: 'common'
     }
   },
   methods: {
     search () {
-      // console.log(this.keyword)
-      console.log('methods this', this.$data)
-      let params = {
-        query: this.keyword,
-        apply_type: 'inventions',
-        search_type: this.search_type,
-        field: this.field,
-        session: state.get('session_id'),
-        per_page: 3,
-        page: 1
-      }
-      sendRequest.search.post(params).then((data) => {
-        state.setSearchParams('query', params.query)
+      state.setSearchParams('query', this.keyword)
+      state.setSearchParams('apply_type', this.applyTypeSelected)
+      state.setSearchParams('search_type', this.searchType)
+      sendRequest.search.post(state.get('searchParams')).then((data) => {
         bus.$emit('search', data)
         this.$router.push('/Search')
       })
     }
   },
   created () {
-    this.keyword = state.get('searchParams').query
-    // 监听不到
+    this.keyword = state.get('searchParams').query // 从Home页进行的搜索
+    this.applyTypeSelected = state.get('searchParams').apply_type
     bus.$on('setSearchParams', searchParams => {
-      this.keyword = searchParams.query // this没用
+      this.keyword = searchParams.query // 需要箭头函数的this
+      this.applyTypeSelected = searchParams.apply_type
     })
   }
 }

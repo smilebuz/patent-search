@@ -38,6 +38,7 @@ export default new Vue({
     },
     searchParams: {
       handler: function (newParams, oldParams) {
+        console.log('拥抱变化')
         bus.$emit('setSearchParams', newParams)
       },
       deep: true

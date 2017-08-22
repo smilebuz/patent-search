@@ -10,7 +10,7 @@
         </el-row>
         <el-row id="filter-group">
           <el-col :span='8' class='filter-item' v-for='type, index in apply_type' :key='index'>
-            <el-radio class='radio' v-model='search_filter' v-bind:label='type.value'> {{ type.message }} </el-radio>
+            <el-radio class='radio' v-model='applyTypeSelected' v-bind:label='type.value'> {{ type.message }} </el-radio>
           </el-col>
         </el-row>
       </el-col>
@@ -58,7 +58,7 @@ export default {
     return {
       header: 'INNOPRO',
       keyword: '',
-      search_filter: '',
+      applyTypeSelected: '',
       apply_type: [
         {
           message: '发明专利',
@@ -73,8 +73,9 @@ export default {
           value: 'designs'
         }
       ],
+      search_type: 'common',
       field: 'keywords',
-      search_type: 'common'
+      session: ''
     }
   },
   methods: {
@@ -84,7 +85,7 @@ export default {
     search () {
       let params = {
         query: this.keyword,
-        apply_type: this.search_filter,
+        apply_type: this.applyTypeSelected,
         search_type: this.search_type,
         field: this.field,
         session_id: state.get('session_id'),
@@ -92,7 +93,7 @@ export default {
         page: state.get('page')
       }
       sendRequest.search.post(params).then((data) => {
-        state.setSearchParams('query', params.query)
+        state.set('searchParams', params)
         bus.$emit('search', data)
         this.$router.push('Search')
       })

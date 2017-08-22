@@ -44,16 +44,8 @@ export default {
   },
   methods: {
     search: function (keyword) {
-      let params = {
-        query: keyword,
-        apply_type: '',
-        search_type: 'common',
-        field: 'keywords',
-        session_id: state.get('session_id'),
-        per_page: state.get('per_page'),
-        page: state.get('page')
-      }
-      sendRequest.search.post(params).then((data) => {
+      state.setSearchParams('query', keyword)
+      sendRequest.search.post(state.get('searchParams')).then((data) => {
         bus.$emit('search', data)
       })
     },
@@ -90,6 +82,7 @@ export default {
     .recommend-item {
       margin-right: 1em;
       margin-bottom: 1em;
+      cursor: pointer;
     }
   }
 </style>

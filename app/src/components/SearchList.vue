@@ -86,17 +86,9 @@ export default {
       }
     },
     search: function (keyword, field) {
-      let params = {
-        query: keyword,
-        apply_type: 'inventions',
-        search_type: 'common',
-        field: field,
-        session: state.get('session_id'),
-        per_page: state.get('per_page'),
-        page: state.get('page')
-      }
-      sendRequest.search.post(params).then((data) => {
-        state.setSearchParams('query', params.query)
+      state.setSearchParams('query', keyword)
+      state.setSearchParams('field', field)
+      sendRequest.search.post(state.get('searchParams')).then((data) => {
         bus.$emit('search', data)
       })
     },

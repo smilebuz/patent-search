@@ -46,6 +46,7 @@ export const sendRequest = ((apilist) => {
           apilist[api] = apilist[api].replace('{patentId}', patentId)
         }
         console.log('api:', apilist[api])
+        console.log('搜索', params)
         return axios.post(apilist[api], params)
           .then(response => {
             return Promise.resolve(response.data.result) // 将response.data.result转成Promise对象
