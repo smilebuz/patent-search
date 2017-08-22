@@ -92,19 +92,10 @@ export default {
         page: state.get('page')
       }
       sendRequest.search.post(params).then((data) => {
+        state.setSearchParams('query', params.query)
         bus.$emit('search', data)
         this.$router.push('Search')
       })
-      /*
-      this.$http.post(Api.search, params)
-        .then((response) => {
-          bus.$emit('search', response.data.result)
-          this.$router.push('Search')
-        })
-        .catch((error) => {
-          console.log('error', error)
-        })
-      */
     }
   }
 }

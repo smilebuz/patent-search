@@ -96,7 +96,7 @@ export default {
         page: state.get('page')
       }
       sendRequest.search.post(params).then((data) => {
-        bus.$emit('setKeyword', keyword)
+        state.setSearchParams('query', params.query)
         bus.$emit('search', data)
       })
     },

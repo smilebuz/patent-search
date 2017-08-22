@@ -55,6 +55,8 @@ export default {
   },
   methods: {
     search () {
+      // console.log(this.keyword)
+      console.log('methods this', this.$data)
       let params = {
         query: this.keyword,
         apply_type: 'inventions',
@@ -65,15 +67,17 @@ export default {
         page: 1
       }
       sendRequest.search.post(params).then((data) => {
+        state.setSearchParams('query', params.query)
         bus.$emit('search', data)
         this.$router.push('/Search')
       })
     }
   },
   created () {
-    bus.$on('setKeyword', function (keyword) {
-      this.keyword = keyword
-      // this.$set(this, 'keyword', keyword)
+    this.keyword = state.get('searchParams').query
+    // 监听不到
+    bus.$on('setSearchParams', searchParams => {
+      this.keyword = searchParams.query // this没用
     })
   }
 }

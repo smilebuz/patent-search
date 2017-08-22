@@ -9,6 +9,7 @@ export default new Vue({
       session_id: '',
       patent_id: '', // 不同的信息读取 例如申请人信息 专利信息
       searchParams: {
+        query: '',
         per_page: 10,
         page: 1
       },
@@ -25,15 +26,21 @@ export default new Vue({
       return this[key]
     },
     setSearchParams (key, val) {
-      this.$set(this, this.searchParams[key], val)
+      this.$set(this.searchParams, key, val)
     }
   },
   watch: {
-    token: function (newToken) {
+    token (newToken) {
       bus.$emit('setToken', newToken)
     },
-    patent_id: function (newId) {
+    patent_id (newId) {
       bus.$emit('setPatentId', newId)
+    },
+    searchParams: {
+      handler: function (newParams, oldParams) {
+        bus.$emit('setSearchParams', newParams)
+      },
+      deep: true
     }
   }
 })
