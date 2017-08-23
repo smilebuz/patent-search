@@ -6,6 +6,7 @@ import Register from '@/views/Register'
 import Home from '@/views/Home'
 import AdvancedSearch from '@/views/AdvancedSearch'
 import Search from '@/views/Search'
+import CategoryNav from '@/views/CategoryNav'
 import PatentInfo from '@/views/PatentInfo'
 import ValueDegree from '@/views/ValueDegree'
 import ApplicantInfo from '@/views/ApplicantInfo'
@@ -20,7 +21,7 @@ let router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/Login'
+      redirect: '/Home'
     },
     {
       path: '/Login',
@@ -72,6 +73,12 @@ let router = new Router({
       path: '/PotentialBuyer',
       name: 'PotentialBuyer',
       component: PotentialBuyer,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/CategoryNav',
+      name: 'Category',
+      component: CategoryNav,
       meta: { requiresAuth: true }
     }
   ]

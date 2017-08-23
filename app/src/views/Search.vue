@@ -2,7 +2,7 @@
   <div>
     <myheader></myheader>
 
-    <div class='search'>
+    <div class="search">
       <searchbar></searchbar>
       <!--el-row>
         <span>首页n条专利，共n条相关专利</span>
@@ -11,75 +11,75 @@
 
     <div class="toolbar">
       <el-row>
-        <el-col :span='4'>
-          <div class='tab-group'>
-            <div class='tab' @click='switchSidebar("filter")'>过滤</div>
-            <div class='tab' @click='switchSidebar("recentSearch")'>最近搜索</div>
-            <div class='tab' @click='switchSidebar("categoryNav")'>分类导航</div>
+        <el-col :span="4">
+          <div class="tab-group">
+            <div class="tab" @click="switchSidebar('filter')">过滤</div>
+            <div class="tab" @click="switchSidebar('recentSearch')">最近搜索</div>
+            <router-link to="CategoryNav" class="tab" tag="span">分类导航</router-link>
           </div>
         </el-col>
 
-        <el-col :span='8' :offset='2' v-if='sideBarSelected !== "categoryNav"'>
-          <div class='tab-group'>
-            <div class='tab' @click='toggleDisplayType("abstract")'>摘要式</div>
-            <div class='tab' @click='toggleDisplayType("table")'>表格式</div>
+        <el-col :span="8" :offset="2">
+          <div class="tab-group">
+            <div class="tab" @click="toggleDisplayType('abstract')">摘要式</div>
+            <div class="tab" @click="toggleDisplayType('table')">表格式</div>
 
-            <el-popover ref='popoverSave' placement='top' width='400' trigger='click' v-model='savePopover' v-on:hide='resetSavePopover'>
+            <el-popover ref="popoverSave" placement="top" width="400" trigger="click" v-model="savePopover" v-on:hide="resetSavePopover">
               <h3>保存范围:</h3>
-              <div class='save-choice'>
-                <el-checkbox v-model='savePatent.saveChecked'>勾选的专利</el-checkbox>
+              <div class="save-choice">
+                <el-checkbox v-model="savePatent.saveChecked">勾选的专利</el-checkbox>
               </div>
-              <div class='save-choice'>
-                <el-checkbox v-model='savePatent.savePage'>
-                  从<el-input class='page-input' size='mini' v-model='savePatent.pageStart' :disabled='!savePatent.savePage'></el-input>页到<el-input class='page-input' size='mini' v-model='savePatent.pageEnd' :disabled='!savePatent.savePage'></el-input>页
+              <div class="save-choice">
+                <el-checkbox v-model="savePatent.savePage">
+                  从<el-input class="page-input" size="mini" v-model="savePatent.pageStart" :disabled="!savePatent.savePage"></el-input>页到<el-input class="page-input" size="mini" v-model="savePatent.pageEnd" :disabled="!savePatent.savePage"></el-input>页
                 </el-checkbox>
               </div>
-              <div class='popover-button'>
-                <el-button size='small'>保存</el-button>
-                <el-button size='small' @click='hideSavePopover'>取消</el-button>
+              <div class="popover-button">
+                <el-button size="small">保存</el-button>
+                <el-button size="small" @click="hideSavePopover">取消</el-button>
               </div>
             </el-popover>
 
-            <el-popover ref='popoverFavor' placement='top' width='400' trigger='click' v-model='favorPopover' v-on:hide='resetFavorPopover'>
-              <el-row type='flex' justify='space-between' align='middle'>
-                <el-col :span='6'>
+            <el-popover ref="popoverFavor" placement="top" width="400" trigger="click" v-model="favorPopover" v-on:hide="resetFavorPopover">
+              <el-row type="flex" justify="space-between" align="middle">
+                <el-col :span="6">
                   <h3>收藏夹名称:</h3>
                 </el-col>
-                <el-col :span='10'>
-                  <el-input size='small'></el-input>
+                <el-col :span="10">
+                  <el-input size="small"></el-input>
                 </el-col>
-                <el-col :span='6' :offset='2'>
-                  <el-button size='small'>创建并加入</el-button>
+                <el-col :span="6" :offset="2">
+                  <el-button size="small">创建并加入</el-button>
                 </el-col>
               </el-row>
-              <el-table :data='favorTable' border class="popover-table">
-                <el-table-column type='selection'></el-table-column>
-                <el-table-column prop='collection' label='收藏夹'></el-table-column>
-                <el-table-column prop='createTime' label='创建时间'></el-table-column>
-                <el-table-column label='编辑'>
-                  <template scope='scope'>
+              <el-table :data="favorTable" border class="popover-table">
+                <el-table-column type="selection"></el-table-column>
+                <el-table-column prop="collection" label="收藏夹"></el-table-column>
+                <el-table-column prop="createTime" label="创建时间"></el-table-column>
+                <el-table-column label="编辑">
+                  <template scope="scope">
                     <div class="popover-cell">
-                      <el-button size='mini'>收藏</el-button>
-                      <el-button size='mini'>删除</el-button>
+                      <el-button size="mini">收藏</el-button>
+                      <el-button size="mini">删除</el-button>
                     </div>
                   </template>
                 </el-table-column>
               </el-table>
-              <div class='popover-button'>
-                <el-button size='small'>保存</el-button>
-                <el-button size='small' @click='hideFavorPopover'>取消</el-button>
+              <div class="popover-button">
+                <el-button size="small">保存</el-button>
+                <el-button size="small" @click="hideFavorPopover">取消</el-button>
               </div>
             </el-popover>
 
-            <div class='tab' v-popover:popoverSave>保存</div>
-            <div class='tab' v-popover:popoverFavor>加入收藏</div>
-            <div class='tab'>加入分析库</div>
+            <div class="tab" v-popover:popoverSave>保存</div>
+            <div class="tab" v-popover:popoverFavor>加入收藏</div>
+            <div class="tab">加入分析库</div>
           </div>
         </el-col>
 
-        <el-col :span='8' :offset='1' v-if='sideBarSelected !== "categoryNav"'>
-          <div class='tab-group'>
-            <div class='tab tab-order' v-for='(value, key) in sorts' :key='key' @click='sort(key, value.direction)'>
+        <el-col :span="8" :offset="1">
+          <div class="tab-group">
+            <div class="tab tab-order" v-for="(value, key) in sorts" :key="key" @click="sort(key, value.direction)">
               {{ value.message }}
             </div>
           </div>
@@ -87,24 +87,19 @@
       </el-row>
     </div>
 
-    <div class='main'>
+    <div class="main">
       <el-row>
-        <el-col :span='4'>
-          <myfilter v-if='sideBarSelected === "filter"'></myfilter>
-          <div v-else-if='sideBarSelected === "recentSearch"' id="recentSearch">
-            <p v-for='item, index in recentSearch' @click=search(item)>{{ item.message }}</p>
+        <el-col :span="4">
+          <myfilter v-if="sideBarSelected === 'filter'"></myfilter>
+          <div v-else-if="sideBarSelected === 'recentSearch'" id="recentSearch">
+            <p v-for="item, index in recentSearch" @click="search(item.message)">{{ item.message }}</p>
           </div>
-          <categoryNav v-else></categoryNav>
+          <sideNav v-else></sideNav>
         </el-col>
 
-        <el-col :span='17' :offset='2'>
-          <div v-if='sideBarSelected === "categoryNav"'>
-            <el-tree :data='navObj' :props='navProps' @node-click='searchFromNode' class="nav-tree"></el-tree>
-          </div>
-          <div v-else>
-            <searchlist :displayType='displayType'></searchlist>
-            <recommend></recommend>
-          </div>
+        <el-col :span="17" :offset="2">
+          <searchlist :displayType="displayType"></searchlist>
+          <recommend></recommend>
         </el-col>
       </el-row>
     </div>
@@ -122,7 +117,7 @@ import myfilter from '../components/Filter'
 import searchlist from '../components/SearchList'
 import recommend from '../components/Recommend'
 import searchbar from '../components/SearchBar'
-import categoryNav from '../components/CategoryNav'
+import sideNav from '../components/sideNav'
 
 export default {
   data () {
@@ -179,12 +174,7 @@ export default {
           collection: 'react',
           createTime: '2016-02-18'
         }
-      ],
-      navObj: [],
-      navProps: {
-        label: 'label',
-        children: 'children'
-      }
+      ]
     }
   },
   methods: {
@@ -207,16 +197,10 @@ export default {
     switchSidebar: function (type) {
       this.sideBarSelected = type
     },
-    searchFromNode: function (data) {
-      // 根据expanded和有没有expanded判断是否进行搜索
-      data.expanded = !data.expanded
-      console.log(this.navObj)
-    },
-    search: function (item) {
-      let params = {
-      }
+    search: function (keyword) {
       // 点击最近搜索
-      sendRequest.search.post(params).then((data) => {
+      state.setSearchParams('query', keyword)
+      sendRequest.search.post(state.get('searchParams')).then((data) => {
         this.sideBarSelected = 'filter'
         bus.$emit('search', data)
       })
@@ -255,27 +239,9 @@ export default {
     }
   },
   created () {
-    bus.$on('getNavObj', (root) => {
-      this.navObj.splice(0, this.navObj.length)
-      this.navObj.push({
-        label: '国网江苏省供电公司',
-        expanded: false,
-        children: [
-          {
-            label: '国网江苏省电力公司南京供电公司'
-          },
-          {
-            label: '国网江苏省电力公司苏州供电公司'
-          },
-          {
-            label: '国网江苏省电力公司徐州供电公司'
-          }
-        ]
-      })
-    })
   },
   components: {
-    myheader, myfilter, searchlist, recommend, searchbar, categoryNav
+    myheader, myfilter, searchlist, recommend, searchbar, sideNav
   }
 }
 </script>
@@ -333,8 +299,5 @@ export default {
     p {
       cursor: pointer;
     }
-  }
-  .nav-tree {
-    text-align: left;
   }
 </style>
