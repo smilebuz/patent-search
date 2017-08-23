@@ -12,10 +12,11 @@ export const Api = {
   'sort': '/api/sort/?access_token={token}', // post
 
   'patentInfo': '/api/patents/{patentId}', // get
-  'similarPatent': '/api/patents/patent_id/similarities?perPage=5&page=1', // get
+  'similarPatent': '/api/patents/{patentId}/similarities?perPage=5&page=1', // get
   'applicant': '/api/organizations/{patentId}', // get
-  'valuedegree': '/api/patents',
+  'valuedegree': '/api/patents/{patentId}/values', // get
   'legatStatus': '/api/patents/patent_id/legal_statuses', // get
+  'potentBuyer': '/api/applicants?patent_id={patentId}&intent=potential_buyer&per_page={per_page}&page={page}', // get
 
   'recentSearch': 'api/users/user_id/recent_queries' // get
 }
@@ -29,7 +30,6 @@ bus.$on('setToken', function (newToken) {
 
 bus.$on('setPatentId', (newId) => {
   patentId = newId
-  Api.valuedegree = Api.valuedegree + '/' + newId + '/values'
 })
 
 export const sendRequest = ((apilist) => {

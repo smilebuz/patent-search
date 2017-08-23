@@ -27,11 +27,11 @@
     </el-row>
     <el-row>
       <el-col :span='4' :offset='4' class="search-special">
-        <img src="../assets/images/category_navigation.png" alt="" class="">
-        <span>分类导航</span>
+        <img src="../assets/images/category_navigation.png" alt="" class="" v-on:click="categoryNav">
+        <span v-on:click="categoryNav">分类导航</span>
       </el-col>
       <el-col :span='4' class="search-special">
-        <img src="../assets/images/advanced_search.png" alt="" class="" v-on:click='advancedSearch'>
+        <img src="../assets/images/advanced_search.png" alt="" class="" v-on:click="advancedSearch">
         <span v-on:click='advancedSearch'>高级检索</span>
       </el-col>
       <el-col :span='4' class="search-special">
@@ -79,6 +79,9 @@ export default {
     }
   },
   methods: {
+    categoryNav () {
+      this.$router.push('CategoryNav')
+    },
     advancedSearch () {
       this.$router.push('AdvancedSearch')
     },

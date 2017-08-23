@@ -110,19 +110,9 @@ export default {
   },
   methods: {
     switchTab (tab, event) {
-      let params = {
-        params: {
-          perPage: 5,
-          page: 1
-        }
-      }
       if (this.activeTab === 'similarPatent') {
-        this.$http.get('/api/patents/' + this.patentId + '/similarities', params)
-        .then((response) => {
-          this.refreshSimPanel(response.data.result)
-        })
-        .catch((error) => {
-          console.log(error)
+        sendRequest.similarPatent.get().then(data => {
+          this.refreshSimPanel(data)
         })
       }
     },
@@ -199,16 +189,6 @@ export default {
     sendRequest.patentInfo.get().then(data => {
       this.fillInfo(data)
     })
-    /*
-    this.patentId = this.$route.params.id
-    this.$http.get('/api/patents/' + this.patentId)
-      .then((response) => {
-        this.fillInfo(response.data.result)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    */
   },
   components: {
     myHeader, searchbar

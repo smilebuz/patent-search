@@ -19,7 +19,7 @@
           </div>
         </el-col>
 
-        <el-col :span="8" :offset="2">
+        <el-col :span="7" :offset="2">
           <div class="tab-group">
             <div class="tab" @click="toggleDisplayType('abstract')">摘要式</div>
             <div class="tab" @click="toggleDisplayType('table')">表格式</div>
@@ -77,10 +77,14 @@
           </div>
         </el-col>
 
-        <el-col :span="8" :offset="1">
+        <el-col :span="9" :offset="1">
           <div class="tab-group">
-            <div class="tab tab-order" v-for="(value, key) in sorts" :key="key" @click="sort(key, value.direction)">
-              {{ value.message }}
+            <div class="tab tab-order" v-for="(value, key) in sorts" :key="key" @click="sort(key)">
+              <span class="order-text">{{ value.message }}</span>
+              <div class="order-icon">
+                <i class="el-icon-caret-top tab-icon icon-asc" v-bind:class="{ active: value.direction === 'ascending' }"></i>
+                <i class="el-icon-caret-bottom tab-icon icon-desc" v-bind:class="{ active: value.direction === 'decending' }"></i>
+              </div>
             </div>
           </div>
         </el-col>
@@ -127,23 +131,23 @@ export default {
       sorts: {
         relevance: {
           message: '相关度',
-          direction: 'decending'
+          direction: 'none'
         },
         apply_type: {
           message: '申请时间',
-          direction: 'decending'
+          direction: 'none'
         },
         value_degree: {
           message: '价值度',
-          direction: 'decending'
+          direction: 'none'
         },
         potential_buyer_number: {
           message: '潜在买家数',
-          direction: 'decending'
+          direction: 'none'
         },
         similar_patent_number: {
           message: '相似专利数',
-          direction: 'decending'
+          direction: 'none'
         }
       },
       recentSearch: [
@@ -178,15 +182,29 @@ export default {
     }
   },
   methods: {
-    sort (target, direction) {
+    sort (target) {
+      switch (this.sorts[target].direction) {
+        case 'none':
+          this.sorts[target].direction = 'decending'
+          break
+        case 'decending':
+          this.sorts[target].direction = 'ascending'
+          break
+        case 'ascending':
+          this.sorts[target].direction = 'none'
+          break
+        default:
+          break
+      }
       let params = {
         target: target,
-        direction: direction,
+        direction: this.sorts[target].direction,
         session_id: state.get('session_id'),
         per_page: state.get('per_page'),
         page: state.get('page')
       }
-      this.sorts[target].direction === 'decending' ? this.sorts[target].direction = 'ascending' : this.sorts[target].direction = 'decending'
+      // this.sorts[target].direction === 'decending' ? this.sorts[target].direction = 'ascending' : this.sorts[target].direction = 'decending'
+      console.log(params)
       sendRequest.sort.post(params).then((data) => {
         state.set('patentList', data.patent_list)
       })
@@ -256,12 +274,37 @@ export default {
       border-right: none;
       padding-top: .5em;
       padding-bottom: .5em;
-      cursor: default;
+      cursor: pointer;
       &:last-child {
         border-right: 1px solid #000;
       }
     }
-    .tab-order {
+  }
+  .tab-order {
+    display: flex;
+    justify-content: space-between;
+    .order-text {
+      margin-left: .5em;
+    }
+    .order-icon {
+      position: relative;
+      height: 100%;
+      .tab-icon {
+        transform: scale(.7);
+      }
+      .icon-asc {
+        position: absolute;
+        top: -2px;
+        right: 2px;
+      }
+      .icon-desc {
+        position: absolute;
+        bottom: -2px;
+        right: 2px;
+      }
+      .active {
+        color: #008080;
+      }
     }
   }
   .page-input {

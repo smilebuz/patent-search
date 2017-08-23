@@ -87,7 +87,7 @@ export default {
       border-right: none;
       padding-top: .5em;
       padding-bottom: .5em;
-      cursor: default;
+      cursor: pointer;
       &:last-child {
         border-right: 1px solid #000;
       }
