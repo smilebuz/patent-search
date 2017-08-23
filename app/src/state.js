@@ -7,7 +7,8 @@ export default new Vue({
       isLogin: '',
       token: '',
       session_id: '',
-      patent_id: '', // 不同的信息读取 例如申请人信息 专利信息
+      patent_id: '', // 不同的信息读取 例如专利信息
+      applicant_id: '', // 不同的申请人ID
       searchParams: {},
       // sortParams: {},
       patentList: [],
@@ -35,6 +36,10 @@ export default new Vue({
     },
     patent_id (newId) {
       bus.$emit('setPatentId', newId)
+    },
+    applicant_id (newId) {
+      console.log(newId)
+      bus.$emit('setApplicantId', newId)
     },
     searchParams: {
       handler: function (newParams, oldParams) {

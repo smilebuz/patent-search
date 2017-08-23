@@ -21,7 +21,7 @@
           {{ item.abstract }}
         </div>
         <div>
-          <span class='link' @click='searchApplicant(item.patent_id)'>申请人信息</span> ——
+          <span class='link' @click='searchApplicant(item.applicant_id)'>申请人信息</span> ——
           <span class='link'>申请人购买力</span> ——
           <span class='link'>申请人主营产品</span> ——
           <router-link to='home' tag='span' class='link'>相似专利</router-link> ——
@@ -73,6 +73,7 @@ export default {
           patent_id: patent.patent_id,
           invention_title: patent.invention_title,
           applicant_name: patent.applicant_name,
+          applicant_id: patent.applicant_id,
           inventor_list: patent.inventor_list.join(' '),
           ipc_main_classification: patent.ipc_main_classification,
           apply_date: patent.apply_date,
@@ -100,8 +101,8 @@ export default {
       state.set('patent_id', patentId)
       this.$router.push('/ValueDegree')
     },
-    searchApplicant: function (patentId) {
-      state.set('patent_id', patentId)
+    searchApplicant: function (applicantId) {
+      state.set('applicant_id', applicantId)
       this.$router.push('/ApplicantInfo')
     },
     loadPotentialBuyer: function (patentId) {

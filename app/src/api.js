@@ -13,7 +13,7 @@ export const Api = {
 
   'patentInfo': '/api/patents/{patentId}', // get
   'similarPatent': '/api/patents/{patentId}/similarities?perPage=5&page=1', // get
-  'applicant': '/api/organizations/{patentId}', // get
+  'applicant': '/api/applicants/{applicantId}', // get
   'valuedegree': '/api/patents/{patentId}/values', // get
   'legatStatus': '/api/patents/patent_id/legal_statuses', // get
   'potentBuyer': '/api/applicants?patent_id={patentId}&intent=potential_buyer&per_page={per_page}&page={page}', // get
@@ -23,6 +23,7 @@ export const Api = {
 
 export let token = ''
 export let patentId = ''
+export let applicantId = ''
 
 bus.$on('setToken', function (newToken) {
   token = newToken
@@ -30,6 +31,10 @@ bus.$on('setToken', function (newToken) {
 
 bus.$on('setPatentId', (newId) => {
   patentId = newId
+})
+
+bus.$on('setApplicantId', (newId) => {
+  applicantId = newId
 })
 
 export const sendRequest = ((apilist) => {
@@ -45,8 +50,10 @@ export const sendRequest = ((apilist) => {
           console.log('patentId', patentId)
           apilist[api] = apilist[api].replace('{patentId}', patentId)
         }
+        if (apilist[api].includes('{applicantId}')) {
+          apilist[api] = apilist[api].replace('{applicantId}', applicantId)
+        }
         console.log('api:', apilist[api])
-        console.log('搜索', params)
         return axios.post(apilist[api], params)
           .then(response => {
             return Promise.resolve(response.data.result) // 将response.data.result转成Promise对象
@@ -61,6 +68,9 @@ export const sendRequest = ((apilist) => {
         }
         if (apilist[api].includes('{patentId}')) {
           apilist[api] = apilist[api].replace('{patentId}', patentId)
+        }
+        if (apilist[api].includes('{applicantId}')) {
+          apilist[api] = apilist[api].replace('{applicantId}', applicantId)
         }
         console.log('api:', apilist[api])
         if (params) {

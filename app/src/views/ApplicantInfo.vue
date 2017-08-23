@@ -12,7 +12,10 @@
           <el-table-column prop='title' label='信息名称' class='table-row-title'></el-table-column>
           <el-table-column prop='text' label='信息内容'></el-table-column>
         </el-table>
-        <el-table :data='mainProductTable.products' border align='left'>
+        <div v-else>
+          <span v-for="(product, index) in mainProducts" :key="index">{{ product }}</span>
+        </div>
+        <!--el-table v-else :data='mainProductTable.products' border align='left'>
           <el-table-column label='申请人名称'>
             <el-table-column prop='productName' label='产品名称'></el-table-column>
           </el-table-column>
@@ -21,7 +24,7 @@
             <el-table-column prop='secondClassMenu' label='二级目录'></el-table-column>
             <el-table-column prop='thirdClassMenu' label='三级目录'></el-table-column>
           </el-table-column>
-        </el-table>
+        </el-table-->
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -31,8 +34,8 @@
 import myHeader from '../components/Header'
 import searchbar from '../components/SearchBar'
 
-import state from '../state.js'
-// import { sendRequest } from '../Api'
+// import state from '../state.js'
+import { sendRequest } from '../Api'
 
 export default {
   data () {
@@ -54,12 +57,15 @@ export default {
       ],
       infoTable: [],
       purchasePowerTable: [],
+      mainProducts: []
+      /*
       mainProductTable: {
         name: '',
         products: []
       },
       mockProduct: [],
       recLevel: 0
+      */
     }
   },
   methods: {
@@ -93,6 +99,8 @@ export default {
       this.purchasePowerTable.push({title: '人数规模', text: data.personNumber})
       this.purchasePowerTable.push({title: '购买增长率', text: data.purchaseGrowthRate})
       // 申请人主营产品
+      this.mainProducts = data.main_product_list
+      /*
       this.mainProductTable.name = data.name
       let mainProducts = JSON.parse(data.mainProductsInJson)
       let firstClassMenu = Object.keys(mainProducts).filter((el, i, arr) => {
@@ -105,11 +113,6 @@ export default {
           let secondMenu = secondClasses[i]
           secondClassMenu.push({first: menu, second: secondMenu, firstSecondMenu: i === 0})
         }
-        /*
-        for (let secondMenu of secondClasses) {
-          secondClassMenu.push({first: menu, second: secondMenu})
-        }
-        */
       }
       let thirdClassMenu = []
       for (let menu of secondClassMenu) {
@@ -122,11 +125,6 @@ export default {
           let firstThridMenu = i === 0
           thirdClassMenu.push({first: firstMenu, second: secondMenu, third: thirdMenu, firstSecondMenu: firstSecondMenu && firstThridMenu, firstThridMenu: i === 0})
         }
-        /*
-        for (let thirdMenu of thirdClasses) {
-          thirdClassMenu.push({first: firstMenu, second: secondMenu, third: thirdMenu})
-        }
-        */
       }
       for (let menu of thirdClassMenu) {
         let firstMenu = menu.first
@@ -151,14 +149,9 @@ export default {
           } else {
             this.mainProductTable.products.push({firstClassMenu: '', secondClassMenu: '', thirdClassMenu: '', productName: product})
           }
-          // productList.push({firstClassMenu: firstMenu, secondClassMenu: secondMenu, thirdClassMenu: thirdMenu, productName: product, firstSecondMenu: firstSecondMenu && firstSecondMenu, firstThridMenu: firstThridMenu && firstSecondMenu, firstProduct: firstProduct})
         }
-        /*
-        for (let product of products) {
-          this.mainProductTable.products.push({firstClassMenu: firstMenu, secondClassMenu: secondMenu, thirdClassMenu: thirdMenu, productName: product})
-        }
-        */
       }
+      */
       // console.log('产品', aaa)
     },
     loadProducts: function (productObj) {
@@ -177,7 +170,11 @@ export default {
     }
   },
   mounted () {
-    let url = '/api/organizations/' + state.get('patent_id')
+    sendRequest.applicant.get().then(data => {
+      console.log('申请人', data)
+      this.fillInfo(data)
+    })
+    /*
     this.$http.get(url)
       .then((response) => {
         this.fillInfo(response.data)
@@ -186,6 +183,7 @@ export default {
       .catch((error) => {
         console.log(error)
       })
+    */
   },
   components: {
     myHeader, searchbar
