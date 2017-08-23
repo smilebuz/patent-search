@@ -4,34 +4,34 @@
     <searchbar></searchbar>
     <el-tabs type='border-card' class="tab" v-model='activeTab'>
       <el-tab-pane v-for='tab, index in tabs' :key='index' v-bind:label='tab.message' v-bind:name='tab.value'>
-        <el-table v-if='activeTab === "generalValue"' :data='infoTable' border align='left'>
-          <el-table-column prop='evalutae_item' label='评估项'></el-table-column>
+        <el-table v-if='activeTab === "generalValue"' :data='generalTable' border align='left'>
+          <el-table-column prop='evaluate_item' label='评估项'></el-table-column>
           <el-table-column prop='score' label='得分'></el-table-column>
-          <el-table-column prop='meanScore' label='平均分'></el-table-column>
+          <el-table-column prop='mean_score' label='平均分'></el-table-column>
           <el-table-column prop='standard_deviation' label='标准差'></el-table-column>
         </el-table>
 
         <el-table v-else-if='activeTab === "lawValue"' :data='lawTable' border align='left'>
-          <el-table-column prop='evalutae_item' label='评估项'></el-table-column>
-          <el-table-column prop='totalSorce' label='总分值'></el-table-column>
+          <el-table-column prop='evaluate_item' label='评估项'></el-table-column>
+          <el-table-column prop='total_score' label='总分值'></el-table-column>
           <el-table-column prop='score' label='得分'></el-table-column>
-          <el-table-column prop='meanScore' label='平均分'></el-table-column>
+          <el-table-column prop='mean_score' label='平均分'></el-table-column>
           <el-table-column prop='standard_deviation' label='标准差'></el-table-column>
         </el-table>
 
-        <el-table v-else-if='activeTab === "tenicalValue"' :data='tenialTable' border align='left'>
-          <el-table-column prop='evalutae_item' label='评估项'></el-table-column>
-          <el-table-column prop='totalSorce' label='总分值'></el-table-column>
+        <el-table v-else-if='activeTab === "tenicalValue"' :data='technicalTable' border align='left'>
+          <el-table-column prop='evaluate_item' label='评估项'></el-table-column>
+          <el-table-column prop='total_score' label='总分值'></el-table-column>
           <el-table-column prop='score' label='得分'></el-table-column>
-          <el-table-column prop='meanScore' label='平均分'></el-table-column>
+          <el-table-column prop='mean_score' label='平均分'></el-table-column>
           <el-table-column prop='standard_deviation' label='标准差'></el-table-column>
         </el-table>
 
         <el-table v-else='activeTab === "economyValue"' :data='economyTable' border align='left'>
-          <el-table-column prop='evalutae_item' label='评估项'></el-table-column>
-          <el-table-column prop='totalSorce' label='总分值'></el-table-column>
+          <el-table-column prop='evaluate_item' label='评估项'></el-table-column>
+          <el-table-column prop='total_score' label='总分值'></el-table-column>
           <el-table-column prop='score' label='得分'></el-table-column>
-          <el-table-column prop='meanScore' label='平均分'></el-table-column>
+          <el-table-column prop='mean_score' label='平均分'></el-table-column>
           <el-table-column prop='standard_deviation' label='标准差'></el-table-column>
         </el-table>
 
@@ -44,7 +44,7 @@
 import myHeader from '../components/Header'
 import searchbar from '../components/SearchBar'
 
-// import { sendRequest } from '../Api'
+import { sendRequest } from '../Api'
 
 export default {
   data () {
@@ -70,15 +70,17 @@ export default {
       ],
       generalTable: [],
       lawTable: [],
-      tenicalTable: [],
+      technicalTable: [],
       economyTable: []
     }
   },
   mounted () {
-    /*
     sendRequest.valuedegree.get().then((data) => {
+      this.generalTable = data.general_value
+      this.lawTable = data.law_value
+      this.technicalTable = data.technical_value
+      this.economyTable = data.economy_value
     })
-    */
   },
   components: {
     myHeader, searchbar

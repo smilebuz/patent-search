@@ -16,7 +16,7 @@ export const Api = {
   'applicant': '/api/applicants/{applicantId}', // get
   'valuedegree': '/api/patents/{patentId}/values', // get
   'legatStatus': '/api/patents/patent_id/legal_statuses', // get
-  'potentBuyer': '/api/applicants?patent_id={patentId}&intent=potential_buyer&per_page={per_page}&page={page}', // get
+  'potentialBuyer': '/api/patents/{patentId}/applicants?intent=potential_buyer&per_page=10&page=1', // get
 
   'recentSearch': 'api/users/user_id/recent_queries' // get
 }
