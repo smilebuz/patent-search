@@ -82,10 +82,11 @@ export default {
         username: this.form.account,
         password: this.form.password
       }
-      sendRequest.login.post(params).then(res => {
+      sendRequest.login.post(params).then(data => {
         state.set('isLogin', true)
-        state.set('token', res.access_token)
-        console.log('token', state.get('token'))
+        // state.set('token', data.access_token)
+        state.set('user_id', data.user_id)
+        console.log('user_id', data.user_id)
         this.$router.push('Home')
       })
     }

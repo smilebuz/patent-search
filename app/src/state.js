@@ -5,7 +5,7 @@ export default new Vue({
   data () {
     return {
       isLogin: '',
-      token: '',
+      user_id: '',
       session_id: '',
       patent_id: '', // 不同的信息读取 例如专利信息
       applicant_id: '', // 不同的申请人ID
@@ -31,8 +31,8 @@ export default new Vue({
     }
   },
   watch: {
-    token (newToken) {
-      bus.$emit('setToken', newToken)
+    user_id (newId) {
+      bus.$emit('setUserId', newId)
     },
     patent_id (newId) {
       bus.$emit('setPatentId', newId)

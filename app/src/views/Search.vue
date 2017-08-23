@@ -72,7 +72,7 @@
             </el-popover>
 
             <div class="tab" v-popover:popoverSave>保存</div>
-            <div class="tab" v-popover:popoverFavor>加入收藏</div>
+            <div class="tab" v-popover:popoverFavor @click="loadFavor">加入收藏</div>
             <div class="tab">加入分析库</div>
           </div>
         </el-col>
@@ -96,7 +96,7 @@
         <el-col :span="4">
           <myfilter v-if="sideBarSelected === 'filter'"></myfilter>
           <div v-else-if="sideBarSelected === 'recentSearch'" id="recentSearch">
-            <p v-for="item, index in recentSearch" @click="search(item.message)">{{ item.message }}</p>
+            <p v-for="item, index in recentSearch" @click="search(item.query, item.field)">{{ item.query }}</p>
           </div>
           <sideNav v-else></sideNav>
         </el-col>
@@ -150,17 +150,7 @@ export default {
           direction: 'none'
         }
       },
-      recentSearch: [
-        {
-          message: '电力载波技术'
-        },
-        {
-          message: '制冷装置'
-        },
-        {
-          message: '国网冀北电力'
-        }
-      ],
+      recentSearch: [],
       savePopover: false,
       savePatent: {
         saveChecked: false,
@@ -215,9 +205,10 @@ export default {
     switchSidebar: function (type) {
       this.sideBarSelected = type
     },
-    search: function (keyword) {
+    search: function (keyword, field) {
       // 点击最近搜索
       state.setSearchParams('query', keyword)
+      state.setSearchParams('field', field)
       sendRequest.search.post(state.get('searchParams')).then((data) => {
         this.sideBarSelected = 'filter'
         bus.$emit('search', data)
@@ -230,6 +221,8 @@ export default {
       this.savePatent.saveChecked = false
       this.savePatent.savePage = false
     },
+    loadFavor: function () {
+    },
     hideFavorPopover: function () {
       this.favorPopover = false
     },
@@ -241,15 +234,9 @@ export default {
     sideBarSelected: function (type) {
       switch (type) {
         case 'recentSearch':
-          /*
-          this.$http.get('')
-            .then((response) => {
-
-            })
-            .catch((error) => {
-              console.log(error)
-            })
-          */
+          sendRequest.recentSearch.get().then(data => {
+            this.recentSearch = data
+          })
           break
         default:
           break

@@ -12,7 +12,7 @@
           <span class="degree link" @click='loadDegreeValue(item.patent_id)'>价值度:{{ item.value_degree.value }} <i v-for='n in item.value_degree.degree' class='el-icon-star-off'></i> </span>
         </div>
         <div>
-          申请人:<span @click='search(item.applicant_name, "applicant")' class='search-span'>{{ item.applicant_name }}</span> 发明人:<span v-for='inventor, index in item.inventor_list' :key='index' @click='search(inventor, "inventor")' class='search-span'>{{ inventor }} </span> IPC分类号:<span @click='search(item.ipc_main_classification, "ipc_main_classification")' class='search-span'>{{ item.ipc_main_classification }}</span>
+          申请人:<span @click='search(item.applicant_name, "applicant")' class='search-span'>{{ item.applicant_name }}</span> 发明人:<span v-for='inventor, index in item.inventor_list' :key='index' @click='search(inventor, "inventor")' class='search-span'>{{ inventor }} </span> IPC分类号:<span @click='search(item.ipc_main_classification_no, "ipc_main_classification")' class='search-span'>{{ item.ipc_main_classification_no }}</span>
         </div>
         <div>
           申请日:<span>{{ item.apply_date }}</span> 申请号:<span>{{ item.apply_no }}</span> 公开日:<span>{{ item.publish_date }}</span> 公开号:<span>{{ item.publish_no }}</span>
@@ -66,7 +66,6 @@ export default {
   methods: {
     refreshList: function (patentList) {
       this.patents.splice(0, this.patents.length)
-      // let patentList = state.get('patentList')
       for (let i = 0; i < patentList.length; i++) {
         let patent = patentList[i]
         this.patents.push({
@@ -75,7 +74,7 @@ export default {
           applicant_name: patent.applicant_name,
           applicant_id: patent.applicant_id,
           inventor_list: patent.inventor_list.join(' '),
-          ipc_main_classification: patent.ipc_main_classification,
+          ipc_main_classification_no: patent.ipc_main_classification_no,
           apply_date: patent.apply_date,
           apply_no: patent.apply_no,
           publish_date: patent.publish_date,
