@@ -138,6 +138,9 @@ export default {
         this.selectPatentIds.push(patent.patent_id)
       }
     },
+    selectPatentIds: function (newIds) {
+      bus.$emit('updateSelectPatents', newIds)
+    },
     selectAll: function (newVal) {
       if (newVal) {
         this.selectPatentIds.splice(0, this.selectPatentIds.length)

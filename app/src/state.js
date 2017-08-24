@@ -13,7 +13,8 @@ export default new Vue({
       // sortParams: {},
       patentList: [],
       filterList: [],
-      recommendList: []
+      recommendList: [],
+      favorList: []
     }
   },
   methods: {
@@ -63,6 +64,9 @@ export default new Vue({
     },
     recommendList (newList) {
       bus.$emit('updateRecommendList', newList)
+    },
+    favorList (newList) {
+      bus.$emit('updateFavorList', newList)
     }
   }
 })

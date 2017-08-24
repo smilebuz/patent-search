@@ -52,15 +52,15 @@
                 <h3>收藏夹名称:</h3>
               </el-col>
               <el-col :span="10">
-                <el-input size="small"></el-input>
+                <el-input size="small" v-model="newFavorName"></el-input>
               </el-col>
               <el-col :span="6" :offset="2">
-                <el-button size="small">创建并加入</el-button>
+                <el-button size="small" @click="addFavor">创建并加入</el-button>
               </el-col>
             </el-row>
             <el-table :data="favorTable" border class="popover-table">
               <el-table-column type="selection"></el-table-column>
-              <el-table-column prop="collection" label="收藏夹"></el-table-column>
+              <el-table-column prop="name" label="收藏夹"></el-table-column>
               <el-table-column prop="createTime" label="创建时间"></el-table-column>
               <el-table-column label="编辑">
                 <template scope="scope">
@@ -178,16 +178,9 @@ export default {
         pageEnd: ''
       },
       favorPopover: false,
-      favorTable: [
-        {
-          collection: 'vue',
-          createTime: '2016-02-18'
-        },
-        {
-          collection: 'react',
-          createTime: '2016-02-18'
-        }
-      ]
+      newFavorName: '',
+      favorTable: [],
+      selectPatentIds: []
     }
   },
   methods: {
@@ -233,6 +226,7 @@ export default {
         bus.$emit('search', data)
       })
     },
+    // 保存
     hideSavePopover: function () {
       this.savePopover = false
     },
@@ -240,7 +234,24 @@ export default {
       this.savePatent.saveChecked = false
       this.savePatent.savePage = false
     },
+    // 收藏
     loadFavor: function () {
+      this.favorTable.splice(0, this.favorTable.length)
+      sendRequest.getFavor.get().then(data => {
+        state.set('favorList', data)
+      })
+    },
+    addFavor: function () {
+      let params = {
+        name: this.newFavorName,
+        patent_id_list: this.selectPatentIds
+      }
+      sendRequest.createFavor.post(params).then(data => {
+        // console.log(data)
+        let favorList = state.get('favorList')
+        favorList.push(data)
+        state.set('favorList', favorList)
+      })
     },
     hideFavorPopover: function () {
       this.favorPopover = false
@@ -266,6 +277,12 @@ export default {
     }
   },
   created () {
+    bus.$on('updateSelectPatents', patentIds => {
+      this.selectPatentIds = patentIds
+    })
+    bus.$on('updateFavorList', favorList => {
+      this.favorTable = favorList
+    })
   },
   components: {
     myheader, myfilter, searchlist, recommend, searchbar, sideNav
