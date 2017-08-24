@@ -12,73 +12,81 @@
     <div class="toolbar">
       <el-row>
         <el-col :span="4">
-          <div class="tab-group">
+          <el-button-group>
+            <el-button @click="switchSidebar('filter')">过滤</el-button>
+            <el-button @click="switchSidebar('recentSearch')">最近搜索</el-button>
+            <el-button @click="switchSidebar('categoryNav')">分类导航</el-button>
+          </el-button-group>
+          <!--div class="tab-group">
             <div class="tab" @click="switchSidebar('filter')">过滤</div>
             <div class="tab" @click="switchSidebar('recentSearch')">最近搜索</div>
             <router-link to="CategoryNav" class="tab" tag="span">分类导航</router-link>
-          </div>
+          </div-->
         </el-col>
 
         <el-col :span="7" :offset="2">
-          <div class="tab-group">
-            <div class="tab" @click="toggleDisplayType('abstract')">摘要式</div>
-            <div class="tab" @click="toggleDisplayType('table')">表格式</div>
+          <el-button-group>
+            <el-button @click="toggleDisplayType('abstract')">摘要式</el-button>
+            <el-button @click="toggleDisplayType('table')">表格式</el-button>
+          </el-button-group>
 
-            <el-popover ref="popoverSave" placement="top" width="400" trigger="click" v-model="savePopover" v-on:hide="resetSavePopover">
-              <h3>保存范围:</h3>
-              <div class="save-choice">
-                <el-checkbox v-model="savePatent.saveChecked">勾选的专利</el-checkbox>
-              </div>
-              <div class="save-choice">
-                <el-checkbox v-model="savePatent.savePage">
-                  从<el-input class="page-input" size="mini" v-model="savePatent.pageStart" :disabled="!savePatent.savePage"></el-input>页到<el-input class="page-input" size="mini" v-model="savePatent.pageEnd" :disabled="!savePatent.savePage"></el-input>页
-                </el-checkbox>
-              </div>
-              <div class="popover-button">
-                <el-button size="small">保存</el-button>
-                <el-button size="small" @click="hideSavePopover">取消</el-button>
-              </div>
-            </el-popover>
+          <el-popover ref="popoverSave" placement="top" width="400" trigger="click" v-model="savePopover" v-on:hide="resetSavePopover">
+            <h3>保存范围:</h3>
+            <div class="save-choice">
+              <el-checkbox v-model="savePatent.saveChecked">勾选的专利</el-checkbox>
+            </div>
+            <div class="save-choice">
+              <el-checkbox v-model="savePatent.savePage">
+                从<el-input class="page-input" size="mini" v-model="savePatent.pageStart" :disabled="!savePatent.savePage"></el-input>页到<el-input class="page-input" size="mini" v-model="savePatent.pageEnd" :disabled="!savePatent.savePage"></el-input>页
+              </el-checkbox>
+            </div>
+            <div class="popover-button">
+              <el-button size="small">保存</el-button>
+              <el-button size="small" @click="hideSavePopover">取消</el-button>
+            </div>
+          </el-popover>
 
-            <el-popover ref="popoverFavor" placement="top" width="400" trigger="click" v-model="favorPopover" v-on:hide="resetFavorPopover">
-              <el-row type="flex" justify="space-between" align="middle">
-                <el-col :span="6">
-                  <h3>收藏夹名称:</h3>
-                </el-col>
-                <el-col :span="10">
-                  <el-input size="small"></el-input>
-                </el-col>
-                <el-col :span="6" :offset="2">
-                  <el-button size="small">创建并加入</el-button>
-                </el-col>
-              </el-row>
-              <el-table :data="favorTable" border class="popover-table">
-                <el-table-column type="selection"></el-table-column>
-                <el-table-column prop="collection" label="收藏夹"></el-table-column>
-                <el-table-column prop="createTime" label="创建时间"></el-table-column>
-                <el-table-column label="编辑">
-                  <template scope="scope">
-                    <div class="popover-cell">
-                      <el-button size="mini">收藏</el-button>
-                      <el-button size="mini">删除</el-button>
-                    </div>
-                  </template>
-                </el-table-column>
-              </el-table>
-              <div class="popover-button">
-                <el-button size="small">保存</el-button>
-                <el-button size="small" @click="hideFavorPopover">取消</el-button>
-              </div>
-            </el-popover>
+          <el-popover ref="popoverFavor" placement="top" width="400" trigger="click" v-model="favorPopover" v-on:hide="resetFavorPopover">
+            <el-row type="flex" justify="space-between" align="middle">
+              <el-col :span="6">
+                <h3>收藏夹名称:</h3>
+              </el-col>
+              <el-col :span="10">
+                <el-input size="small"></el-input>
+              </el-col>
+              <el-col :span="6" :offset="2">
+                <el-button size="small">创建并加入</el-button>
+              </el-col>
+            </el-row>
+            <el-table :data="favorTable" border class="popover-table">
+              <el-table-column type="selection"></el-table-column>
+              <el-table-column prop="collection" label="收藏夹"></el-table-column>
+              <el-table-column prop="createTime" label="创建时间"></el-table-column>
+              <el-table-column label="编辑">
+                <template scope="scope">
+                  <div class="popover-cell">
+                    <el-button size="mini">收藏</el-button>
+                    <el-button size="mini">删除</el-button>
+                  </div>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div class="popover-button">
+              <el-button size="small">保存</el-button>
+              <el-button size="small" @click="hideFavorPopover">取消</el-button>
+            </div>
+          </el-popover>
 
-            <div class="tab" v-popover:popoverSave>保存</div>
-            <div class="tab" v-popover:popoverFavor @click="loadFavor">加入收藏</div>
-            <div class="tab">加入分析库</div>
-          </div>
+          <el-button-group>
+            <el-button v-popover:popoverSave>保存</el-button>
+            <el-button v-popover:popoverFavor @click="loadFavor">加入收藏</el-button>
+            <el-button>加入分析库</el-button>
+          </el-button-group>
         </el-col>
 
         <el-col :span="9" :offset="1">
-          <div class="tab-group">
+
+          <!--div class="tab-group">
             <div class="tab tab-order" v-for="(value, key) in sorts" :key="key" @click="sort(key)">
               <span class="order-text">{{ value.message }}</span>
               <div class="order-icon">
@@ -86,7 +94,18 @@
                 <i class="el-icon-caret-bottom tab-icon icon-desc" v-bind:class="{ active: value.direction === 'decending' }"></i>
               </div>
             </div>
-          </div>
+          </div-->
+
+          <el-button-group>
+            <el-button class="tab-order" v-for="(value, key) in sorts" :key="key" @click="sort(key)">
+              <span class="order-text">{{ value.message }}</span>
+              <div class="order-icon">
+                <i class="el-icon-caret-top tab-icon icon-asc" v-bind:class="{ active: value.direction === 'ascending' }"></i>
+                <i class="el-icon-caret-bottom tab-icon icon-desc" v-bind:class="{ active: value.direction === 'decending' }"></i>
+              </div>
+            </el-button>
+          </el-button-group>
+
         </el-col>
       </el-row>
     </div>
@@ -238,6 +257,9 @@ export default {
             this.recentSearch = data
           })
           break
+        case 'categoryNav':
+          this.$router.push('/CategoryNav')
+          break
         default:
           break
       }
@@ -274,19 +296,19 @@ export default {
       margin-left: .5em;
     }
     .order-icon {
-      position: relative;
-      height: 100%;
+      /*position: relative;
+      height: 100%;*/
       .tab-icon {
-        transform: scale(.7);
+        transform: scale(.5);
       }
       .icon-asc {
         position: absolute;
-        top: -2px;
+        top: 5px;
         right: 2px;
       }
       .icon-desc {
         position: absolute;
-        bottom: -2px;
+        bottom: 5px;
         right: 2px;
       }
       .active {

@@ -5,11 +5,11 @@
     <div class="toolbar">
       <el-row>
         <el-col :span="4">
-          <div class="tab-group">
-            <router-link to="/Search" tag="span" class="tab">过滤</router-link>
-            <router-link to="/Search" tag="span" class="tab">最近搜索</router-link>
-            <div class="tab">分类导航</div>
-          </div>
+          <el-button-group>
+            <el-button @click="routeSearch">过滤</el-button>
+            <el-button @click="routeSearch">最近搜索</el-button>
+            <el-button>分类导航</el-button>
+          </el-button-group>
         </el-col>
       </el-row>
     </div>
@@ -45,7 +45,10 @@ export default {
     }
   },
   methods: {
-    searchFromNode: function (data) {
+    routeSearch () {
+      this.$router.push('/Search')
+    },
+    searchFromNode (data) {
       // 根据expanded和有没有expanded判断是否进行搜索
       data.expanded = !data.expanded
       console.log(this.navObj)

@@ -23,7 +23,7 @@ export const Api = {
 
   'getFavor': '/api//users/{userId}/favorites?per_page=4&page=1', // get
   'createFavor': '/api/users/{userId}/favorites', // post
-  'deleteFavorMenu': '/api/users/{userId}/favorites/{favoriteId}', // delete???
+  'deleteFavorMenu': '/api/users/{userId}/favorites/{favoriteId}', // delete
   'deleteFavor': '/api/users/{userId}/favorites/{favoriteId}/patents/{patentId}', // delete
   'addFavor': '/api/users/{userId}/favorites/{favoriteId}/patents/{patentId}' // put
 
@@ -98,6 +98,24 @@ export const sendRequest = ((apilist) => {
               console.log(error)
             })
         }
+      },
+      put: () => {
+        return axios.put(apilist[api])
+          .then(response => {
+            return Promise.resolve(response.data.result)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      },
+      delete: () => {
+        return axios.delete(apilist[api])
+          .then(response => {
+            return Promise.resolve(response.data.result)
+          })
+          .catch(error => {
+            console.log(error)
+          })
       }
     }
   }
