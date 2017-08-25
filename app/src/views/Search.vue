@@ -55,7 +55,7 @@
                 <el-input size="small" v-model="newFavorName"></el-input>
               </el-col>
               <el-col :span="6" :offset="2">
-                <el-button size="small" @click="addFavor">创建并加入</el-button>
+                <el-button size="small" @click="createFavor">创建并加入</el-button>
               </el-col>
             </el-row>
             <el-table :data="favorTable" border class="popover-table">
@@ -65,8 +65,8 @@
               <el-table-column label="编辑">
                 <template scope="scope">
                   <div class="popover-cell">
-                    <el-button size="mini">收藏</el-button>
-                    <el-button size="mini">删除</el-button>
+                    <el-button size="mini" @click="addPatents2Favor(scope.row)">收藏</el-button>
+                    <el-button size="mini" @click="deleteFavorMenu(scope.row)">删除</el-button>
                   </div>
                 </template>
               </el-table-column>
@@ -134,6 +134,8 @@
 import bus from '../bus.js'
 import state from '../state.js'
 import {sendRequest} from '../Api'
+
+// import axios from 'axios'
 
 import myheader from '../components/Header'
 import myfilter from '../components/Filter'
@@ -241,7 +243,7 @@ export default {
         state.set('favorList', data)
       })
     },
-    addFavor: function () {
+    createFavor: function () {
       let params = {
         name: this.newFavorName,
         patent_id_list: this.selectPatentIds
@@ -250,6 +252,35 @@ export default {
         let favorList = state.get('favorList')
         favorList.push(data)
         state.set('favorList', favorList)
+      })
+    },
+    addPatents2Favor: function (favor) {
+      // let requestArr = []
+      console.log(favor)
+      let patentIds = this.selectPatentIds
+      let favorId = favor.id
+      state.set('favor_id', favorId)
+      /*
+      for (let patentId of patentIds) {
+        state.set('patent_id', patentId)
+        requestArr.push(sendRequest.addFavor.put)
+      }
+      axios.all(requestArr).then(data => {
+        console.log(data)
+      })
+      */
+      for (let patentId of patentIds) {
+        state.set('patent_id', patentId)
+        sendRequest.addFavor.put().then(data => {
+          console.log(data)
+        })
+      }
+    },
+    deleteFavorMenu: function (favor) {
+      let favorId = favor.id
+      state.set('favor_id', favorId)
+      sendRequest.deleteFavorMenu.delete().then(data => {
+        console.log(data)
       })
     },
     hideFavorPopover: function () {
@@ -310,6 +341,7 @@ export default {
     justify-content: space-between;
     .order-text {
       margin-left: .5em;
+      margin-right: .5em;
     }
     .order-icon {
       /*position: relative;
@@ -319,12 +351,12 @@ export default {
       }
       .icon-asc {
         position: absolute;
-        top: 5px;
+        top: 6px;
         right: 2px;
       }
       .icon-desc {
         position: absolute;
-        bottom: 5px;
+        bottom: 6px;
         right: 2px;
       }
       .active {

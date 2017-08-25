@@ -1,6 +1,7 @@
 // import Vue from 'Vue'
 import axios from 'axios'
 import bus from './bus.js'
+import state from './state.js'
 
 export const Api = {
   'login': '/api/users/login', // post
@@ -21,17 +22,18 @@ export const Api = {
   'recentSearch': '/api/users/{userId}/recent_queries?per_page=5&page=1', // get
   'userPatent': '/api/users/{userId}/applicants?per_page=3&page=1', // get
 
-  'getFavor': '/api//users/{userId}/favorites?per_page=4&page=1', // get
+  'getFavor': '/api/users/{userId}/favorites?per_page=4&page=1', // get
   'createFavor': '/api/users/{userId}/favorites', // post
-  'deleteFavorMenu': '/api/users/{userId}/favorites/{favoriteId}', // delete
-  'deleteFavor': '/api/users/{userId}/favorites/{favoriteId}/patents/{patentId}', // delete
-  'addFavor': '/api/users/{userId}/favorites/{favoriteId}/patents/{patentId}' // put
+  'deleteFavorMenu': '/api/users/{userId}/favorites/{favorId}', // delete
+  'deleteFavor': '/api/users/{userId}/favorites/{favorId}/patents/{patentId}', // delete
+  'addFavor': '/api/users/{userId}/favorites/{favorId}/patents/{patentId}' // put
 
 }
 
 export let patentId = ''
 export let applicantId = ''
 export let userId = ''
+export let favorId = ''
 
 bus.$on('setPatentId', (newId) => {
   patentId = newId
@@ -43,6 +45,10 @@ bus.$on('setApplicantId', (newId) => {
 
 bus.$on('setUserId', (newId) => {
   userId = newId
+})
+
+bus.$on('setFavorId', (newId) => {
+  favorId = newId
 })
 
 export const sendRequest = ((apilist) => {
@@ -59,9 +65,13 @@ export const sendRequest = ((apilist) => {
           apilist[api] = apilist[api].replace('{applicantId}', applicantId)
         }
         if (apilist[api].includes('{userId}')) {
+          console.log('userId', userId)
           apilist[api] = apilist[api].replace('{userId}', userId)
         }
-        console.log('api:', apilist[api])
+        if (apilist[api].includes('{favorId}')) {
+          apilist[api] = apilist[api].replace('{favorId}', favorId)
+        }
+        console.log('api post:', apilist[api])
         return axios.post(apilist[api], params)
           .then(response => {
             return Promise.resolve(response.data.result) // 将response.data.result转成Promise对象
@@ -80,7 +90,10 @@ export const sendRequest = ((apilist) => {
         if (apilist[api].includes('{userId}')) {
           apilist[api] = apilist[api].replace('{userId}', userId)
         }
-        console.log('api:', apilist[api])
+        if (apilist[api].includes('{favorId}')) {
+          apilist[api] = apilist[api].replace('{favorId}', favorId)
+        }
+        console.log('api get:', apilist[api])
         if (params) {
           return axios.get(apilist[api], params)
             .then(response => {
@@ -100,6 +113,19 @@ export const sendRequest = ((apilist) => {
         }
       },
       put: () => {
+        if (apilist[api].includes('{patentId}')) {
+          apilist[api] = apilist[api].replace('{patentId}', state.get('patent_id'))
+        }
+        if (apilist[api].includes('{applicantId}')) {
+          apilist[api] = apilist[api].replace('{applicantId}', applicantId)
+        }
+        if (apilist[api].includes('{userId}')) {
+          apilist[api] = apilist[api].replace('{userId}', userId)
+        }
+        if (apilist[api].includes('{favorId}')) {
+          apilist[api] = apilist[api].replace('{favorId}', state.get('favor_id'))
+        }
+        console.log('api put:', apilist[api])
         return axios.put(apilist[api])
           .then(response => {
             return Promise.resolve(response.data.result)
@@ -109,9 +135,23 @@ export const sendRequest = ((apilist) => {
           })
       },
       delete: () => {
+        if (apilist[api].includes('{patentId}')) {
+          apilist[api] = apilist[api].replace('{patentId}', state.get('patent_id'))
+        }
+        if (apilist[api].includes('{applicantId}')) {
+          apilist[api] = apilist[api].replace('{applicantId}', applicantId)
+        }
+        if (apilist[api].includes('{userId}')) {
+          console.log('userId', userId)
+          apilist[api] = apilist[api].replace('{userId}', userId)
+        }
+        if (apilist[api].includes('{favorId}')) {
+          apilist[api] = apilist[api].replace('{favorId}', state.get('favor_id'))
+        }
+        console.log('api delete:', apilist[api])
         return axios.delete(apilist[api])
           .then(response => {
-            return Promise.resolve(response.data.result)
+            return Promise.resolve(response.data.result) // 将response.data.result转成Promise对象
           })
           .catch(error => {
             console.log(error)

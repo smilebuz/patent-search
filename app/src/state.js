@@ -14,6 +14,7 @@ export default new Vue({
       patentList: [],
       filterList: [],
       recommendList: [],
+      favor_id: '', // 收藏目录ID
       favorList: []
     }
   },
@@ -39,8 +40,10 @@ export default new Vue({
       bus.$emit('setPatentId', newId)
     },
     applicant_id (newId) {
-      console.log(newId)
       bus.$emit('setApplicantId', newId)
+    },
+    favor_id (newId) {
+      bus.$emit('setFavorId', newId)
     },
     searchParams: {
       handler: function (newParams, oldParams) {
