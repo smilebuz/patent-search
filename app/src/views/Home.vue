@@ -1,48 +1,48 @@
 <template>
-  <div>
+  <div class="container">
     <h1>{{ header }}</h1>
     <el-row id="search-row">
-      <el-col :span='8' :push='8'>
+      <el-col :span="8" :push="8">
         <el-row>
-          <el-col :span='24'>
-            <el-input v-model='keyword' id="keyword"></el-input>
+          <el-col :span="24">
+            <el-input v-model="keyword" id="keyword"></el-input>
           </el-col>
         </el-row>
         <el-row id="filter-group">
-          <el-col :span='8' class='filter-item' v-for='type, index in apply_type' :key='index'>
-            <el-radio class='radio' v-model='applyTypeSelected' v-bind:label='type.value'> {{ type.message }} </el-radio>
+          <el-col :span="8" class="filter-item" v-for="type, index in apply_type" :key="index">
+            <el-radio class="radio" v-model="applyTypeSelected" v-bind:label="type.value"> {{ type.message }} </el-radio>
           </el-col>
         </el-row>
       </el-col>
-      <el-col :span='8' :push='8'>
-        <el-row type='flex' align='middle'>
-          <el-col :span='4' :push='2'>
-            <el-button type='primary' v-on:click='search'>检索</el-button>
+      <el-col :span="8" :push="8">
+        <el-row type="flex" align="middle">
+          <el-col :span="4" :push="2">
+            <el-button type="primary" v-on:click="search">检索</el-button>
           </el-col>
-          <el-col :span='8' :push='2'>
-            <router-link to='AdvancedSearch' id='advanced-search' tag='span'>高级检索</router-link>
+          <el-col :span="8" :push="2">
+            <router-link to="AdvancedSearch" id="advanced-search" tag="span">高级检索</router-link>
           </el-col>
         </el-row>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :span='4' :offset='4' class="search-special">
+    <!--el-row>
+      <el-col :span="4" :offset="4" class="search-special">
         <img src="../assets/images/category_navigation.png" alt="" class="" v-on:click="categoryNav">
         <span v-on:click="categoryNav">分类导航</span>
       </el-col>
-      <el-col :span='4' class="search-special">
+      <el-col :span="4" class="search-special">
         <img src="../assets/images/advanced_search.png" alt="" class="" v-on:click="advancedSearch">
-        <span v-on:click='advancedSearch'>高级检索</span>
+        <span v-on:click="advancedSearch">高级检索</span>
       </el-col>
-      <el-col :span='4' class="search-special">
+      <el-col :span="4" class="search-special">
         <img src="../assets/images/my_collection.png" alt="" id="my-collection-img">
         <span>我的收藏</span>
       </el-col>
-      <el-col :span='4' class="search-special">
+      <el-col :span="4" class="search-special">
         <img src="../assets/images/user_management.png" alt="" class="">
         <span>用户管理</span>
       </el-col>
-    </el-row>
+    </el-row-->
   </div>
 </template>
 
@@ -108,6 +108,9 @@ export default {
 <style lang="scss" scoped>
   $head-color: #00f;
   $head-font: 40px 'Source Sans Pro';
+  .container {
+    margin-top: 10em;
+  }
   h1 {
     margin-bottom: 50px;
     color: $head-color;

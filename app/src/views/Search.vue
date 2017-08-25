@@ -247,7 +247,6 @@ export default {
         patent_id_list: this.selectPatentIds
       }
       sendRequest.createFavor.post(params).then(data => {
-        // console.log(data)
         let favorList = state.get('favorList')
         favorList.push(data)
         state.set('favorList', favorList)
