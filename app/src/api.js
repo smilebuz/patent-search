@@ -30,47 +30,50 @@ export const Api = {
 
 }
 
+/*
 export let patentId = ''
 export let applicantId = ''
 export let userId = ''
 export let favorId = ''
+*/
+
+export let Ids = {
+  patentId: '',
+  applicantId: '',
+  userId: '',
+  favorId: ''
+}
 
 bus.$on('setPatentId', (newId) => {
-  patentId = newId
+  // patentId = newId
+  Ids.patentId = newId
 })
 
 bus.$on('setApplicantId', (newId) => {
-  applicantId = newId
+  // applicantId = newId
+  Ids.applicantId = newId
 })
 
 bus.$on('setUserId', (newId) => {
-  userId = newId
+  // userId = newId
+  Ids.userId = newId
 })
 
 bus.$on('setFavorId', (newId) => {
-  favorId = newId
+  // favorId = newId
+  Ids.favorId = newId
 })
 
 export const sendRequest = ((apilist) => {
   let list = {}
+  let apiReg = /({userId}|{patentId}|{applicantId})/
 
   for (let api in apilist) {
     list[api] = {
       post: params => {
-        if (apilist[api].includes('{patentId}')) {
-          console.log('patentId', patentId)
-          apilist[api] = apilist[api].replace('{patentId}', patentId)
-        }
-        if (apilist[api].includes('{applicantId}')) {
-          apilist[api] = apilist[api].replace('{applicantId}', applicantId)
-        }
-        if (apilist[api].includes('{userId}')) {
-          console.log('userId', userId)
-          apilist[api] = apilist[api].replace('{userId}', userId)
-        }
-        if (apilist[api].includes('{favorId}')) {
-          apilist[api] = apilist[api].replace('{favorId}', favorId)
-        }
+        apiReg.test(apilist[api])
+        let idkey = RegExp.$1.substring(1, RegExp.$1.length - 1)
+        apilist[api] = apilist[api].replace(apiReg, Ids[idkey])
         console.log('api post:', apilist[api])
         return axios.post(apilist[api], params)
           .then(response => {
@@ -81,18 +84,9 @@ export const sendRequest = ((apilist) => {
           })
       },
       get: params => {
-        if (apilist[api].includes('{patentId}')) {
-          apilist[api] = apilist[api].replace('{patentId}', patentId)
-        }
-        if (apilist[api].includes('{applicantId}')) {
-          apilist[api] = apilist[api].replace('{applicantId}', applicantId)
-        }
-        if (apilist[api].includes('{userId}')) {
-          apilist[api] = apilist[api].replace('{userId}', userId)
-        }
-        if (apilist[api].includes('{favorId}')) {
-          apilist[api] = apilist[api].replace('{favorId}', favorId)
-        }
+        apiReg.test(apilist[api])
+        let idkey = RegExp.$1.substring(1, RegExp.$1.length - 1)
+        apilist[api] = apilist[api].replace(apiReg, Ids[idkey])
         console.log('api get:', apilist[api])
         if (params) {
           return axios.get(apilist[api], params)
@@ -117,10 +111,10 @@ export const sendRequest = ((apilist) => {
           apilist[api] = apilist[api].replace('{patentId}', state.get('patent_id'))
         }
         if (apilist[api].includes('{applicantId}')) {
-          apilist[api] = apilist[api].replace('{applicantId}', applicantId)
+          apilist[api] = apilist[api].replace('{applicantId}', Ids.applicantId)
         }
         if (apilist[api].includes('{userId}')) {
-          apilist[api] = apilist[api].replace('{userId}', userId)
+          apilist[api] = apilist[api].replace('{userId}', Ids.userId)
         }
         if (apilist[api].includes('{favorId}')) {
           apilist[api] = apilist[api].replace('{favorId}', state.get('favor_id'))
@@ -139,11 +133,10 @@ export const sendRequest = ((apilist) => {
           apilist[api] = apilist[api].replace('{patentId}', state.get('patent_id'))
         }
         if (apilist[api].includes('{applicantId}')) {
-          apilist[api] = apilist[api].replace('{applicantId}', applicantId)
+          apilist[api] = apilist[api].replace('{applicantId}', Ids.applicantId)
         }
         if (apilist[api].includes('{userId}')) {
-          console.log('userId', userId)
-          apilist[api] = apilist[api].replace('{userId}', userId)
+          apilist[api] = apilist[api].replace('{userId}', Ids.userId)
         }
         if (apilist[api].includes('{favorId}')) {
           apilist[api] = apilist[api].replace('{favorId}', state.get('favor_id'))
