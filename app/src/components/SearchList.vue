@@ -18,7 +18,7 @@
           申请日:<span>{{ item.apply_date }}</span> 申请号:<span>{{ item.apply_no }}</span> 公开日:<span>{{ item.publish_date }}</span> 公开号:<span>{{ item.publish_no }}</span>
         </div>
         <div>
-          {{ item.abstract }}
+          {{ item.abstract_info }}
         </div>
         <div>
           <span class='link' @click='searchApplicant(item.applicant_id)'>申请人信息</span> ——
@@ -66,23 +66,10 @@ export default {
   methods: {
     refreshList: function (patentList) {
       this.patents.splice(0, this.patents.length)
-      for (let i = 0; i < patentList.length; i++) {
-        let patent = patentList[i]
-        this.patents.push({
-          patent_id: patent.patent_id,
-          invention_title: patent.invention_title,
-          applicant_name: patent.applicant_name,
-          applicant_id: patent.applicant_id,
-          inventor_list: patent.inventor_list.join(' '),
-          ipc_main_classification_no: patent.ipc_main_classification_no,
-          apply_date: patent.apply_date,
-          apply_no: patent.apply_no,
-          publish_date: patent.publish_date,
-          publish_no: patent.publish_no,
-          abstract: patent.abstract_info,
-          value_degree: patent.value_degree,
-          checked: false
-        })
+      this.patents = [...patentList]
+      for (let patent of this.patents) {
+        patent.inventor_list = patent.inventor_list.join(' ')
+        patent.checked = false
       }
     },
     search: function (keyword, field) {

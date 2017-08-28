@@ -76,10 +76,10 @@ export default {
   },
   mounted () {
     sendRequest.valuedegree.get().then((data) => {
-      this.generalTable = data.general_value
-      this.lawTable = data.law_value
-      this.technicalTable = data.technical_value
-      this.economyTable = data.economy_value
+      this.generalTable = [...data.general_value]
+      this.lawTable = [...data.law_value]
+      this.technicalTable = [...data.technical_value]
+      this.economyTable = [...data.economy_value]
     })
   },
   components: {
