@@ -55,7 +55,7 @@ bus.$on('setFavorId', (newId) => {
 
 export const sendRequest = ((apilist) => {
   let list = {}
-  let apiReg = /({userId}|{patentId}|{applicantId}|{favorId})/g
+  let apiReg = /({[a-zA-Z]+})/g // ?先行匹配不行
 
   for (let api in apilist) {
     list[api] = {

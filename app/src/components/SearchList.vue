@@ -67,12 +67,12 @@ export default {
     refreshList: function (patentList) {
       this.patents.splice(0, this.patents.length)
       this.patents = [...patentList]
-      // console.log('QIAN', this.patents[0].inventor_list)
+      console.log('QIAN', this.patents[0].inventor_list)
       for (let patent of this.patents) {
         patent.inventor_list = patent.inventor_list.join(' ')
         patent.checked = false
       }
-      // console.log('HOU', this.patents[0].inventor_list)
+      console.log('HOU', this.patents[0].inventor_list)
     },
     search: function (keyword, field) {
       state.setSearchParams('query', keyword)
@@ -147,10 +147,12 @@ export default {
   },
   created () {
     bus.$on('updatePatentList', newList => {
+      console.log('hahaha')
       this.refreshList(newList)
     })
   },
   mounted () {
+    console.log('lalala')
     this.refreshList(state.get('patentList'))
   },
   beforeDestroy () {
