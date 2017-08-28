@@ -12,6 +12,7 @@ import ValueDegree from '@/views/ValueDegree'
 import ApplicantInfo from '@/views/ApplicantInfo'
 import PotentialBuyer from '@/views/PotentialBuyer'
 import Favor from '@/views/Favor'
+import UserManagement from '@/views/UserManagement'
 
 Vue.use(Router)
 
@@ -86,6 +87,12 @@ let router = new Router({
       path: '/Favor',
       name: 'Favor',
       component: Favor,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/UserManagement',
+      name: 'UserManagement',
+      component: UserManagement,
       meta: { requiresAuth: true }
     }
   ]

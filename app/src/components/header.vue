@@ -5,7 +5,7 @@
       <el-dropdown @command="handleCommand">
         <span class="el-dropdownlink">用户</span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>个人资料</el-dropdown-item>
+          <el-dropdown-item command='manageProfile'>个人资料</el-dropdown-item>
           <el-dropdown-item command='jump2favor'>我的收藏</el-dropdown-item>
           <el-dropdown-item command="exit">退出</el-dropdown-item>
         </el-dropdown-menu>
@@ -28,6 +28,9 @@ export default {
   methods: {
     handleCommand (command) {
       switch (command) {
+        case 'manageProfile':
+          this.$router.push('/UserManagement')
+          break
         case 'exit':
           let params = {}
           sendRequest.logout.post(params).then((data) => {
