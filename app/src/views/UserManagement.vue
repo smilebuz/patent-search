@@ -55,7 +55,7 @@ export default {
 <style lang="scss" scoped>
   .collapse {
     .collapse-item {
-      word-wrap: 80%;
+      width: 90%;
       margin: 0 auto;
       padding-top: .5em;
       padding-bottom: .5em;

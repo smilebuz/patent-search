@@ -65,6 +65,7 @@ export default {
   },
   methods: {
     refreshList: function (patentList) {
+      console.log(patentList)
       this.patents.splice(0, this.patents.length)
       this.patents = [...patentList]
       for (let patent of this.patents) {
@@ -150,6 +151,9 @@ export default {
   },
   mounted () {
     this.refreshList(state.get('patentList'))
+  },
+  beforeDestroy () {
+    bus.$off('updatePatentList')
   }
 }
 </script>
