@@ -2,62 +2,62 @@
   <div>
     <h1>{{ header }}</h1>
     <main>
-      <el-form ref='form' :model='form' :rules='rules' id="register-form" label-width='100px'>
+      <el-form ref="form" :model="form" :rules="rules" id="register-form" label-width="100px">
         <div class="form-part">
-          <el-form-item label="账号:" prop='account'>
-            <el-input v-model='form.account' placeholder='6-20位英文、数字或者常用符号'></el-input>
+          <el-form-item label="账号:" prop="account">
+            <el-input v-model="form.account" placeholder="6-20位英文、数字或者常用符号"></el-input>
           </el-form-item>
-          <el-form-item label="密码:" prop='password'>
-            <el-input v-model='form.password' placeholder='6-20位英文、数字或者常用符号' type='password'></el-input>
+          <el-form-item label="密码:" prop="password">
+            <el-input v-model="form.password" placeholder="6-20位英文、数字或者常用符号" type="password"></el-input>
           </el-form-item>
-          <el-form-item label="确认密码:" prop='password_confirm'>
-            <el-input v-model='form.password_confirm' placeholder='请再次输入密码' type='password'></el-input>
+          <el-form-item label="确认密码:" prop="password_confirm">
+            <el-input v-model="form.password_confirm" placeholder="请再次输入密码" type="password"></el-input>
           </el-form-item>
-          <el-form-item label="姓名:" prop='name'>
-            <el-input v-model='form.name'></el-input>
+          <el-form-item label="姓名:" prop="name">
+            <el-input v-model="form.name"></el-input>
           </el-form-item>
           <el-form-item label="座机:">
-            <el-input v-model='form.telephone'></el-input>
+            <el-input v-model="form.telephone"></el-input>
           </el-form-item>
           <el-form-item label="手机:">
-            <el-input v-model='form.mobile'></el-input>
+            <el-input v-model="form.mobile"></el-input>
           </el-form-item>
-          <el-form-item label="E-mail:" prop='email'>
-            <el-input v-model='form.email'></el-input>
+          <el-form-item label="E-mail:" prop="email">
+            <el-input v-model="form.email"></el-input>
           </el-form-item>
           <el-form-item label="地址:">
-            <el-input v-model='form.address'></el-input>
+            <el-input v-model="form.address"></el-input>
           </el-form-item>
           <el-form-item id="register-btn-group">
-            <el-button type='primary' @click='register' id="register">注册</el-button>
-            <el-button type='primary' @click='' id="trial">申请试用</el-button>
+            <el-button type="primary" @click="register" id="register">注册</el-button>
+            <el-button type="primary" @click="" id="trial">申请试用</el-button>
           </el-form-item>
         </div>
         <div class="form-part">
           <el-form-item label="工作岗位:">
-            <el-select v-model='form.post' placeholder='请选择'>
-              <el-option v-for='(option, index) in form.post_options' :key='index' :value='option'>{{ option }}</el-option>
+            <el-select v-model="form.post" placeholder="请选择">
+              <el-option v-for="(option, index) in form.post_options" :key="index" :value="option">{{ option }}</el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label='工作单位:'>
-            <el-input v-model='form.organization'></el-input>
+          <el-form-item label="工作单位:">
+            <el-input v-model="form.organization"></el-input>
           </el-form-item>
-          <el-form-item label='所属行业:'>
-            <el-select v-model='form.industry' placeholder='请选择'>
-              <el-option v-for='(option, index) in form.industries' :key='index' :value='option'>{{ option }}</el-option>
+          <el-form-item label="所属行业:">
+            <el-select v-model="form.industry" placeholder="请选择">
+              <el-option v-for="(option, index) in form.industries" :key="index" :value="option">{{ option }}</el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label='获知渠道:'>
-            <el-select v-model='form.source' placeholder='请选择'>
-              <el-option v-for='(option, index) in form.sources' :key='index' :value='option'>{{ option }}</el-option>
+          <el-form-item label="获知渠道:">
+            <el-select v-model="form.source" placeholder="请选择">
+              <el-option v-for="(option, index) in form.sources" :key="index" :value="option">{{ option }}</el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label='所属地区:'>
-            <el-input v-model='form.district'></el-input>
+          <el-form-item label="所属地区:">
+            <el-input v-model="form.district"></el-input>
           </el-form-item>
-          <el-form-item label='采购计划:'>
-            <el-select v-model='form.purchase' placeholder='请选择'>
-              <el-option v-for='(option, index) in form.purchase_time' :key='index' :value='option'>{{ option }}</el-option>
+          <el-form-item label="采购计划:">
+            <el-select v-model="form.purchase" placeholder="请选择">
+              <el-option v-for="(option, index) in form.purchase_time" :key="index" :value="option">{{ option }}</el-option>
             </el-select>
           </el-form-item>
         </div>
