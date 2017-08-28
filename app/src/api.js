@@ -1,7 +1,7 @@
 // import Vue from 'Vue'
 import axios from 'axios'
 import bus from './bus.js'
-import state from './state.js'
+// import state from './state.js'
 
 export const Api = {
   'login': '/api/users/login', // post
@@ -30,13 +30,6 @@ export const Api = {
 
 }
 
-/*
-export let patentId = ''
-export let applicantId = ''
-export let userId = ''
-export let favorId = ''
-*/
-
 export let Ids = {
   patentId: '',
   applicantId: '',
@@ -45,28 +38,24 @@ export let Ids = {
 }
 
 bus.$on('setPatentId', (newId) => {
-  // patentId = newId
   Ids.patentId = newId
 })
 
 bus.$on('setApplicantId', (newId) => {
-  // applicantId = newId
   Ids.applicantId = newId
 })
 
 bus.$on('setUserId', (newId) => {
-  // userId = newId
   Ids.userId = newId
 })
 
 bus.$on('setFavorId', (newId) => {
-  // favorId = newId
   Ids.favorId = newId
 })
 
 export const sendRequest = ((apilist) => {
   let list = {}
-  let apiReg = /({userId}|{patentId}|{applicantId})/g
+  let apiReg = /({userId}|{patentId}|{applicantId}|{favorId})/g
 
   for (let api in apilist) {
     list[api] = {
@@ -115,17 +104,12 @@ export const sendRequest = ((apilist) => {
         }
       },
       put: () => {
-        if (apilist[api].includes('{patentId}')) {
-          apilist[api] = apilist[api].replace('{patentId}', state.get('patent_id'))
-        }
-        if (apilist[api].includes('{applicantId}')) {
-          apilist[api] = apilist[api].replace('{applicantId}', Ids.applicantId)
-        }
-        if (apilist[api].includes('{userId}')) {
-          apilist[api] = apilist[api].replace('{userId}', Ids.userId)
-        }
-        if (apilist[api].includes('{favorId}')) {
-          apilist[api] = apilist[api].replace('{favorId}', state.get('favor_id'))
+        let idkeys = apilist[api].match(apiReg)
+        if (idkeys) {
+          for (let idkey of idkeys) {
+            idkey = idkey.substring(1, idkey.length - 1)
+            apilist[api] = apilist[api].replace(apiReg, Ids[idkey])
+          }
         }
         console.log('api put:', apilist[api])
         return axios.put(apilist[api])
@@ -137,17 +121,12 @@ export const sendRequest = ((apilist) => {
           })
       },
       delete: () => {
-        if (apilist[api].includes('{patentId}')) {
-          apilist[api] = apilist[api].replace('{patentId}', state.get('patent_id'))
-        }
-        if (apilist[api].includes('{applicantId}')) {
-          apilist[api] = apilist[api].replace('{applicantId}', Ids.applicantId)
-        }
-        if (apilist[api].includes('{userId}')) {
-          apilist[api] = apilist[api].replace('{userId}', Ids.userId)
-        }
-        if (apilist[api].includes('{favorId}')) {
-          apilist[api] = apilist[api].replace('{favorId}', state.get('favor_id'))
+        let idkeys = apilist[api].match(apiReg)
+        if (idkeys) {
+          for (let idkey of idkeys) {
+            idkey = idkey.substring(1, idkey.length - 1)
+            apilist[api] = apilist[api].replace(apiReg, Ids[idkey])
+          }
         }
         console.log('api delete:', apilist[api])
         return axios.delete(apilist[api])
