@@ -66,14 +66,18 @@ bus.$on('setFavorId', (newId) => {
 
 export const sendRequest = ((apilist) => {
   let list = {}
-  let apiReg = /({userId}|{patentId}|{applicantId})/
+  let apiReg = /({userId}|{patentId}|{applicantId})/g
 
   for (let api in apilist) {
     list[api] = {
       post: params => {
-        apiReg.test(apilist[api])
-        let idkey = RegExp.$1.substring(1, RegExp.$1.length - 1)
-        apilist[api] = apilist[api].replace(apiReg, Ids[idkey])
+        let idkeys = apilist[api].match(apiReg)
+        if (idkeys) {
+          for (let idkey of idkeys) {
+            idkey = idkey.substring(1, idkey.length - 1)
+            apilist[api] = apilist[api].replace(apiReg, Ids[idkey])
+          }
+        }
         console.log('api post:', apilist[api])
         return axios.post(apilist[api], params)
           .then(response => {
@@ -84,9 +88,13 @@ export const sendRequest = ((apilist) => {
           })
       },
       get: params => {
-        apiReg.test(apilist[api])
-        let idkey = RegExp.$1.substring(1, RegExp.$1.length - 1)
-        apilist[api] = apilist[api].replace(apiReg, Ids[idkey])
+        let idkeys = apilist[api].match(apiReg)
+        if (idkeys) {
+          for (let idkey of idkeys) {
+            idkey = idkey.substring(1, idkey.length - 1)
+            apilist[api] = apilist[api].replace(apiReg, Ids[idkey])
+          }
+        }
         console.log('api get:', apilist[api])
         if (params) {
           return axios.get(apilist[api], params)
