@@ -11,6 +11,7 @@ import PatentInfo from '@/views/PatentInfo'
 import ValueDegree from '@/views/ValueDegree'
 import ApplicantInfo from '@/views/ApplicantInfo'
 import PotentialBuyer from '@/views/PotentialBuyer'
+import Favor from '@/views/Favor'
 
 Vue.use(Router)
 
@@ -79,6 +80,12 @@ let router = new Router({
       path: '/CategoryNav',
       name: 'Category',
       component: CategoryNav,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/Favor',
+      name: 'Favor',
+      component: Favor,
       meta: { requiresAuth: true }
     }
   ]

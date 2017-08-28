@@ -6,7 +6,7 @@
         <span class="el-dropdownlink">用户</span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人资料</el-dropdown-item>
-          <el-dropdown-item>我的收藏</el-dropdown-item>
+          <el-dropdown-item command='jump2favor'>我的收藏</el-dropdown-item>
           <el-dropdown-item command="exit">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -34,6 +34,9 @@ export default {
             state.set('isLogin', false)
             this.$router.push('/Home')
           })
+          break
+        case 'jump2favor':
+          this.$router.push('/Favor')
           break
         default:
           break
