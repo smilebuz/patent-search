@@ -84,7 +84,7 @@ export default {
       this.purchasePowerTable.push({title: '人数规模', text: data.person_number})
       this.purchasePowerTable.push({title: '购买增长率', text: data.purchase_growth_rate})
       // 申请人主营产品
-      this.mainProducts = data.main_product_list
+      this.mainProducts = [...data.main_product_list]
       /*
       this.mainProductTable.name = data.name
       let mainProducts = JSON.parse(data.mainProductsInJson)

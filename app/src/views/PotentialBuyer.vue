@@ -38,7 +38,7 @@ export default {
   },
   mounted () {
     sendRequest.potentialBuyer.get().then(data => {
-      this.buyerTable = data.potential_buyer_list
+      this.buyerTable = [...data.potential_buyer_list]
       for (let i = 1; i <= this.buyerTable.length; i++) {
         let buyer = this.buyerTable[i - 1]
         buyer.order = i
