@@ -1,18 +1,18 @@
 <template lang="html">
   <div>
-    <div v-if='displayType === "abstract"'>
+    <div v-if="displayType === 'abstract'">
       <div class="select-all">
-        <el-checkbox v-model='selectAll'>全选</el-checkbox>
+        <el-checkbox v-model="selectAll">全选</el-checkbox>
       </div>
 
-      <div v-for='item, index in patents' :key='index' class='list-item'>
+      <div v-for="(item, index) in patents" :key="index" class="list-item">
         <div>
-          <el-checkbox v-model='item.checked' @change='toggleChange(item)'></el-checkbox>
-          <span class='link' @click="loadPatentInfo(item.patent_id)">{{ item.invention_title }}</span>
-          <span class="degree link" @click='loadDegreeValue(item.patent_id)'>价值度:{{ item.value_degree.value }} <i v-for='n in item.value_degree.degree' class='el-icon-star-off'></i> </span>
+          <el-checkbox v-model="item.checked" @change="toggleChange(item)"></el-checkbox>
+          <span class="link" @click="loadPatentInfo(item.patent_id)">{{ item.invention_title }}</span>
+          <span class="degree link" @click="loadDegreeValue(item.patent_id)">价值度:{{ item.value_degree.value }} <i v-for="n in item.value_degree.degree" class="el-icon-star-off"></i> </span>
         </div>
         <div>
-          申请人:<span @click='search(item.applicant_name, "applicant")' class='search-span'>{{ item.applicant_name }}</span> 发明人:<span v-for='inventor, index in item.inventor_list' :key='index' @click='search(inventor, "inventor")' class='search-span'>{{ inventor }} </span> IPC分类号:<span @click='search(item.ipc_main_classification_no, "ipc_main_classification")' class='search-span'>{{ item.ipc_main_classification_no }}</span>
+          申请人:<span @click="search(item.applicant_name, 'applicant')" class="search-span">{{ item.applicant_name }}</span> 发明人:<span v-for="(inventor, index) in item.inventor_list" :key="index" @click="search(inventor, 'inventor')" class="search-span">{{ inventor }}</span> IPC分类号:<span @click="search(item.ipc_main_classification_no, 'ipc_main_classification')" class="search-span">{{ item.ipc_main_classification_no }}</span>
         </div>
         <div>
           申请日:<span>{{ item.apply_date }}</span> 申请号:<span>{{ item.apply_no }}</span> 公开日:<span>{{ item.publish_date }}</span> 公开号:<span>{{ item.publish_no }}</span>
@@ -21,27 +21,27 @@
           {{ item.abstract_info }}
         </div>
         <div>
-          <span class='link' @click='searchApplicant(item.applicant_id)'>申请人信息</span> ——
-          <span class='link'>申请人购买力</span> ——
-          <span class='link'>申请人主营产品</span> ——
-          <router-link to='home' tag='span' class='link'>相似专利</router-link> ——
-          <span class='link' @click='loadPotentialBuyer(item.patent_id)'>潜在买家</span>
+          <span class="link" @click="searchApplicant(item.applicant_id)">申请人信息</span> ——
+          <span class="link" @click="searchApplicant(item.applicant_id)">申请人购买力</span> ——
+          <span class="link" @click="searchApplicant(item.applicant_id)">申请人主营产品</span> ——
+          <span class="link" @click="loadPatentInfo(item.patent_id)">相似专利</span> ——
+          <span class="link" @click="loadPotentialBuyer(item.patent_id)">潜在买家</span>
         </div>
       </div>
     </div>
 
-    <el-table v-else :data='patents' @selection-change='selectChange' border>
-      <el-table-column type='selection'></el-table-column>
-      <el-table-column prop='publish_no' label='公开号'></el-table-column>
-      <el-table-column prop='invention_title' label='专利名称'></el-table-column>
-      <el-table-column prop='applicant_name' label='专利权人'></el-table-column>
-      <el-table-column prop='inventor_list' label='发明人'></el-table-column>
-      <el-table-column prop='apply_date' label='申请日'></el-table-column>
-      <el-table-column prop='publish_date' label='公开日'></el-table-column>
+    <el-table v-else :data="patents" @selection-change="selectChange" border>
+      <el-table-column type="selection"></el-table-column>
+      <el-table-column prop="publish_no" label="公开号"></el-table-column>
+      <el-table-column prop="invention_title" label="专利名称"></el-table-column>
+      <el-table-column prop="applicant_name" label="专利权人"></el-table-column>
+      <el-table-column prop="inventor_list" label="发明人"></el-table-column>
+      <el-table-column prop="apply_date" label="申请日"></el-table-column>
+      <el-table-column prop="publish_date" label="公开日"></el-table-column>
     </el-table>
 
     <!--div>
-      <el-pagination @size-change='handleSizeChange' @current-change='handleCurrentChange' layout='sizes, prev, pager, next, jumper' class="pagination"></el-pagination>
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="sizes, prev, pager, next, jumper" class="pagination"></el-pagination>
     </div-->
   </div>
 </template>
@@ -65,13 +65,14 @@ export default {
   },
   methods: {
     refreshList: function (patentList) {
-      console.log(patentList)
       this.patents.splice(0, this.patents.length)
       this.patents = [...patentList]
+      // console.log('QIAN', this.patents[0].inventor_list)
       for (let patent of this.patents) {
         patent.inventor_list = patent.inventor_list.join(' ')
         patent.checked = false
       }
+      // console.log('HOU', this.patents[0].inventor_list)
     },
     search: function (keyword, field) {
       state.setSearchParams('query', keyword)

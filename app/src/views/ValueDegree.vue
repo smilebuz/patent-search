@@ -4,22 +4,14 @@
     <searchbar></searchbar>
     <el-tabs type="border-card" class="tab" v-model="activeTab">
       <el-tab-pane v-for="tab, index in tabs" :key="index" v-bind:label="tab.message" v-bind:name="tab.value">
-        <el-table v-if="activeTab === "generalValue"" :data="generalTable" border align="left">
+        <el-table v-if="activeTab === 'generalValue'" :data="generalTable" border align="left">
           <el-table-column prop="evaluate_item" label="评估项"></el-table-column>
           <el-table-column prop="score" label="得分"></el-table-column>
           <el-table-column prop="mean_score" label="平均分"></el-table-column>
           <el-table-column prop="standard_deviation" label="标准差"></el-table-column>
         </el-table>
 
-        <el-table v-else-if="activeTab === "lawValue"" :data="lawTable" border align="left">
-          <el-table-column prop="evaluate_item" label="评估项"></el-table-column>
-          <el-table-column prop="total_score" label="总分值"></el-table-column>
-          <el-table-column prop="score" label="得分"></el-table-column>
-          <el-table-column prop="mean_score" label="平均分"></el-table-column>
-          <el-table-column prop="standard_deviation" label="标准差"></el-table-column>
-        </el-table>
-
-        <el-table v-else-if="activeTab === "tenicalValue"" :data="technicalTable" border align="left">
+        <el-table v-else-if="activeTab === 'lawValue'" :data="lawTable" border align="left">
           <el-table-column prop="evaluate_item" label="评估项"></el-table-column>
           <el-table-column prop="total_score" label="总分值"></el-table-column>
           <el-table-column prop="score" label="得分"></el-table-column>
@@ -27,7 +19,15 @@
           <el-table-column prop="standard_deviation" label="标准差"></el-table-column>
         </el-table>
 
-        <el-table v-else="activeTab === "economyValue"" :data="economyTable" border align="left">
+        <el-table v-else-if="activeTab === 'tenicalValue'" :data="technicalTable" border align="left">
+          <el-table-column prop="evaluate_item" label="评估项"></el-table-column>
+          <el-table-column prop="total_score" label="总分值"></el-table-column>
+          <el-table-column prop="score" label="得分"></el-table-column>
+          <el-table-column prop="mean_score" label="平均分"></el-table-column>
+          <el-table-column prop="standard_deviation" label="标准差"></el-table-column>
+        </el-table>
+
+        <el-table v-else :data="economyTable" border align="left">
           <el-table-column prop="evaluate_item" label="评估项"></el-table-column>
           <el-table-column prop="total_score" label="总分值"></el-table-column>
           <el-table-column prop="score" label="得分"></el-table-column>

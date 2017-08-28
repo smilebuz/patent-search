@@ -1,23 +1,23 @@
 <template lang="html">
   <div>
-    <el-row class='row'>
-      <el-col :span='8' :offset='8'>
-        <el-input v-model='keyword'></el-input>
+    <el-row class="row">
+      <el-col :span="8" :offset="8">
+        <el-input v-model="keyword"></el-input>
       </el-col>
-      <el-col :span='4'>
-        <el-button type='primary' v-on:click='search'>检索</el-button>
-        <router-link to='/AdvancedSearch' tag='span' id="advanced-search">高级检索</router-link>
+      <el-col :span="4">
+        <el-button type="primary" v-on:click="search">检索</el-button>
+        <router-link to="/AdvancedSearch" tag="span" id="advanced-search">高级检索</router-link>
       </el-col>
     </el-row>
-    <el-row class='row'>
-      <!--el-col :span='8' :offset='8'>
-        <el-radio class='radio' v-model='search_type' label='keyword'>关键词查询</el-radio>
-        <el-radio class='radio' v-model='search_type' label='ipc'>分类号查询</el-radio>
+    <el-row class="row">
+      <!--el-col :span="8" :offset="8">
+        <el-radio class="radio" v-model="search_type" label="keyword">关键词查询</el-radio>
+        <el-radio class="radio" v-model="search_type" label="ipc">分类号查询</el-radio>
       </el-col-->
-      <el-col :span='8' :offset='8'>
-        <el-row id='filter-group'>
-          <el-col :span='8' class='filter-item' v-for='type, index in apply_type' :key='index'>
-            <el-radio class='radio' v-model='applyTypeSelected' v-bind:label='type.value'> {{ type.message }} </el-radio>
+      <el-col :span="8" :offset="8">
+        <el-row id="filter-group">
+          <el-col :span="8" class="filter-item" v-for="type, index in apply_type" :key="index">
+            <el-radio class="radio" v-model="applyTypeSelected" v-bind:label="type.value"> {{ type.message }} </el-radio>
           </el-col>
         </el-row>
       </el-col>

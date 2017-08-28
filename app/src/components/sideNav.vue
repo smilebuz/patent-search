@@ -1,7 +1,7 @@
 <template lang="html">
   <el-collapse>
-    <el-collapse-item v-for='(value, key) in navs' :key='key' v-bind:title='value.title' class='nav-item'>
-      <p v-for='item in value.items' @click='loadNavObj(item.name)'>{{ item.name }}</p>
+    <el-collapse-item v-for="(value, key) in navs" :key="key" v-bind:title="value.title" class="nav-item">
+      <p v-for="item in value.items" @click="loadNavObj(item.name)">{{ item.name }}</p>
     </el-collapse-item>
   </el-collapse>
 </template>
