@@ -66,13 +66,16 @@ export default {
   methods: {
     refreshList: function (patentList) {
       this.patents.splice(0, this.patents.length)
-      this.patents = [...patentList]
+      // this.patents = [...patentList]
+      this.patents = JSON.parse(JSON.stringify(patentList)) // 深拷贝
       console.log('QIAN', this.patents[0].inventor_list)
+      console.log('QIAN2', state.get('patentList')[0].inventor_list)
       for (let patent of this.patents) {
         patent.inventor_list = patent.inventor_list.join(' ')
         patent.checked = false
       }
       console.log('HOU', this.patents[0].inventor_list)
+      console.log('HOU2', state.get('patentList')[0].inventor_list)
     },
     search: function (keyword, field) {
       state.setSearchParams('query', keyword)

@@ -55,7 +55,7 @@ bus.$on('setFavorId', (newId) => {
 
 export const sendRequest = ((apilist) => {
   let list = {}
-  let apiReg = /({[a-zA-Z]+})/g // ?先行匹配不行
+  let apiReg = /({[a-zA-Z]+})/g // ?先行匹配有问题 只能用后行匹配 但是拿到userId怎么替换掉大括号{}
 
   for (let api in apilist) {
     list[api] = {
