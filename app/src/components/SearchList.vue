@@ -8,14 +8,37 @@
       <div v-for="(item, index) in patents" :key="index" class="list-item">
         <div>
           <el-checkbox v-model="item.checked" @change="toggleChange(item)"></el-checkbox>
-          <span class="link" @click="loadPatentInfo(item.patent_id)">{{ item.invention_title }}</span>
-          <span class="degree link" @click="loadDegreeValue(item.patent_id)">价值度:{{ item.value_degree.value }} <i v-for="n in item.value_degree.degree" class="el-icon-star-off"></i> </span>
+          <span class="link" @click="loadPatentInfo(item.patent_id)">
+            {{ item.invention_title }}
+          </span>
+          <span class="degree link" @click="loadDegreeValue(item.patent_id)">
+            价值度:{{ item.value_degree.value }} <i v-for="n in item.value_degree.degree" class="el-icon-star-off"></i>
+          </span>
         </div>
         <div>
-          申请人:<span @click="search(item.applicant_name, 'applicant')" class="search-span">{{ item.applicant_name }}</span> 发明人:<span v-for="(inventor, index) in item.inventor_list" :key="index" @click="search(inventor, 'inventor')" class="search-span">{{ inventor }}</span> IPC分类号:<span @click="search(item.ipc_main_classification_no, 'ipc_main_classification')" class="search-span">{{ item.ipc_main_classification_no }}</span>
+          申请人:
+          <span @click="search(item.applicant_name, 'applicant')" class="search-span">
+            {{ item.applicant_name }}
+          </span>
+          发明人:
+          <span v-for="(inventor, index) in item.inventor_list"
+            :key="index" @click="search(inventor, 'inventor')" class="search-span">
+            {{ inventor }}
+          </span>
+          IPC分类号:
+          <span @click="search(item.ipc_main_classification_no, 'ipc_main_classification')" class="search-span">
+            {{ item.ipc_main_classification_no }}
+          </span>
         </div>
         <div>
-          申请日:<span>{{ item.apply_date }}</span> 申请号:<span>{{ item.apply_no }}</span> 公开日:<span>{{ item.publish_date }}</span> 公开号:<span>{{ item.publish_no }}</span>
+          申请日:
+          <span>{{ item.apply_date }}</span>
+          申请号:
+          <span>{{ item.apply_no }}</span>
+          公开日:
+          <span>{{ item.publish_date }}</span>
+          公开号:
+          <span>{{ item.publish_no }}</span>
         </div>
         <div>
           {{ item.abstract_info }}
@@ -65,17 +88,7 @@ export default {
   },
   methods: {
     refreshList: function (patentList) {
-      this.patents.splice(0, this.patents.length)
-      // this.patents = [...patentList]
-      this.patents = JSON.parse(JSON.stringify(patentList)) // 深拷贝
-      console.log('QIAN', this.patents[0].inventor_list)
-      console.log('QIAN2', state.get('patentList')[0].inventor_list)
-      for (let patent of this.patents) {
-        patent.inventor_list = patent.inventor_list.join(' ')
-        patent.checked = false
-      }
-      console.log('HOU', this.patents[0].inventor_list)
-      console.log('HOU2', state.get('patentList')[0].inventor_list)
+      this.patents = [...patentList]
     },
     search: function (keyword, field) {
       state.setSearchParams('query', keyword)
