@@ -5,7 +5,8 @@
       <el-button @click="cancel">取消</el-button>
     </div class="btn-group">
     <el-collapse v-model="activeFilters">
-      <el-collapse-item v-for="(value, key) in filters" :key="key" v-bind:title="value.title" class="filter-item">
+      <el-collapse-item v-for="(value, key) in filters"
+        :key="key" v-bind:title="value.title" class="filter-item">
         <el-checkbox-group v-if="key === 'maintenance_period_list' || key === 'application_time_list' || key === 'purchasing_power_list'" v-model="value.checkList" class="checkbox-group">
           <el-checkbox v-for="label, index in value.labels" :key="index" v-bind:label="label" class="checkbox"></el-checkbox>
         </el-checkbox-group>

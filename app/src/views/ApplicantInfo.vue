@@ -14,7 +14,9 @@
         </el-table>
         <div v-else class="product-container">
           <el-tag type="gray" v-for="(product, index) in mainProducts" :key="index" class="tag">
-            <span @click="search(product)">{{ product }}</span>
+            <span @click="search(product)">
+              {{ product }}
+            </span>
           </el-tag>
         </div>
       </el-tab-pane>
