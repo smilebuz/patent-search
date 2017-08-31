@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="header">
-    <span class="company-name">{{ header }}</span>
+    <span class="company-name" @click='clickLogo'>{{ header }}</span>
     <div class="header-user">
       <el-dropdown @command="handleCommand">
         <span class="el-dropdownlink">用户</span>
@@ -26,6 +26,9 @@ export default {
     }
   },
   methods: {
+    clickLogo () {
+      this.$router.push('/Home')
+    },
     handleCommand (command) {
       switch (command) {
         case 'manageProfile':
@@ -62,6 +65,7 @@ export default {
       color: $company-name-color;
       font-size: 28px;
       font-weight: 700;
+      cursor: pointer;
     }
     .header-user {
       font-size: 13px;
