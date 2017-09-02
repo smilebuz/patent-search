@@ -95,7 +95,9 @@ export default {
       */
       this.patents.splice(0, this.patents.length)
       for (let i = 0; i < patentList.length; i++) {
+        // let patent = patentList[i]
         let patent = JSON.parse(JSON.stringify(patentList[i])) // 要深拷贝才有用？？？
+        // 不深拷贝 第一次点就是true 以后也是true
         patent['isChecked'] = false
         this.patents.push(patent)
         /*
@@ -116,7 +118,7 @@ export default {
         })
         */
       }
-      console.log(this.patents[0])
+      console.log(state.get('patentList')[0])
     },
     search: function (keyword, field) {
       state.setSearchParams('query', keyword)
@@ -150,6 +152,7 @@ export default {
     // 列表选择
     toggleChange: function (patent) {
       console.log(patent)
+      console.log(state.get('patentList')[0])
       if (patent.isChecked) {
         this.selectPatentIds.push(patent.patent_id)
       } else {

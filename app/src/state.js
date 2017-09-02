@@ -59,9 +59,10 @@ export default new Vue({
       deep: true
     }
     */
-    patentList (newList) {
-      console.log('更改')
-      bus.$emit('updatePatentList', newList)
+    patentList: {
+      handler: function (newList) {
+        bus.$emit('updatePatentList', newList)
+      }
     },
     filterList (newList) {
       bus.$emit('updateFilterList', newList)
