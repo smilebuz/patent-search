@@ -4,51 +4,51 @@
       <div class="select-all">
         <el-checkbox v-model="selectAll">全选</el-checkbox>
       </div>
-
-      <div v-for="(item, index) in patents" :key="index" class="list-item">
+      <el-checkbox v-model="checkboxtest">框</el-checkbox>
+      <div v-for="(patent, index) in patents" :key="index" class="list-item">
         <div>
-          <el-checkbox v-model="item.checked" @change="toggleChange(item)"></el-checkbox>
-          <span class="link" @click="loadPatentInfo(item.patent_id)">
-            {{ item.invention_title }}
+          <el-checkbox v-model="patent.checked" @change="toggleChange(patent)"></el-checkbox>
+          <span class="link" @click="loadPatentInfo(patent.patent_id)">
+            {{ patent.invention_title }}
           </span>
-          <span class="degree link" @click="loadDegreeValue(item.patent_id)">
-            价值度:{{ item.value_degree.value }} <i v-for="n in item.value_degree.degree" class="el-icon-star-off"></i>
+          <span class="degree link" @click="loadDegreeValue(patent.patent_id)">
+            价值度:{{ patent.value_degree.value }} <i v-for="n in patent.value_degree.degree" class="el-icon-star-off"></i>
           </span>
         </div>
         <div>
           申请人:
-          <span @click="search(item.applicant_name, 'applicant')" class="search-span">
-            {{ item.applicant_name }}
+          <span @click="search(patent.applicant_name, 'applicant')" class="search-span">
+            {{ patent.applicant_name }}
           </span>
           发明人:
-          <span v-for="(inventor, index) in item.inventor_list"
+          <span v-for="(inventor, index) in patent.inventor_list"
             :key="index" @click="search(inventor, 'inventor')" class="search-span">
             {{ inventor }}
           </span>
           IPC分类号:
-          <span @click="search(item.ipc_main_classification_no, 'ipc_main_classification')" class="search-span">
-            {{ item.ipc_main_classification_no }}
+          <span @click="search(patent.ipc_main_classification_no, 'ipc_main_classification')" class="search-span">
+            {{ patent.ipc_main_classification_no }}
           </span>
         </div>
         <div>
           申请日:
-          <span>{{ item.apply_date }}</span>
+          <span>{{ patent.apply_date }}</span>
           申请号:
-          <span>{{ item.apply_no }}</span>
+          <span>{{ patent.apply_no }}</span>
           公开日:
-          <span>{{ item.publish_date }}</span>
+          <span>{{ patent.publish_date }}</span>
           公开号:
-          <span>{{ item.publish_no }}</span>
+          <span>{{ patent.publish_no }}</span>
         </div>
         <div>
-          {{ item.abstract_info }}
+          {{ patent.abstract_info }}
         </div>
         <div>
-          <span class="link" @click="searchApplicant(item.applicant_id)">申请人信息</span> ——
-          <span class="link" @click="searchApplicant(item.applicant_id)">申请人购买力</span> ——
-          <span class="link" @click="searchApplicant(item.applicant_id)">申请人主营产品</span> ——
-          <span class="link" @click="loadPatentInfo(item.patent_id)">相似专利</span> ——
-          <span class="link" @click="loadPotentialBuyer(item.patent_id)">潜在买家</span>
+          <span class="link" @click="searchApplicant(patent.applicant_id)">申请人信息</span> ——
+          <span class="link" @click="searchApplicant(patent.applicant_id)">申请人购买力</span> ——
+          <span class="link" @click="searchApplicant(patent.applicant_id)">申请人主营产品</span> ——
+          <span class="link" @click="loadPatentInfo(patent.patent_id)">相似专利</span> ——
+          <span class="link" @click="loadPotentialBuyer(patent.patent_id)">潜在买家</span>
         </div>
       </div>
     </div>
@@ -80,7 +80,8 @@ export default {
       patents: [],
       selectPatents: [],
       selectPatentIds: [],
-      selectAll: false
+      selectAll: false,
+      checkboxtest: false
     }
   },
   props: {
@@ -88,7 +89,31 @@ export default {
   },
   methods: {
     refreshList: function (patentList) {
+      /*
       this.patents = [...patentList]
+      for (let patent of this.patents) {
+        patent.checked = false
+      }
+      */
+      this.patents.splice(0, this.patents.length)
+      for (let i = 0; i < patentList.length; i++) {
+        let patent = patentList[i]
+        this.patents.push({
+          patent_id: patent.patent_id,
+          invention_title: patent.invention_title,
+          applicant_name: patent.applicant_name,
+          applicant_id: patent.applicant_id,
+          inventor_list: patent.inventor_list.join(' '),
+          ipc_main_classification_no: patent.ipc_main_classification_no,
+          apply_date: patent.apply_date,
+          apply_no: patent.apply_no,
+          publish_date: patent.publish_date,
+          publish_no: patent.publish_no,
+          abstract: patent.abstract_info,
+          value_degree: patent.value_degree,
+          checked: false
+        })
+      }
     },
     search: function (keyword, field) {
       state.setSearchParams('query', keyword)
@@ -119,9 +144,7 @@ export default {
     handleCurrentChange: function (val) {
       state.set('page', val)
     },
-    selectChange: function (selection) {
-      this.selectPatents = selection
-    },
+    // 列表选择
     toggleChange: function (patent) {
       if (patent.checked) {
         this.selectPatentIds.push(patent.patent_id)
@@ -131,6 +154,10 @@ export default {
         })
         this.selectPatentIds.splice(index, 1)
       }
+    },
+    // 表格选择
+    selectChange: function (selection) {
+      this.selectPatents = selection
     }
   },
   watch: {

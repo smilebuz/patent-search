@@ -248,6 +248,7 @@ export default {
         name: this.newFavorName,
         patent_id_list: this.selectPatentIds
       }
+      debugger
       sendRequest.createFavor.post(params).then(data => {
         let favorList = state.get('favorList')
         favorList.push(data)

@@ -8,7 +8,7 @@
         <p v-for="favor in favors" :key="favor.id" class="favor-item" @click="fetchFavorPatents(favor.id)">{{ favor.name }}</p>
       </el-col>
       <el-col :span="17" :offset="2">
-        <el-table ref="favorTable" border :data="favorList">
+        <el-table ref="favorTable" border :data="favorTable">
           <el-table-column v-for="column in favorColumns" :key="column.label" :prop="column.prop" :label="column.label"></el-table-column>
         </el-table>
       </el-col>
@@ -20,40 +20,41 @@
 import myheader from '../components/Header'
 import searchbar from '../components/SearchBar'
 
+import state from '../state'
 import { sendRequest } from '../Api'
 
 export default {
   data () {
     return {
       favors: [],
-      favorList: [],
+      favorTable: [],
       favorColumns: [
         {
-          'prop': '',
+          'prop': 'apply_type',
           'label': '专利类型'
         },
         {
-          'prop': '',
+          'prop': 'application_doc_number',
           'label': '申请号'
         },
         {
-          'prop': '',
+          'prop': 'invention_title',
           'label': '专利名称'
         },
         {
-          'prop': '',
+          'prop': 'applicant_name',
           'label': '申请人'
         },
         {
-          'prop': '',
+          'prop': 'inventor_list',
           'label': '发明人'
         },
         {
-          'prop': '',
+          'prop': 'apply_date',
           'label': '申请日'
         },
         {
-          'prop': '',
+          'prop': 'ipc_main_classification_no',
           'label': '分类号'
         }
       ]
@@ -61,7 +62,10 @@ export default {
   },
   methods: {
     fetchFavorPatents (favorId) {
-      alert(favorId)
+      state.set('favor_id', favorId)
+      sendRequest.favorPatent.get().then(data => {
+        this.favorTable = [...data.patent_list]
+      })
     }
   },
   mounted () {

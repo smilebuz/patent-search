@@ -1,7 +1,7 @@
 // import Vue from 'Vue'
 import axios from 'axios'
 import bus from './bus.js'
-// import state from './state.js'
+import state from './state.js'
 
 export const Api = {
   'login': '/api/users/login', // post
@@ -26,7 +26,8 @@ export const Api = {
   'createFavor': '/api/users/{userId}/favorites', // post
   'deleteFavorMenu': '/api/users/{userId}/favorites/{favorId}', // delete
   'deleteFavor': '/api/users/{userId}/favorites/{favorId}/patents/{patentId}', // delete
-  'addFavor': '/api/users/{userId}/favorites/{favorId}/patents/{patentId}' // put
+  'addFavor': '/api/users/{userId}/favorites/{favorId}/patents/{patentId}', // put
+  'favorPatent': '/api/users/{userId}/favorites/{favorId}' // get
 
 }
 
@@ -77,10 +78,14 @@ export const sendRequest = ((apilist) => {
           })
       },
       get: params => {
+        if (apilist[api].includes('{favorId}')) {
+          apilist[api] = apilist[api].replace('{favorId}', state.get('favor_id'))
+        }
         let idkeys = apilist[api].match(apiReg)
         if (idkeys) {
           for (let idkey of idkeys) {
             idkey = idkey.substring(1, idkey.length - 1)
+            debugger
             apilist[api] = apilist[api].replace(apiReg, Ids[idkey])
           }
         }
