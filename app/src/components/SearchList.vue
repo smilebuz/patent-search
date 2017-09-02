@@ -4,10 +4,9 @@
       <div class="select-all">
         <el-checkbox v-model="selectAll">全选</el-checkbox>
       </div>
-      <el-checkbox v-model="checkboxtest">框</el-checkbox>
       <div v-for="(patent, index) in patents" :key="index" class="list-item">
         <div>
-          <el-checkbox v-model="patent.checked" @change="toggleChange(patent)"></el-checkbox>
+          <el-checkbox v-model="patent.isChecked" @change="toggleChange(patent)"></el-checkbox>
           <span class="link" @click="loadPatentInfo(patent.patent_id)">
             {{ patent.invention_title }}
           </span>
@@ -80,8 +79,7 @@ export default {
       patents: [],
       selectPatents: [],
       selectPatentIds: [],
-      selectAll: false,
-      checkboxtest: false
+      selectAll: false
     }
   },
   props: {
@@ -92,28 +90,33 @@ export default {
       /*
       this.patents = [...patentList]
       for (let patent of this.patents) {
-        patent.checked = false
+        patent.isChecked = false
       }
       */
       this.patents.splice(0, this.patents.length)
       for (let i = 0; i < patentList.length; i++) {
-        let patent = patentList[i]
+        let patent = JSON.parse(JSON.stringify(patentList[i])) // 要深拷贝才有用？？？
+        patent['isChecked'] = false
+        this.patents.push(patent)
+        /*
         this.patents.push({
           patent_id: patent.patent_id,
           invention_title: patent.invention_title,
           applicant_name: patent.applicant_name,
           applicant_id: patent.applicant_id,
-          inventor_list: patent.inventor_list.join(' '),
+          inventor_list: patent.inventor_list,
           ipc_main_classification_no: patent.ipc_main_classification_no,
           apply_date: patent.apply_date,
           apply_no: patent.apply_no,
           publish_date: patent.publish_date,
           publish_no: patent.publish_no,
-          abstract: patent.abstract_info,
+          abstract_info: patent.abstract_info,
           value_degree: patent.value_degree,
-          checked: false
+          isChecked: false
         })
+        */
       }
+      console.log(this.patents[0])
     },
     search: function (keyword, field) {
       state.setSearchParams('query', keyword)
@@ -146,7 +149,8 @@ export default {
     },
     // 列表选择
     toggleChange: function (patent) {
-      if (patent.checked) {
+      console.log(patent)
+      if (patent.isChecked) {
         this.selectPatentIds.push(patent.patent_id)
       } else {
         let index = this.selectPatentIds.findIndex((el, i, arr) => {
@@ -177,13 +181,13 @@ export default {
       if (newVal) {
         this.selectPatentIds.splice(0, this.selectPatentIds.length)
         for (let patent of this.patents) {
-          patent.checked = true
+          patent.isChecked = true
           this.selectPatentIds.push(patent.patent_id)
         }
       } else {
         this.selectPatentIds.splice(0, this.selectPatentIds.length)
         for (let patent of this.patents) {
-          patent.checked = false
+          patent.isChecked = false
         }
       }
     }

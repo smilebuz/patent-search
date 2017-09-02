@@ -85,7 +85,6 @@ export const sendRequest = ((apilist) => {
         if (idkeys) {
           for (let idkey of idkeys) {
             idkey = idkey.substring(1, idkey.length - 1)
-            debugger
             apilist[api] = apilist[api].replace(apiReg, Ids[idkey])
           }
         }
@@ -109,6 +108,12 @@ export const sendRequest = ((apilist) => {
         }
       },
       put: () => {
+        if (apilist[api].includes('{favorId}')) {
+          apilist[api] = apilist[api].replace('{favorId}', state.get('favor_id'))
+        }
+        if (apilist[api].includes('{patentId}')) {
+          apilist[api] = apilist[api].replace('{patentId}', state.get('patent_id'))
+        }
         let idkeys = apilist[api].match(apiReg)
         if (idkeys) {
           for (let idkey of idkeys) {
@@ -126,6 +131,9 @@ export const sendRequest = ((apilist) => {
           })
       },
       delete: () => {
+        if (apilist[api].includes('{favorId}')) {
+          apilist[api] = apilist[api].replace('{favorId}', state.get('favor_id'))
+        }
         let idkeys = apilist[api].match(apiReg)
         if (idkeys) {
           for (let idkey of idkeys) {

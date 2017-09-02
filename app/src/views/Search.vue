@@ -135,7 +135,7 @@ import bus from '../bus.js'
 import state from '../state.js'
 import {sendRequest} from '../Api'
 
-// import axios from 'axios'
+import axios from 'axios'
 
 import myheader from '../components/Header'
 import myfilter from '../components/Filter'
@@ -248,7 +248,6 @@ export default {
         name: this.newFavorName,
         patent_id_list: this.selectPatentIds
       }
-      debugger
       sendRequest.createFavor.post(params).then(data => {
         let favorList = state.get('favorList')
         favorList.push(data)
@@ -272,9 +271,21 @@ export default {
       */
       for (let patentId of patentIds) {
         state.set('patent_id', patentId)
+        let url = '/api/users/' + state.get('user_id') + '/favorites/' + state.get('favor_id') + '/patents/' + state.get('patent_id')
+        debugger
+        // 测试
+        axios.put(url)
+          .then(data => {
+            console.log(data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        /*
         sendRequest.addFavor.put().then(data => {
           console.log(data)
         })
+        */
       }
     },
     deleteFavorMenu: function (favor) {

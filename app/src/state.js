@@ -60,6 +60,7 @@ export default new Vue({
     }
     */
     patentList (newList) {
+      console.log('更改')
       bus.$emit('updatePatentList', newList)
     },
     filterList (newList) {
