@@ -208,7 +208,6 @@ export default {
         page: state.get('page')
       }
       // this.sorts[target].direction === 'decending' ? this.sorts[target].direction = 'ascending' : this.sorts[target].direction = 'decending'
-      console.log(params)
       sendRequest.sort.post(params).then((data) => {
         state.set('patentList', data.patent_list)
       })
@@ -255,42 +254,32 @@ export default {
       })
     },
     addPatents2Favor: function (favor) {
-      // let requestArr = []
-      console.log(favor)
       let patentIds = this.selectPatentIds
       let favorId = favor.id
-      state.set('favor_id', favorId)
-      /*
+      state.set('favorId', favorId)
+      let requests = []
       for (let patentId of patentIds) {
-        state.set('patent_id', patentId)
-        requestArr.push(sendRequest.addFavor.put)
-      }
-      axios.all(requestArr).then(data => {
-        console.log(data)
-      })
-      */
-      for (let patentId of patentIds) {
-        state.set('patent_id', patentId)
-        let url = '/api/users/' + state.get('user_id') + '/favorites/' + state.get('favor_id') + '/patents/' + state.get('patent_id')
-        debugger
-        // 测试
-        axios.put(url)
-          .then(data => {
-            console.log(data)
-          })
-          .catch(error => {
-            console.log(error)
-          })
+        state.set('patentId', patentId)
+        let url = '/api/users/' + state.get('userId') + '/favorites/' + state.get('favorId') + '/patents/' + state.get('patentId')
+        requests.push(axios.put(url))
         /*
         sendRequest.addFavor.put().then(data => {
           console.log(data)
         })
         */
       }
+      axios.all(requests).then(data => {
+        this.$alert('收藏成功', '', {
+          confirmButtonText: '确定'
+        })
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
     deleteFavorMenu: function (favor) {
       let favorId = favor.id
-      state.set('favor_id', favorId)
+      state.set('favorId', favorId)
       sendRequest.deleteFavorMenu.delete().then(data => {
         console.log(data)
       })

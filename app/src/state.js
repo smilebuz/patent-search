@@ -5,16 +5,16 @@ export default new Vue({
   data () {
     return {
       isLogin: '',
-      user_id: '',
+      userId: '',
       session_id: '',
-      patent_id: '', // 不同的信息读取 例如专利信息
-      applicant_id: '', // 不同的申请人ID
+      patentId: '', // 不同的信息读取 例如专利信息
+      applicantId: '', // 不同的申请人ID
       searchParams: {},
       // sortParams: {},
       patentList: [],
       filterList: [],
       recommendList: [],
-      favor_id: '', // 收藏目录ID
+      favorId: '', // 收藏目录ID
       favorList: []
     }
   },
@@ -33,16 +33,17 @@ export default new Vue({
     }
   },
   watch: {
-    user_id (newId) {
+    userId (newId) {
       bus.$emit('setUserId', newId)
     },
-    patent_id (newId) {
+    patentId (newId) {
       bus.$emit('setPatentId', newId)
     },
-    applicant_id (newId) {
+    applicantId (newId) {
       bus.$emit('setApplicantId', newId)
     },
-    favor_id (newId) {
+    favorId (newId) {
+      debugger
       bus.$emit('setFavorId', newId)
     },
     searchParams: {

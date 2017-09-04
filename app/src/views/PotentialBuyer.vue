@@ -31,7 +31,7 @@ export default {
   methods: {
     loadApplicantInfo (cell, event) {
       if (event.label === '卖家名称') {
-        state.set('applicant_id', cell.applicant_id)
+        state.set('applicantId', cell.applicant_id)
         this.$router.push('/ApplicantInfo')
       }
     }

@@ -84,9 +84,7 @@ export default {
       }
       sendRequest.login.post(params).then(data => {
         state.set('isLogin', true)
-        // state.set('token', data.access_token)
-        state.set('user_id', data.user_id)
-        // console.log('user_id', data.user_id)
+        state.set('userId', data.user_id)
         this.$router.push('Home')
       })
     }

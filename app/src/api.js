@@ -16,7 +16,7 @@ export const Api = {
   'similarPatent': '/api/patents/{patentId}/similarities?per_page=5&page=1', // get
   'applicant': '/api/applicants/{applicantId}', // get
   'valuedegree': '/api/patents/{patentId}/values', // get
-  'legatStatus': '/api/patents/patent_id/legal_statuses', // get
+  'legatStatus': '/api/patents/{patentId}/legal_statuses', // get
   'potentialBuyer': '/api/patents/{patentId}/applicants?intent=potential_buyer&per_page=10&page=1', // get
 
   'recentSearch': '/api/users/{userId}/recent_queries?per_page=5&page=1', // get
@@ -64,8 +64,8 @@ export const sendRequest = ((apilist) => {
         let idkeys = apilist[api].match(apiReg)
         if (idkeys) {
           for (let idkey of idkeys) {
-            idkey = idkey.substring(1, idkey.length - 1)
-            apilist[api] = apilist[api].replace(apiReg, Ids[idkey])
+            // apilist[api] = apilist[api].replace(idkey, Ids[idkey.substring(1, idkey.length - 1)])
+            apilist[api] = apilist[api].replace(idkey, state.get(idkey.substring(1, idkey.length - 1)))
           }
         }
         console.log('api post:', apilist[api])
@@ -78,14 +78,15 @@ export const sendRequest = ((apilist) => {
           })
       },
       get: params => {
+        /*
         if (apilist[api].includes('{favorId}')) {
-          apilist[api] = apilist[api].replace('{favorId}', state.get('favor_id'))
+          apilist[api] = apilist[api].replace('{favorId}', state.get('favorId'))
         }
+        */
         let idkeys = apilist[api].match(apiReg)
         if (idkeys) {
           for (let idkey of idkeys) {
-            idkey = idkey.substring(1, idkey.length - 1)
-            apilist[api] = apilist[api].replace(apiReg, Ids[idkey])
+            apilist[api] = apilist[api].replace(idkey, state.get(idkey.substring(1, idkey.length - 1)))
           }
         }
         console.log('api get:', apilist[api])
@@ -108,17 +109,10 @@ export const sendRequest = ((apilist) => {
         }
       },
       put: () => {
-        if (apilist[api].includes('{favorId}')) {
-          apilist[api] = apilist[api].replace('{favorId}', state.get('favor_id'))
-        }
-        if (apilist[api].includes('{patentId}')) {
-          apilist[api] = apilist[api].replace('{patentId}', state.get('patent_id'))
-        }
         let idkeys = apilist[api].match(apiReg)
         if (idkeys) {
           for (let idkey of idkeys) {
-            idkey = idkey.substring(1, idkey.length - 1)
-            apilist[api] = apilist[api].replace(apiReg, Ids[idkey])
+            apilist[api] = apilist[api].replace(idkey, state.get(idkey.substring(1, idkey.length - 1)))
           }
         }
         console.log('api put:', apilist[api])
@@ -131,14 +125,10 @@ export const sendRequest = ((apilist) => {
           })
       },
       delete: () => {
-        if (apilist[api].includes('{favorId}')) {
-          apilist[api] = apilist[api].replace('{favorId}', state.get('favor_id'))
-        }
         let idkeys = apilist[api].match(apiReg)
         if (idkeys) {
           for (let idkey of idkeys) {
-            idkey = idkey.substring(1, idkey.length - 1)
-            apilist[api] = apilist[api].replace(apiReg, Ids[idkey])
+            apilist[api] = apilist[api].replace(idkey, state.get(idkey.substring(1, idkey.length - 1)))
           }
         }
         console.log('api delete:', apilist[api])

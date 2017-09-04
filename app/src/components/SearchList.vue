@@ -118,7 +118,7 @@ export default {
         })
         */
       }
-      console.log(state.get('patentList')[0])
+      // console.log(state.get('patentList')[0])
     },
     search: function (keyword, field) {
       state.setSearchParams('query', keyword)
@@ -128,19 +128,19 @@ export default {
       })
     },
     loadPatentInfo (patentId) {
-      state.set('patent_id', patentId)
+      state.set('patentId', patentId)
       this.$router.push('/PatentInfo')
     },
     loadDegreeValue: function (patentId) {
-      state.set('patent_id', patentId)
+      state.set('patentId', patentId)
       this.$router.push('/ValueDegree')
     },
     searchApplicant: function (applicantId) {
-      state.set('applicant_id', applicantId)
+      state.set('applicantId', applicantId)
       this.$router.push('/ApplicantInfo')
     },
     loadPotentialBuyer: function (patentId) {
-      state.set('patent_id', patentId)
+      state.set('patentId', patentId)
       this.$router.push('/PotentialBuyer')
     },
     handleSizeChange: function (val) {
@@ -151,8 +151,8 @@ export default {
     },
     // 列表选择
     toggleChange: function (patent) {
-      console.log(patent)
-      console.log(state.get('patentList')[0])
+      // console.log(patent)
+      // console.log(state.get('patentList')[0])
       if (patent.isChecked) {
         this.selectPatentIds.push(patent.patent_id)
       } else {
@@ -197,12 +197,12 @@ export default {
   },
   created () {
     bus.$on('updatePatentList', newList => {
-      console.log('hahaha')
+      // console.log('hahaha')
       this.refreshList(newList)
     })
   },
   mounted () {
-    console.log('lalala')
+    // console.log('lalala')
     this.refreshList(state.get('patentList'))
   },
   beforeDestroy () {

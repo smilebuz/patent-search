@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     fetchFavorPatents (favorId) {
-      state.set('favor_id', favorId)
+      state.set('favorId', favorId)
       sendRequest.favorPatent.get().then(data => {
         this.favorTable = [...data.patent_list]
       })
