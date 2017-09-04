@@ -281,7 +281,11 @@ export default {
       let favorId = favor.id
       state.set('favorId', favorId)
       sendRequest.deleteFavorMenu.delete().then(data => {
-        console.log(data)
+        let favorList = state.get('favorList')
+        favorList = favorList.filter((el, index, arr) => {
+          return el.id !== favorId
+        })
+        state.set('favorList', favorList)
       })
     },
     hideFavorPopover: function () {
