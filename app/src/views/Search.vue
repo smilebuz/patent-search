@@ -58,7 +58,7 @@
                 <el-button size="small" @click="createFavor">创建并加入</el-button>
               </el-col>
             </el-row>
-            <el-table :data="favorTable" border class="popover-table">
+            <el-table :data="favorTable" border class="popover-table" @selection-change="selectChangeFavor">
               <el-table-column type="selection"></el-table-column>
               <el-table-column prop="name" label="收藏夹"></el-table-column>
               <el-table-column prop="createTime" label="创建时间"></el-table-column>
@@ -72,7 +72,7 @@
               </el-table-column>
             </el-table>
             <div class="popover-button">
-              <el-button size="small">保存</el-button>
+              <el-button size="small" @click="addPatents2Favors">保存</el-button>
               <el-button size="small" @click="hideFavorPopover">取消</el-button>
             </div>
           </el-popover>
@@ -182,7 +182,8 @@ export default {
       favorPopover: false,
       newFavorName: '',
       favorTable: [],
-      selectPatentIds: []
+      selectPatentIds: [],
+      selectFavors: []
     }
   },
   methods: {
@@ -287,6 +288,16 @@ export default {
         })
         state.set('favorList', favorList)
       })
+    },
+    selectChangeFavor (selection) {
+      for (let favor of selection) {
+        this.selectFavors.push(favor)
+      }
+    },
+    addPatents2Favors () {
+      for (let favor of this.selectFavors) {
+        this.addPatents2Favor(favor)
+      }
     },
     hideFavorPopover: function () {
       this.favorPopover = false
