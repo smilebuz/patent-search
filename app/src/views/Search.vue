@@ -239,7 +239,10 @@ export default {
     // 收藏
     loadFavor: function () {
       this.favorTable.splice(0, this.favorTable.length)
-      sendRequest.getFavor.get().then(data => {
+      let ids = {
+        userId: state.get('userId')
+      }
+      sendRequest.getFavor.get(null, ids).then(data => {
         state.set('favorList', data)
       })
     },
@@ -281,7 +284,11 @@ export default {
     deleteFavorMenu: function (favor) {
       let favorId = favor.id
       state.set('favorId', favorId)
-      sendRequest.deleteFavorMenu.delete().then(data => {
+      let ids = {
+        userId: state.get('userId'),
+        favorId: state.get('favorId')
+      }
+      sendRequest.deleteFavorMenu.delete(ids).then(data => {
         let favorList = state.get('favorList')
         favorList = favorList.filter((el, index, arr) => {
           return el.id !== favorId
@@ -310,7 +317,10 @@ export default {
     sideBarSelected: function (type) {
       switch (type) {
         case 'recentSearch':
-          sendRequest.recentSearch.get().then(data => {
+          let ids = {
+            userId: 'userId'
+          }
+          sendRequest.recentSearch.get(null, ids).then(data => {
             this.recentSearch = data
           })
           break

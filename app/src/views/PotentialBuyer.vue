@@ -37,7 +37,10 @@ export default {
     }
   },
   mounted () {
-    sendRequest.potentialBuyer.get().then(data => {
+    let ids = {
+      patentId: state.get('patentId')
+    }
+    sendRequest.potentialBuyer.get(null, ids).then(data => {
       this.buyerTable = [...data.potential_buyer_list]
       for (let i = 1; i <= this.buyerTable.length; i++) {
         let buyer = this.buyerTable[i - 1]

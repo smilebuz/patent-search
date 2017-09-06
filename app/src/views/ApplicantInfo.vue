@@ -164,7 +164,10 @@ export default {
     }
   },
   mounted () {
-    sendRequest.applicant.get().then(data => {
+    let ids = {
+      applicantId: state.get('applicantId')
+    }
+    sendRequest.applicant.get(null, ids).then(data => {
       this.fillInfo(data)
     })
   },

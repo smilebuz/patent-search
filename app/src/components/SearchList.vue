@@ -6,7 +6,8 @@
       </div>
       <div v-for="(patent, index) in patents" :key="index" class="list-item">
         <div>
-          <el-checkbox v-model="patent.isChecked" @change="toggleChange(patent)"></el-checkbox>
+          {{ patent.isChecked }}
+          <el-checkbox v-if="patent.isChecked !== undefined" v-model="patent.isChecked"></el-checkbox>
           <span class="link" @click="loadPatentInfo(patent.patent_id)">
             {{ patent.invention_title }}
           </span>
@@ -51,7 +52,6 @@
         </div>
       </div>
     </div>
-
     <el-table v-else :data="patents" @selection-change="selectChange" border>
       <el-table-column type="selection"></el-table-column>
       <el-table-column prop="publish_no" label="公开号"></el-table-column>
@@ -87,12 +87,12 @@ export default {
   },
   methods: {
     refreshList: function (patentList) {
+      patentList = window.tempdata
+      this.patents = patentList.map(item => {
+        item.isChecked = ''
+        return item
+      })
       /*
-      this.patents = [...patentList]
-      for (let patent of this.patents) {
-        patent.isChecked = false
-      }
-      */
       this.patents.splice(0, this.patents.length)
       for (let i = 0; i < patentList.length; i++) {
         // let patent = patentList[i]
@@ -100,7 +100,7 @@ export default {
         // 不深拷贝 第一次点就是true 以后也是true
         patent['isChecked'] = false
         this.patents.push(patent)
-        /*
+
         this.patents.push({
           patent_id: patent.patent_id,
           invention_title: patent.invention_title,
@@ -116,8 +116,9 @@ export default {
           value_degree: patent.value_degree,
           isChecked: false
         })
-        */
+
       }
+*/
       // console.log(state.get('patentList')[0])
     },
     search: function (keyword, field) {

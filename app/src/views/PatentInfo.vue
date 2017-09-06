@@ -51,6 +51,7 @@
 import myHeader from '../components/Header'
 import searchbar from '../components/SearchBar'
 
+import state from '../state.js'
 import { sendRequest } from '../Api'
 
 export default {
@@ -111,7 +112,10 @@ export default {
   methods: {
     switchTab (tab, event) {
       if (this.activeTab === 'similarPatent') {
-        sendRequest.similarPatent.get().then(data => {
+        let ids = {
+          patentId: state.get('patentId')
+        }
+        sendRequest.similarPatent.get(null, ids).then(data => {
           this.refreshSimPanel(data)
         })
       }
@@ -147,7 +151,10 @@ export default {
     }
   },
   mounted () {
-    sendRequest.patentInfo.get().then(data => {
+    let ids = {
+      patentId: state.get('patentId')
+    }
+    sendRequest.patentInfo.get(null, ids).then(data => {
       this.fillInfo(data)
     })
   },

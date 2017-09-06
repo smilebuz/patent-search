@@ -44,6 +44,7 @@
 import myHeader from '../components/Header'
 import searchbar from '../components/SearchBar'
 
+import state from '../state.js'
 import { sendRequest } from '../Api'
 
 export default {
@@ -75,7 +76,10 @@ export default {
     }
   },
   mounted () {
-    sendRequest.valuedegree.get().then((data) => {
+    let ids = {
+      patentId: state.get('patentId')
+    }
+    sendRequest.valuedegree.get(null, ids).then((data) => {
       this.generalTable = [...data.general_value]
       this.lawTable = [...data.law_value]
       this.technicalTable = [...data.technical_value]

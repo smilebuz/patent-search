@@ -10,6 +10,8 @@
 
 <script>
 import bus from '../bus.js'
+
+import state from '../state.js'
 import { sendRequest } from '../Api'
 
 export default {
@@ -45,7 +47,10 @@ export default {
     }
   },
   mounted () {
-    sendRequest.userPatent.get().then(data => {
+    let ids = {
+      userId: state.get('userId')
+    }
+    sendRequest.userPatent.get(null, ids).then(data => {
       this.navs.myPatent.items = data
     })
   }

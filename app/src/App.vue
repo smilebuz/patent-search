@@ -13,7 +13,8 @@ export default {
   name: 'app',
   created () {
     bus.$on('search', data => {
-      state.set('patentList', data.patent_list)
+      window.tempdata = data.patent_list
+      // state.set('patentList', data.patent_list)
       state.set('filterList', data.filter_sidebar_list)
       state.set('recommendList', data.recommend_list)
       state.set('session_id', data.session_id)

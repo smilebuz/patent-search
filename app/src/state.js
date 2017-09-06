@@ -43,7 +43,6 @@ export default new Vue({
       bus.$emit('setApplicantId', newId)
     },
     favorId (newId) {
-      debugger
       bus.$emit('setFavorId', newId)
     },
     searchParams: {

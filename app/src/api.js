@@ -1,7 +1,5 @@
 // import Vue from 'Vue'
 import axios from 'axios'
-import bus from './bus.js'
-import state from './state.js'
 
 export const Api = {
   'login': '/api/users/login', // post
@@ -31,29 +29,6 @@ export const Api = {
 
 }
 
-export let Ids = {
-  patentId: '',
-  applicantId: '',
-  userId: '',
-  favorId: ''
-}
-
-bus.$on('setPatentId', (newId) => {
-  Ids.patentId = newId
-})
-
-bus.$on('setApplicantId', (newId) => {
-  Ids.applicantId = newId
-})
-
-bus.$on('setUserId', (newId) => {
-  Ids.userId = newId
-})
-
-bus.$on('setFavorId', (newId) => {
-  Ids.favorId = newId
-})
-
 export const sendRequest = ((apilist) => {
   let list = {}
   let apiReg = /({[a-zA-Z]+})/g // ?先行匹配有问题 只能用后行匹配 但是拿到userId怎么替换掉大括号{}
@@ -61,13 +36,14 @@ export const sendRequest = ((apilist) => {
   for (let api in apilist) {
     list[api] = {
       post: params => {
+        /*
         let idkeys = apilist[api].match(apiReg)
         if (idkeys) {
           for (let idkey of idkeys) {
-            // apilist[api] = apilist[api].replace(idkey, Ids[idkey.substring(1, idkey.length - 1)])
             apilist[api] = apilist[api].replace(idkey, state.get(idkey.substring(1, idkey.length - 1)))
           }
         }
+        */
         console.log('api post:', apilist[api])
         return axios.post(apilist[api], params)
           .then(response => {
@@ -77,16 +53,11 @@ export const sendRequest = ((apilist) => {
             console.log(error)
           })
       },
-      get: params => {
-        /*
-        if (apilist[api].includes('{favorId}')) {
-          apilist[api] = apilist[api].replace('{favorId}', state.get('favorId'))
-        }
-        */
+      get: (params, ids) => {
         let idkeys = apilist[api].match(apiReg)
         if (idkeys) {
           for (let idkey of idkeys) {
-            apilist[api] = apilist[api].replace(idkey, state.get(idkey.substring(1, idkey.length - 1)))
+            apilist[api] = apilist[api].replace(idkey, ids[idkey.substring(1, idkey.length - 1)])
           }
         }
         console.log('api get:', apilist[api])
@@ -108,11 +79,11 @@ export const sendRequest = ((apilist) => {
             })
         }
       },
-      put: () => {
+      put: ids => {
         let idkeys = apilist[api].match(apiReg)
         if (idkeys) {
           for (let idkey of idkeys) {
-            apilist[api] = apilist[api].replace(idkey, state.get(idkey.substring(1, idkey.length - 1)))
+            apilist[api] = apilist[api].replace(idkey, ids[idkey.substring(1, idkey.length - 1)])
           }
         }
         console.log('api put:', apilist[api])
@@ -124,11 +95,11 @@ export const sendRequest = ((apilist) => {
             console.log(error)
           })
       },
-      delete: () => {
+      delete: ids => {
         let idkeys = apilist[api].match(apiReg)
         if (idkeys) {
           for (let idkey of idkeys) {
-            apilist[api] = apilist[api].replace(idkey, state.get(idkey.substring(1, idkey.length - 1)))
+            apilist[api] = apilist[api].replace(idkey, ids[idkey.substring(1, idkey.length - 1)])
           }
         }
         console.log('api delete:', apilist[api])
