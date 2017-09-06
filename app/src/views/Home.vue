@@ -48,8 +48,8 @@
 
 <script>
 import state from '../state.js'
-import bus from '../bus.js'
-import { sendRequest } from '../Api'
+// import bus from '../bus.js'
+// import { sendRequest } from '../Api'
 // import Api from '../Api'
 
 export default {
@@ -96,10 +96,7 @@ export default {
         // page: state.get('page')
       }
       state.set('searchParams', params)
-      sendRequest.search.post(state.get('searchParams')).then((data) => {
-        bus.$emit('search', data)
-        this.$router.push('Search')
-      })
+      this.$router.push('Search')
     }
   }
 }

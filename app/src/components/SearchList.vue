@@ -6,7 +6,6 @@
       </div>
       <div v-for="(patent, index) in patents" :key="index" class="list-item">
         <div>
-          {{ patent.isChecked }}
           <el-checkbox v-if="patent.isChecked !== undefined" v-model="patent.isChecked"></el-checkbox>
           <span class="link" @click="loadPatentInfo(patent.patent_id)">
             {{ patent.invention_title }}
@@ -71,7 +70,6 @@
 <script>
 import state from '../state.js'
 import bus from '../bus.js'
-import { sendRequest } from '../Api'
 
 export default {
   data () {
@@ -87,46 +85,15 @@ export default {
   },
   methods: {
     refreshList: function (patentList) {
-      patentList = window.tempdata
+      // patentList = window.tempdata
       this.patents = patentList.map(item => {
         item.isChecked = ''
         return item
       })
-      /*
-      this.patents.splice(0, this.patents.length)
-      for (let i = 0; i < patentList.length; i++) {
-        // let patent = patentList[i]
-        let patent = JSON.parse(JSON.stringify(patentList[i])) // 要深拷贝才有用？？？
-        // 不深拷贝 第一次点就是true 以后也是true
-        patent['isChecked'] = false
-        this.patents.push(patent)
-
-        this.patents.push({
-          patent_id: patent.patent_id,
-          invention_title: patent.invention_title,
-          applicant_name: patent.applicant_name,
-          applicant_id: patent.applicant_id,
-          inventor_list: patent.inventor_list,
-          ipc_main_classification_no: patent.ipc_main_classification_no,
-          apply_date: patent.apply_date,
-          apply_no: patent.apply_no,
-          publish_date: patent.publish_date,
-          publish_no: patent.publish_no,
-          abstract_info: patent.abstract_info,
-          value_degree: patent.value_degree,
-          isChecked: false
-        })
-
-      }
-*/
-      // console.log(state.get('patentList')[0])
     },
     search: function (keyword, field) {
       state.setSearchParams('query', keyword)
       state.setSearchParams('field', field)
-      sendRequest.search.post(state.get('searchParams')).then((data) => {
-        bus.$emit('search', data)
-      })
     },
     loadPatentInfo (patentId) {
       state.set('patentId', patentId)
@@ -152,8 +119,6 @@ export default {
     },
     // 列表选择
     toggleChange: function (patent) {
-      // console.log(patent)
-      // console.log(state.get('patentList')[0])
       if (patent.isChecked) {
         this.selectPatentIds.push(patent.patent_id)
       } else {
@@ -201,10 +166,6 @@ export default {
       // console.log('hahaha')
       this.refreshList(newList)
     })
-  },
-  mounted () {
-    // console.log('lalala')
-    this.refreshList(state.get('patentList'))
   },
   beforeDestroy () {
     bus.$off('updatePatentList')

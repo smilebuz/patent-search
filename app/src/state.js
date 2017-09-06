@@ -46,7 +46,7 @@ export default new Vue({
       bus.$emit('setFavorId', newId)
     },
     searchParams: {
-      handler: function (newParams, oldParams) {
+      handler: function (newParams) {
         bus.$emit('updateSearchParams', newParams)
       },
       deep: true

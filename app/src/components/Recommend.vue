@@ -39,7 +39,6 @@
 <script>
 import state from '../state.js'
 import bus from '../bus.js'
-import { sendRequest } from '../Api'
 
 export default {
   data () {
@@ -53,9 +52,6 @@ export default {
   methods: {
     search: function (keyword) {
       state.setSearchParams('query', keyword)
-      sendRequest.search.post(state.get('searchParams')).then((data) => {
-        bus.$emit('search', data)
-      })
     },
     refreshList (recommendList) {
       this.product_list.splice(0, this.product_list.length)
@@ -72,9 +68,6 @@ export default {
     bus.$on('updateRecommendList', newList => {
       this.refreshList(newList)
     })
-  },
-  mounted () {
-    this.refreshList(state.get('recommendList'))
   }
 }
 </script>

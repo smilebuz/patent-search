@@ -17,11 +17,6 @@
             <el-button @click="switchSidebar('recentSearch')">最近搜索</el-button>
             <el-button @click="switchSidebar('categoryNav')">分类导航</el-button>
           </el-button-group>
-          <!--div class="tab-group">
-            <div class="tab" @click="switchSidebar('filter')">过滤</div>
-            <div class="tab" @click="switchSidebar('recentSearch')">最近搜索</div>
-            <router-link to="CategoryNav" class="tab" tag="span">分类导航</router-link>
-          </div-->
         </el-col>
 
         <el-col :span="7" :offset="2">
@@ -223,10 +218,12 @@ export default {
       // 点击最近搜索
       state.setSearchParams('query', keyword)
       state.setSearchParams('field', field)
+      /*
       sendRequest.search.post(state.get('searchParams')).then((data) => {
         this.sideBarSelected = 'filter'
         bus.$emit('search', data)
       })
+      */
     },
     // 保存
     hideSavePopover: function () {
@@ -339,6 +336,9 @@ export default {
     bus.$on('updateFavorList', favorList => {
       this.favorTable = favorList
     })
+  },
+  mounted () {
+    bus.$emit('updateSearchParams', state.get('searchParams'))
   },
   components: {
     myheader, myfilter, searchlist, recommend, searchbar, sideNav

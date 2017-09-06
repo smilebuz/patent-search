@@ -29,7 +29,7 @@ import myHeader from '../components/Header'
 import searchbar from '../components/SearchBar'
 
 import state from '../state.js'
-import bus from '../bus.js'
+// import bus from '../bus.js'
 import { sendRequest } from '../Api'
 
 export default {
@@ -87,59 +87,6 @@ export default {
       this.purchasePowerTable.push({title: '购买增长率', text: data.purchase_growth_rate})
       // 申请人主营产品
       this.mainProducts = [...data.main_product_list]
-      /*
-      this.mainProductTable.name = data.name
-      let mainProducts = JSON.parse(data.mainProductsInJson)
-      let firstClassMenu = Object.keys(mainProducts).filter((el, i, arr) => {
-        return el !== '申请人名称'
-      })
-      let secondClassMenu = []
-      for (let menu of firstClassMenu) {
-        let secondClasses = Object.keys(mainProducts[menu])
-        for (let i = 0; i < secondClasses.length; i++) {
-          let secondMenu = secondClasses[i]
-          secondClassMenu.push({first: menu, second: secondMenu, firstSecondMenu: i === 0})
-        }
-      }
-      let thirdClassMenu = []
-      for (let menu of secondClassMenu) {
-        let firstMenu = menu.first
-        let secondMenu = menu.second
-        let firstSecondMenu = menu.firstSecondMenu
-        let thirdClasses = Object.keys(mainProducts[firstMenu][secondMenu])
-        for (let i = 0; i < thirdClasses.length; i++) {
-          let thirdMenu = thirdClasses[i]
-          let firstThridMenu = i === 0
-          thirdClassMenu.push({first: firstMenu, second: secondMenu, third: thirdMenu, firstSecondMenu: firstSecondMenu && firstThridMenu, firstThridMenu: i === 0})
-        }
-      }
-      for (let menu of thirdClassMenu) {
-        let firstMenu = menu.first
-        let secondMenu = menu.second
-        let thirdMenu = menu.third
-        let firstSecondMenu = menu.firstSecondMenu
-        let firstThridMenu = menu.firstThridMenu
-        let products = mainProducts[firstMenu][secondMenu][thirdMenu]
-        for (let i = 0; i < products.length; i++) {
-          let product = products[i]
-          let firstProduct = i === 0
-          if (firstProduct) {
-            if (firstProduct && firstThridMenu) {
-              if (firstProduct && firstThridMenu && firstSecondMenu) {
-                this.mainProductTable.products.push({firstClassMenu: firstMenu, secondClassMenu: secondMenu, thirdClassMenu: thirdMenu, productName: product})
-              } else {
-                this.mainProductTable.products.push({firstClassMenu: '', secondClassMenu: secondMenu, thirdClassMenu: thirdMenu, productName: product})
-              }
-            } else {
-              this.mainProductTable.products.push({firstClassMenu: '', secondClassMenu: '', thirdClassMenu: thirdMenu, productName: product})
-            }
-          } else {
-            this.mainProductTable.products.push({firstClassMenu: '', secondClassMenu: '', thirdClassMenu: '', productName: product})
-          }
-        }
-      }
-      */
-      // console.log('产品', aaa)
     },
     loadProducts: function (productObj) {
       let keys = Object.keys(productObj)
@@ -157,10 +104,6 @@ export default {
     },
     search: function (product) {
       state.setSearchParams('query', product)
-      sendRequest.search.post(state.get('searchParams')).then(data => {
-        bus.$emit('search', data)
-        this.$router.push('/Search')
-      })
     }
   },
   mounted () {

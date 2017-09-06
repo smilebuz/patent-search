@@ -5,7 +5,7 @@
         <el-input v-model="keyword"></el-input>
       </el-col>
       <el-col :span="4">
-        <el-button type="primary" v-on:click="search">检索</el-button>
+        <el-button type="primary" v-on:click="jump2search">检索</el-button>
         <router-link to="/AdvancedSearch" tag="span" id="advanced-search">高级检索</router-link>
       </el-col>
     </el-row>
@@ -28,8 +28,9 @@
 </template>
 
 <script>
-import state from '../state.js'
 import bus from '../bus.js'
+
+import state from '../state.js'
 import { sendRequest } from '../Api'
 
 export default {
@@ -55,20 +56,21 @@ export default {
     }
   },
   methods: {
-    search () {
+    jump2search () {
       state.setSearchParams('query', this.keyword)
       state.setSearchParams('apply_type', this.applyTypeSelected)
       state.setSearchParams('search_type', this.searchType)
-      sendRequest.search.post(state.get('searchParams')).then((data) => {
-        bus.$emit('search', data)
-        this.$router.push('/Search')
-      })
+      this.$router.push('/Search')
     }
   },
   created () {
+    bus.$off('updateSearchParams')
     bus.$on('updateSearchParams', searchParams => {
       this.keyword = searchParams.query // 需要箭头函数的this
       this.applyTypeSelected = searchParams.apply_type
+      sendRequest.search.post(state.get('searchParams')).then((data) => {
+        bus.$emit('search', data)
+      })
     })
   },
   mounted () {
