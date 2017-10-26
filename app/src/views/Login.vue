@@ -8,6 +8,7 @@
         ></el-input>
         <el-input placeholder="Password" type="password" class="form__input login__item"
           v-model="loginForm.password"
+          v-on:keyup.enter.native="login"
         ></el-input>
         <el-button class="login__button login__item" type="primary"
           @click="login"

@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="header">
-    <span class="company-name" @click='clickLogo'>{{ header }}</span>
+    <img src="../assets/images/logo.png" alt="logo"></img>
     <div class="header-user">
       <el-dropdown @command="handleCommand">
         <span class="el-dropdownlink">用户</span>
@@ -21,9 +21,7 @@ import state from '../state.js'
 
 export default {
   data () {
-    return {
-      header: 'INNOPRO专利精准推荐系统'
-    }
+    return {}
   },
   methods: {
     clickLogo () {
@@ -55,6 +53,7 @@ export default {
 <style lang="scss" scoped>
   $company-name-color: #008080;
   .header {
+    background: #434343;
     display: flex;
     justify-content: space-between;
     align-items: center;

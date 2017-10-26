@@ -58,7 +58,7 @@
               <el-table-column prop="name" label="收藏夹"></el-table-column>
               <el-table-column prop="createTime" label="创建时间"></el-table-column>
               <el-table-column label="编辑">
-                <template scope="scope">
+                <template slot-scope="scope">
                   <div class="popover-cell">
                     <el-button size="mini" @click="addPatents2Favor(scope.row)">收藏</el-button>
                     <el-button size="mini" @click="deleteFavorMenu(scope.row)">删除</el-button>
