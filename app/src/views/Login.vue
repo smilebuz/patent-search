@@ -1,88 +1,57 @@
 <template>
-  <div id="container">
-    <h1>{{ header }}</h1>
-    <el-row type="flex" justify="center">
-      <el-col :span="14" id="main">
-        <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="账号:">
-            <el-input v-model="form.account"></el-input>
-          </el-form-item>
-          <el-form-item label="密码:">
-            <el-input v-model="form.password"></el-input>
-          </el-form-item>
-          <el-form-item id="operation-group">
-            <el-checkbox label="记住密码" name="rememberPw"></el-checkbox>
-            <router-link to="" id="forgetpw" tag="span" class="span-link">忘记密码</router-link>
-            <router-link to="/Register" tag="span" class="span-link">立即注册</router-link>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="login">登录</el-button>
-          </el-form-item>
-        </el-form>
-      </el-col>
-      <el-col :span="10" id="contact">
-        <el-row class="contact-item">
-          <el-col :span="4">
-            <img src="../assets/images/telephone.png" alt="电话">
-          </el-col>
-          <el-col :span="20" class="contact-detail">
-            <p>客服电话:</p>
-            <p>{{ contact.phone }}</p>
-          </el-col>
-        </el-row>
-        <el-row class="contact-item">
-          <el-col :span="4">
-            <img src="../assets/images/email.png" alt="邮箱">
-          </el-col>
-          <el-col :span="20" class="contact-detail">
-            <p>邮箱:</p>
-            <p>{{ contact.email }}</p>
-          </el-col>
-        </el-row>
-        <el-row class="contact-item">
-          <el-col :span="4">
-            <img src="../assets/images/address.png" alt="地址">
-          </el-col>
-          <el-col :span="20" class="contact-detail">
-            <p>{{ company }}</p>
-            <p>{{ contact.address }}</p>
-          </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
+  <div class="login">
+    <div class="login__form">
+      <img src="../assets/images/logo.png" alt="logo" class="login__item">
+      <div class="login__form">
+        <el-input placeholder="Username" class="form__input login__item"
+          v-model="loginForm.account"
+        ></el-input>
+        <el-input placeholder="Password" type="password" class="form__input login__item"
+          v-model="loginForm.password"
+        ></el-input>
+        <el-button class="login__button login__item" type="primary"
+          @click="login"
+        >登录</el-button>
+      </div>
+      <div class="login__options login__item">
+        <el-checkbox v-model="loginForm.rememberPw">记住密码</el-checkbox>
+        <div class="login__links">
+          <router-link to="" id="forgetpw" tag="span" class="login__link">忘记密码</router-link>
+          <router-link to="/Register" tag="span" class="login__link">立即注册</router-link>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import state from '../state'
 // import bus from '../Bus.js'
-// import Api from '../Api'
 import { sendRequest } from '../Api'
 
 export default {
   name: 'Login',
   data () {
     return {
-      header: 'INNOPRO专利精准推荐系统',
-      form: {
+      loginParams: {
         account: '',
         password: ''
       },
-      contact: {
-        phone: '010-68418027',
-        email: 'service@innnopro.com',
-        address: '北京市海淀区知春路甲48号盈都大厦C座4单元19D'
-      },
-      company: '北京中科创益科技有限公司'
+      loginForm: {
+        account: '',
+        password: '',
+        rememberPw: false
+      }
     }
   },
   methods: {
     login () {
-      let params = {
-        username: this.form.account,
-        password: this.form.password
+      for (let prop in this.loginParams) {
+        if (this.loginParams.hasOwnProperty(prop)) {
+          this.loginParams[prop] = this.loginForm[prop]
+        }
       }
-      sendRequest.login.post(params).then(data => {
+      sendRequest.login.post(this.loginParams).then(data => {
         state.set('isLogin', true)
         state.set('userId', data.user_id)
         this.$router.push('Home')
@@ -92,43 +61,36 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-  #container {
-    width: 80%;
-    margin: 0 auto;
+<style lang="scss">
+  .login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
   }
-  $head-color: #00f;
-  $head-font: 40px SimSun;
-  h1 {
-    margin-bottom: 50px;
-    color: $head-color;
-    font: $head-font;
+  .login__form {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
   }
-  #main {
-    .el-form {
-      width: 60%;
-      margin: 30px auto;
-    }
+  .login__item {
+    margin-bottom: 20px;
   }
-  #contact {
-    .contact-item {
-      display: flex;
-      margin-bottom: 40px;
-      img {
-        height: 60px;
-      }
-      .contact-detail {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: flex-start;
-        p {
-          margin: 0;
-        }
-      }
-    }
+  .login__button {
+    color: #fff;
+    border-color: #3fb5e8;
+    border-radius: 50px;
+    background: #3fb5e8;
   }
-  .span-link {
+  .login__options {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+  .login__link {
     cursor: pointer;
+    &:hover {
+      color: #3fb5e8;
+    }
   }
 </style>
