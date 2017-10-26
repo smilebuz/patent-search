@@ -156,7 +156,8 @@ export default {
         value_degree: {
           message: '价值度',
           direction: 'none'
-        },
+        }
+        /*
         potential_buyer_number: {
           message: '潜在买家数',
           direction: 'none'
@@ -165,6 +166,7 @@ export default {
           message: '相似专利数',
           direction: 'none'
         }
+        */
       },
       recentSearch: [],
       savePopover: false,
