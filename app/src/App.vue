@@ -1,13 +1,16 @@
 <template>
   <div id="app">
     <!--img src="./assets/logo.png"-->
-    <router-view></router-view>
+    <myHeader></myHeader>
+    <router-view class="container"></router-view>
   </div>
 </template>
 
 <script>
 import bus from './bus.js'
 import state from './state.js'
+
+import myHeader from '@/components/Header'
 
 export default {
   name: 'app',
@@ -20,6 +23,9 @@ export default {
       state.set('recommendList', data.recommend_list)
       state.set('session_id', data.session_id)
     })
+  },
+  components: {
+    myHeader
   }
 }
 </script>
@@ -33,5 +39,8 @@ export default {
   color: #2c3e50;
   height: 100%;
   /* margin-top: 60px; */
+}
+.container {
+  display: flex;
 }
 </style>
