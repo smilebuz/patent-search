@@ -12,9 +12,21 @@
       <router-link to="/AdvancedSearch" tag="div" class="advancedSearch__link">高级搜索</router-link>
     </div>
 
-    <div class="userContainer">
-      <img :src="userInfo.avatar" alt="avatar"></img>
-      <span>{{ userInfo.userName }}</span>
+    <div class="userContainer"
+      @mouseleave="showUserMenu = false">
+      <div class="userDropdown__header"
+        @mouseover="showUserMenu = true">
+        <img :src="userInfo.avatar" alt="avatar"></img>
+        <span>{{ userInfo.userName }}</span>
+      </div>
+      <div class="userDropdown__menu" v-if="showUserMenu">
+        <div class="userDropdownMenu__item"
+          v-for="(item, index) in userMenu"
+          :key="item.command"
+          @click="clickUserMenu(item.command)">
+          {{ item.label }}
+        </div>
+      </div>
     </div>
 
     <div class="logout__link" to="/Login" tag="div">退出</div>
@@ -43,26 +55,41 @@ export default {
       userInfo: {
         avatar: require('../assets/images/user.png'),
         userName: 'ZZZZ'
-      }
+      },
+      showUserMenu: false,
+      userMenu: [
+        {
+          label: '个人资料',
+          commend: ''
+        },
+        {
+          label: '我的收藏',
+          command: 'favor'
+        },
+        {
+          label: '退出',
+          command: 'logout'
+        }
+      ]
     }
   },
   methods: {
     submitKeyword () {
       state.setSearchParams('keyword', this.keyword)
     },
-    handleCommand (command) {
+    clickUserMenu (command) {
       switch (command) {
-        case 'manageProfile':
+        case '':
           this.$router.push('/UserManagement')
           break
-        case 'exit':
+        case 'logout':
           let params = {}
           sendRequest.logout.post(params).then((data) => {
             state.set('isLogin', false)
             this.$router.push('/Home')
           })
           break
-        case 'jump2favor':
+        case 'favor':
           this.$router.push('/Favor')
           break
         default:
@@ -139,14 +166,35 @@ export default {
     }
   }
   .userContainer {
-    height: inherit;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100px;
-    padding-left: 10px;
-    padding-right: 10px;
-    border-right: 1px solid $border-color;
+    flex-direction: column;
+    .userDropdown__header {
+      height: 45px;
+      line-height: 45px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 100px;
+      padding-left: 10px;
+      padding-right: 10px;
+      border-right: 1px solid $border-color;
+      cursor: pointer;
+    }
+    .userDropdown__menu {
+      width: 121px;
+      position: absolute;
+      top: 45px;
+      .userDropdownMenu__item {
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
+        background: #434343;
+        &:hover {
+          background: #383838;
+        }
+      }
+    }
   }
   .logout__link {
     width: 60px;
