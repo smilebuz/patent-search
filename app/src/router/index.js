@@ -14,6 +14,8 @@ import PotentialBuyer from '@/views/PotentialBuyer'
 import Favor from '@/views/Favor'
 import UserManagement from '@/views/UserManagement'
 
+import SearchResult from '@/views/SearchResult'
+
 Vue.use(Router)
 
 import state from '../state'
@@ -52,6 +54,11 @@ let router = new Router({
       name: 'Search',
       component: Search,
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/SearchResult',
+      name: 'SearchResult',
+      component: SearchResult
     },
     {
       path: '/PatentInfo',

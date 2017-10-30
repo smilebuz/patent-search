@@ -184,6 +184,7 @@ export default {
       width: 121px;
       position: absolute;
       top: 45px;
+      z-index: 999;
       .userDropdownMenu__item {
         height: 30px;
         line-height: 30px;
@@ -198,7 +199,8 @@ export default {
   }
   .logout__link {
     width: 60px;
-    padding-right: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
     height: 100%;
     line-height: 45px;
     text-align: right;

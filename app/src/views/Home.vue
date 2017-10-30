@@ -9,7 +9,7 @@
           </el-col>
         </el-row>
         <el-row id="filter-group">
-          <el-col :span="8" class="filter-item" v-for="type, index in apply_type" :key="index">
+          <el-col :span="8" class="filter-item" v-for="(type, index) in apply_type" :key="index">
             <el-radio class="radio" v-model="applyTypeSelected" v-bind:label="type.value"> {{ type.message }} </el-radio>
           </el-col>
         </el-row>
