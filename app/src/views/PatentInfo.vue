@@ -1,7 +1,9 @@
 <template lang="html">
-  <div>
-    <myHeader></myHeader>
-    <searchbar></searchbar>
+  <div class="info">
+    <div class="info__title">
+      <img src="" alt="返回上一页"></img>
+      <span>{{ patentId }}</span>
+    </div>
     <el-tabs type="border-card" class="tab" v-model="activeTab" @tab-click="switchTab">
       <el-tab-pane v-for="(tab, index) in tabs" :key="index" v-bind:label="tab.message" v-bind:name="tab.value">
 
@@ -48,9 +50,6 @@
 </template>
 
 <script>
-import myHeader from '../components/Header'
-import searchbar from '../components/SearchBar'
-
 import state from '../state.js'
 import { sendRequest } from '../Api'
 
@@ -157,14 +156,17 @@ export default {
     sendRequest.patentInfo.get(null, ids).then(data => {
       this.fillInfo(data)
     })
-  },
-  components: {
-    myHeader, searchbar
   }
 }
 </script>
 
 <style lang="scss">
+  .info {
+    flex-direction: column;
+  }
+  .info__title {
+
+  }
   .tab {
     width: 70%;
     margin: 0 auto;

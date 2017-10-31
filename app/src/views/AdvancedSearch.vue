@@ -1,55 +1,59 @@
 <template lang="html">
-  <div class="">
-    <myHeader></myHeader>
-    <el-checkbox-group v-model="application_type">
-      <el-checkbox v-for="(type, index) in applicationTypes" :key="index" :label="type.value">{{ type.label }}</el-checkbox>
+  <div class="advancedSearch">
+    <el-checkbox-group v-model="application_type" class="checkboxgroup">
+      <el-checkbox
+        v-for="(type, index) in applicationTypes"
+        :key="index"
+        :label="type.value"
+        >{{ type.label }}
+      </el-checkbox>
     </el-checkbox-group>
-    <div class="form-container">
+    <div class="formContainer">
       <el-form ref="form" :model="form" label-width="90px">
-        <el-form-item label="申请号: ">
+        <el-form-item label="申请号: " class="form__item">
           <el-input v-model="form.number" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="关键词: ">
+        <el-form-item label="关键词: " class="form__item">
           <el-input v-model="form.keyword_list" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="发明名称: ">
+        <el-form-item label="发明名称: " class="form__item">
           <el-input v-model="form.invention_title" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="分类号: ">
+        <el-form-item label="分类号: " class="form__item">
           <el-input v-model="form.ipc_main_classification_no" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="申请人: ">
+        <el-form-item label="申请人: " class="form__item">
           <el-input v-model="form.applicant" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="发明人: ">
+        <el-form-item label="发明人: " class="form__item">
           <el-input v-model="form.inventor_list" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="地址: ">
+        <el-form-item label="地址: " class="form__item">
           <el-input v-model="form.address" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="国省代码: ">
+        <el-form-item label="国省代码: " class="form__item">
           <el-input v-model="form.province" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="代理人: ">
+        <el-form-item label="代理人: " class="form__item">
           <el-input v-model="form.agent" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="代理机构: ">
+        <el-form-item label="代理机构: " class="form__item">
           <el-input v-model="form.agency" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="权利要求书: ">
+        <el-form-item label="权利要求书: " class="form__item">
           <el-input v-model="form.claim" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="说明书: ">
+        <el-form-item label="说明书: " class="form__item">
           <el-input v-model="form.description" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="注册资金: ">
+        <el-form-item label="注册资金: " class="form__item">
           <el-input v-model="form.registration_capital" size="small">
             <el-select slot="prepend" placeholder="" v-model="form.fundRelation" class="form-select">
               <el-option v-for="item in form.relations" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-input>
         </el-form-item>
-        <el-form-item label="营业收入: ">
+        <el-form-item label="营业收入: " class="form__item">
           <el-input v-model="form.revenue" size="small">
             <el-select slot="prepend" placeholder="" v-model="form.revenueRelation" class="form-select">
               <el-option v-for="item in form.relations" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -57,24 +61,33 @@
           </el-input>
         </el-form-item>
       </el-form>
-    </div>
-    <div class="filter-container">
-      <div class="filter" v-for="filter in filters" :key="filter.value" @click="addFormulaFilter(filter.value)">
-        {{ filter.value }}
+      <div class="operator-container">
+        <div class="operator"
+          v-for="operator in operators"
+          :key="operator.value"
+          @click="addFormulaoperator(operator.value)"
+          >{{ operator.value }}
+        </div>
+      </div>
+      <el-input class="formula__input"
+        type="textarea"
+        :rows="3"
+        v-model="formula">
+      </el-input>
+      <div class="buttons">      
+        <el-button type="button" class="button-generate button">生成检索式</el-button>
+        <el-button type="button" @click="search" class="button-search button">检索</el-button>
       </div>
     </div>
-    <div class="formula-container">
-      <el-input type="textarea" :rows="3" v-model="formula">
-      </el-input>
-      <el-button type="button">生成检索式</el-button>
-      <el-button type="button" @click="search">检索</el-button>
+    <div class="tips">
+      <span class="tips__title">注意:</span>
+      <span>申请(专利)号、公开(公告)号前不用加“ZL”或“CN”。</span>
+      <span>字段内各检索词之间可进行AND、OR、NOT运算，使用时AND、OR、NOT必须大写。字段内各检索词如以空格间隔，默认为AND关系。</span>
     </div>
   </div>
 </template>
 
 <script>
-import myHeader from '../components/Header'
-
 import bus from '../bus.js'
 import state from '../state.js'
 import { sendRequest } from '../Api'
@@ -125,7 +138,7 @@ export default {
           'label': '='
         }]
       },
-      filters: [
+      operators: [
         {
           value: 'AND'
         },
@@ -146,8 +159,8 @@ export default {
     }
   },
   methods: {
-    addFormulaFilter (filter) {
-      this.formula += (' ' + filter + ' ')
+    addFormulaoperator (operator) {
+      this.formula += (' ' + operator + ' ')
     },
     search () {
       if (this.formula) {
@@ -194,27 +207,32 @@ export default {
         })
       }
     }
-  },
-  components: {
-    myHeader
   }
 }
 </script>
 
 <style lang="scss">
-  @mixin container {
-    width: 80%;
+  .advancedSearch {
+    flex-direction: column;
   }
-  .form-container {
-    @include container;
-    margin: 20px auto;
+  .checkboxgroup {
+    padding: 20px 0;
+    text-align: center;
+  }
+  .formContainer {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    border: 2px solid #cdcdcd;
+    width: 60%;
     form {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
       overflow: auto;
-      border: 2px solid #000;
       padding: 5%;
+      padding-bottom: 0;
       .el-form-item {
-        width: 50%;
-        float: left;
         .form-select {
           padding: 0;
           width: 60px;
@@ -223,33 +241,59 @@ export default {
       }
     }
   }
-  .filter-container {
-    @include container;
+  .form__item {
+    margin-bottom: 0;
+    float: left;
+    flex-basis: 40%;
+  }
+  .operator-container {
     display: flex;
     margin: 10px auto;
-    .filter {
-      width: 40px;
-      height: 40px;
+    .operator {
+      width: 48px;
+      height: 30px;
       margin-right: 20px;
-      line-height: 40px;
-      border: 2px solid #ccc;
-      border-radius: 50%;
+      line-height: 30px;
+      border-radius: 2px;
       cursor: pointer;
-      &:first-child {
-        margin-left: 50px;
-      }
+      text-align: center;
+      font-weight: 700;
+      color: #fff;
+      background: #a0a0a0;
     }
   }
-  .formula-container {
-    @include container;
-    .el-textarea {
-      width: 50%;
-    }
-    .el-button {
-      font-weight: 700;
-      background-color: #008080;
-      border-color: #008080;
+  .formula__input {
+    width: 50%;
+    margin: 0 auto;
+  }
+  .buttons {
+    margin-top: 10px;
+    padding-bottom: 5%;
+    text-align: center;
+    border: 1px solid #fff;
+    .button {
+      border-radius: 2px;
       color: #fff;
+    }
+    .button-generate {
+      border-color: #51b2b0;
+      background: #51b2b0;
+    }
+    .button-search {
+      border-color: #46b6e9;
+      background: #46b6e9;
+    }
+  }
+  .tips {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin: 20px auto;
+    color: #848484;
+    font-size: 12px;
+    font-weight: 700;
+    .tips__title {
+      color: #ee3d29;
     }
   }
 </style>

@@ -7,6 +7,9 @@
         {{ item.name }}
       </div>
     </div>
+    <div class="filterSelect">
+      <el-select size="small"></el-select>
+    </div>
   </div>
 </template>
 
@@ -63,5 +66,9 @@ export default {
         flex: 2;
       }
     }
+  }
+  .filterSelect {
+    padding: 10px;
+    border-bottom: 1px solid #e8e8e8;
   }
 </style>
