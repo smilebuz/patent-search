@@ -7,9 +7,9 @@
         {{ item.name }}
       </div>
     </div>
-    <div class="filterSelect">
+    <!--div class="filterSelect">
       <el-select size="small"></el-select>
-    </div>
+    </div-->
   </div>
 </template>
 

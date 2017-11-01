@@ -98,6 +98,10 @@ export default {
           break
       }
     }
+  },
+  created () {
+    this.keyword = '设备'
+    this.submitKeyword()
   }
 }
 </script>

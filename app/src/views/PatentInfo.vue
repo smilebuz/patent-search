@@ -293,7 +293,6 @@ export default {
   },
   created () {
     this.patentId = this.$route.params.patentId
-    debugger
     let ids = {
       patentId: this.patentId
     }
@@ -326,7 +325,7 @@ export default {
   }
   .tab {
     width: 70%;
-    margin: 0 auto;
+    margin: 10px auto;
   }
   .table-row-title {
     width: 20%;

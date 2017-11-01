@@ -75,9 +75,9 @@
                 <span class="abstract__button">更多</span>
               </div>
               <div class="patentInfo__links">
-                <span class="info__link">申请人经营信息</span>
-                <span class="info__link">相似专利</span>
-                <span class="info__link">潜在卖家</span>
+                <span class="info__link" @click="checkRelatedInfo('applicant', patent)">申请人经营信息</span>
+                <span class="info__link" @click="checkRelatedInfo('similarity', patent)">相似专利</span>
+                <span class="info__link" @click="checkRelatedInfo('buyer', patent)">潜在买家</span>
               </div>
             </div>
           </div>
@@ -230,6 +230,11 @@ export default {
     },
     checkPatentInfo (patentId) {
       this.$router.push('/PatentInfo/' + patentId)
+    },
+    checkRelatedInfo (infoType, patent) {
+      debugger
+      // this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/' + patent.applicant_id)
+      this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/778929080')
     },
     changePageSize (pageSize) {
       state.setSearchParams('per_page', pageSize)

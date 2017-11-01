@@ -6,16 +6,16 @@ export const Api = {
   'logout': '/api/logout', // post
   'register': '/api/register', // post
 
-  'search': '/api/search', // post
+  'search': '/api/search', // get
   'filter': '/api/filter', // post
   'sort': '/api/sort', // post
 
   'patentInfo': '/api/patents/{patentId}', // get
   'legalStatus': '/api/patents/{patentId}/legal_statuses', // get
-  'similarPatent': '/api/patents/{patentId}/similarities?per_page=5&page=1', // get
+  'similarPatent': '/api/patents/{patentId}/similarities', // get
   'applicant': '/api/applicants/{applicantId}', // get
   'valuedegree': '/api/patents/{patentId}/values', // get
-  'potentialBuyer': '/api/patents/{patentId}/applicants?intent=potential_buyer&per_page=10&page=1', // get
+  'potentialBuyer': '/api/patents/{patentId}/potential_buyers', // get
 
   'recentSearch': '/api/users/{userId}/recent_queries?per_page=5&page=1', // get
   'userPatent': '/api/users/{userId}/applicants?per_page=3&page=1', // get
@@ -62,7 +62,7 @@ export const sendRequest = ((apilist) => {
         }
         console.log('api get:', apilist[api])
         if (params) {
-          return axios.get(apilist[api], params)
+          return axios.get(apilist[api], {params: params})
             .then(response => {
               return Promise.resolve(response.data.result)
             })

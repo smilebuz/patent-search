@@ -15,6 +15,7 @@ import Favor from '@/views/Favor'
 import UserManagement from '@/views/UserManagement'
 
 import SearchResult from '@/views/SearchResult'
+import RelatedInfo from '@/views/RelatedInfo'
 
 Vue.use(Router)
 
@@ -69,6 +70,12 @@ let router = new Router({
       meta: { requiresAuth: true }
     },
     {
+      path: '/RelatedInfo/:infoType/:patentId/:applicantId',
+      name: 'RelatedInfo',
+      component: RelatedInfo,
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/ValueDegree',
       name: 'ValueDegree',
       component: ValueDegree,
@@ -112,7 +119,6 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    debugger
     if (!userState.get('isLogin')) {
       next({
         path: '/Login',

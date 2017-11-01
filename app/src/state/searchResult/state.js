@@ -54,10 +54,10 @@ export default new Vue({
     searchParams: {
       handler: function (newParams) {
         // bus.$emit('updateSearchParams', newParams)
-        sendRequest.search.post(newParams).then(data => {
+        sendRequest.search.get(newParams).then(data => {
           this.set('patentList', data.patent_list)
           this.set('recommendList', data.recommend_list)
-          this.set('filterList', data.filter_list)
+          this.set('filterList', data.filter_sidebar_list)
           for (let prop in this.pageInfo) {
             if (this.pageInfo.hasOwnProperty(prop)) {
               this.pageInfo[prop] = data[prop]
