@@ -1,19 +1,28 @@
 import Vue from 'vue'
-import bus from './bus.js'
+import bus from '../../bus.js'
+import { sendRequest } from '../../Api'
 
 export default new Vue({
   data () {
     return {
-      isLogin: '',
-      userId: '',
-      session_id: '',
       patentId: '', // 不同的信息读取 例如专利信息
       applicantId: '', // 不同的申请人ID
-      searchParams: {},
-      // sortParams: {},
+      searchParams: {
+        apply_type: 'inventions',
+        search_type: 'common',
+        field: 'keywords',
+        query: '',
+        per_page: 10,
+        page: 1
+      },
       patentList: [],
       filterList: [],
-      recommendList: [],
+      recommendList: {},
+      pageInfo: {
+        current_page: -1,
+        total_page_number: -1,
+        total_item_number: -1
+      },
       favorId: '', // 收藏目录ID
       favorList: []
     }
@@ -33,9 +42,6 @@ export default new Vue({
     }
   },
   watch: {
-    userId (newId) {
-      bus.$emit('setUserId', newId)
-    },
     patentId (newId) {
       bus.$emit('setPatentId', newId)
     },
@@ -47,18 +53,20 @@ export default new Vue({
     },
     searchParams: {
       handler: function (newParams) {
-        bus.$emit('updateSearchParams', newParams)
+        // bus.$emit('updateSearchParams', newParams)
+        sendRequest.search.post(newParams).then(data => {
+          this.set('patentList', data.patent_list)
+          this.set('recommendList', data.recommend_list)
+          this.set('filterList', data.filter_list)
+          for (let prop in this.pageInfo) {
+            if (this.pageInfo.hasOwnProperty(prop)) {
+              this.pageInfo[prop] = data[prop]
+            }
+          }
+        })
       },
       deep: true
     },
-    /*
-    sortParams: {
-      handler: function (newParams, oldParams) {
-        bus.$emit('updateSortParams', newParams)
-      },
-      deep: true
-    }
-    */
     patentList: {
       handler: function (newList) {
         bus.$emit('updatePatentList', newList)

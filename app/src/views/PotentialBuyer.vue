@@ -1,7 +1,5 @@
 <template lang="html">
   <div>
-    <myHeader></myHeader>
-    <searchbar></searchbar>
     <el-table :data="buyerTable" border align="left" class="table" @cell-click="loadApplicantInfo">
       <el-table-column prop="order" label="序号"></el-table-column>
       <el-table-column prop="applicant_name" label="卖家名称"></el-table-column>
@@ -16,10 +14,7 @@
 </template>
 
 <script>
-import myHeader from '../components/Header'
-import searchbar from '../components/SearchBar'
-
-import state from '../state.js'
+import state from '../state/searchResult/state.js'
 import { sendRequest } from '../Api'
 
 export default {
@@ -48,9 +43,6 @@ export default {
         buyer.main_product_list = buyer.main_product_list.join(';')
       }
     })
-  },
-  components: {
-    myHeader, searchbar
   }
 }
 </script>

@@ -20,7 +20,7 @@
 import myheader from '../components/Header'
 import searchbar from '../components/SearchBar'
 
-import state from '../state'
+import state from '../state/searchResult/state.js'
 import { sendRequest } from '../Api'
 
 export default {

@@ -2,19 +2,19 @@
 import axios from 'axios'
 
 export const Api = {
-  'login': '/api/users/login', // post
-  'logout': '/api/users/logout', // post
-  'register': '/api/users/register', // post
+  'login': '/api/login', // post
+  'logout': '/api/logout', // post
+  'register': '/api/register', // post
 
   'search': '/api/search', // post
   'filter': '/api/filter', // post
   'sort': '/api/sort', // post
 
   'patentInfo': '/api/patents/{patentId}', // get
+  'legalStatus': '/api/patents/{patentId}/legal_statuses', // get
   'similarPatent': '/api/patents/{patentId}/similarities?per_page=5&page=1', // get
   'applicant': '/api/applicants/{applicantId}', // get
   'valuedegree': '/api/patents/{patentId}/values', // get
-  'legatStatus': '/api/patents/{patentId}/legal_statuses', // get
   'potentialBuyer': '/api/patents/{patentId}/applicants?intent=potential_buyer&per_page=10&page=1', // get
 
   'recentSearch': '/api/users/{userId}/recent_queries?per_page=5&page=1', // get

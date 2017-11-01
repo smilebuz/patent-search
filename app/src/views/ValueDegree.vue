@@ -44,7 +44,7 @@
 import myHeader from '../components/Header'
 import searchbar from '../components/SearchBar'
 
-import state from '../state.js'
+import state from '../state/searchResult/state.js'
 import { sendRequest } from '../Api'
 
 export default {

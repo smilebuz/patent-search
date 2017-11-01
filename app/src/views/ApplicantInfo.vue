@@ -28,7 +28,7 @@
 import myHeader from '../components/Header'
 import searchbar from '../components/SearchBar'
 
-import state from '../state.js'
+import state from '../state/searchResult/state.js'
 // import bus from '../bus.js'
 import { sendRequest } from '../Api'
 

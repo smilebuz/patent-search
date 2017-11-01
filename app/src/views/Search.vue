@@ -125,7 +125,7 @@
 
 <script>
 import bus from '../bus.js'
-import state from '../state.js'
+import state from '../state/searchResult/state.js'
 import {sendRequest} from '../Api'
 
 import axios from 'axios'

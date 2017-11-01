@@ -4,7 +4,7 @@
       <img src="../assets/images/logo.png" alt="logo" class="login__item">
       <div class="login__form">
         <el-input placeholder="Username" class="form__input login__item"
-          v-model="loginForm.account"
+          v-model="loginForm.username"
         ></el-input>
         <el-input placeholder="Password" type="password" class="form__input login__item"
           v-model="loginForm.password"
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import state from '../state'
+import { userState } from '../state/user/state.js'
 // import bus from '../Bus.js'
 import { sendRequest } from '../Api'
 
@@ -35,11 +35,11 @@ export default {
   data () {
     return {
       loginParams: {
-        account: '',
+        username: '',
         password: ''
       },
       loginForm: {
-        account: '',
+        username: '',
         password: '',
         rememberPw: false
       }
@@ -53,9 +53,9 @@ export default {
         }
       }
       sendRequest.login.post(this.loginParams).then(data => {
-        state.set('isLogin', true)
-        state.set('userId', data.user_id)
-        this.$router.push('Home')
+        userState.set('isLogin', true)
+        userState.set('userId', data.user_id)
+        this.$router.push('SearchResult')
       })
     }
   }

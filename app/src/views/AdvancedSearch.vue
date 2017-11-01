@@ -89,7 +89,7 @@
 
 <script>
 import bus from '../bus.js'
-import state from '../state.js'
+import state from '../state/searchResult/state.js'
 import { sendRequest } from '../Api'
 
 export default {
@@ -288,7 +288,6 @@ export default {
     display: flex;
     flex-direction: column;
     width: 60%;
-    margin: 20px auto;
     color: #848484;
     font-size: 12px;
     font-weight: 700;

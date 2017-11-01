@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import state from '../state.js'
+import state from '../state/searchResult/state.js'
 import bus from '../bus.js'
 
 export default {

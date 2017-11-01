@@ -7,7 +7,9 @@
           v-model="keyword"
           v-on:keyup.enter.native="submitKeyword">
         </el-input>
-        <div class="searchbox__icon"></div>
+        <div class="searchbox__icon"
+          @click="submitKeyword"
+        ></div>
       </div>
       <router-link to="/AdvancedSearch" tag="div" class="advancedSearch__link">高级搜索</router-link>
     </div>
@@ -29,7 +31,7 @@
       </div>
     </div>
 
-    <div class="logout__link" to="/Login" tag="div">退出</div>
+    <div class="logout__link" @click="logout">退出</div>
 
     <!--div class="header-user">
       <el-dropdown @command="handleCommand">
@@ -46,7 +48,8 @@
 
 <script>
 import { sendRequest } from '../Api'
-import state from '../state.js'
+import state from '../state/searchResult/state.js'
+import { userState } from '../state/user/state.js'
 
 export default {
   data () {
@@ -75,19 +78,18 @@ export default {
   },
   methods: {
     submitKeyword () {
-      state.setSearchParams('keyword', this.keyword)
+      state.setSearchParams('query', this.keyword)
+    },
+    logout () {
+      sendRequest.logout.get().then((data) => {
+        userState.set('isLogin', false)
+        this.$router.push('/ValueDegree')
+      })
     },
     clickUserMenu (command) {
       switch (command) {
         case '':
           this.$router.push('/UserManagement')
-          break
-        case 'logout':
-          let params = {}
-          sendRequest.logout.post(params).then((data) => {
-            state.set('isLogin', false)
-            this.$router.push('/Home')
-          })
           break
         case 'favor':
           this.$router.push('/Favor')
@@ -101,7 +103,6 @@ export default {
 </script>
 
 <style lang="scss">
-  $company-name-color: #008080;
   $border-color: #383838;
   .header {
     display: flex;

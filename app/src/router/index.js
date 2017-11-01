@@ -18,14 +18,15 @@ import SearchResult from '@/views/SearchResult'
 
 Vue.use(Router)
 
-import state from '../state'
+import { userState } from '../state/user/state.js'
 
 let router = new Router({
   // mode: 'history',
   routes: [
     {
       path: '/',
-      redirect: '/Home'
+      redirect: '/SearchResult',
+      meta: { requiresAuth: true }
     },
     {
       path: '/Login',
@@ -58,10 +59,11 @@ let router = new Router({
     {
       path: '/SearchResult',
       name: 'SearchResult',
-      component: SearchResult
+      component: SearchResult,
+      meta: { requiresAuth: true }
     },
     {
-      path: '/PatentInfo',
+      path: '/PatentInfo/:patentId',
       name: 'PatentInfo',
       component: PatentInfo,
       meta: { requiresAuth: true }
@@ -110,7 +112,8 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (!state.get('isLogin')) {
+    debugger
+    if (!userState.get('isLogin')) {
       next({
         path: '/Login',
         query: { redirect: to.fullPath }

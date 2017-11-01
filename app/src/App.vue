@@ -7,13 +7,14 @@
 </template>
 
 <script>
-import bus from './bus.js'
-import state from './state.js'
+// import bus from './bus.js'
+// import state from './state/searchResult/state.js'
 
 import myHeader from '@/components/Header'
 
 export default {
   name: 'app',
+  /*
   created () {
     bus.$on('search', data => {
       // window.tempdata = data.patent_list
@@ -24,6 +25,7 @@ export default {
       state.set('session_id', data.session_id)
     })
   },
+  */
   components: {
     myHeader
   }

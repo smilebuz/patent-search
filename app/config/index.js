@@ -24,14 +24,21 @@ module.exports = {
   dev: {
     env: require('./dev.env'),
     port: 8080,
-    // port: 9080,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      /*
       '/api': {
-        // target: 'www.baidu.com'
         target: 'http://123.56.179.3:9080/v1',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+      */
+      '/api': {
+        target: 'http://1tu8555153.51mypc.cn:9898/v1',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
