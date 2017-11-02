@@ -71,6 +71,7 @@
             <div class="pagination">
               <span class="pagination__info">总计{{ similarityPageInfo.total_item_number }}条记录</span>
               <el-pagination class="pagination__page"
+                :key="pageKeys[0]"
                 :page-size="similarityParams.per_page"
                 :page-sizes="[10, 20, 30]"
                 :current-page="similarityPageInfo.current_page"
@@ -98,7 +99,8 @@
             </el-table>
             <div class="pagination">
               <span class="pagination__info">总计{{ buyerPageInfo.total_item_number }}条记录</span>
-              <!--el-pagination class="pagination__page"
+              <el-pagination class="pagination__page"
+                :key="pageKeys[1]"
                 :page-size="buyerParams.per_page"
                 :page-sizes="[10, 20, 30]"
                 :current-page="buyerPageInfo.current_page"
@@ -106,7 +108,7 @@
                 @size-change="changeBuyerPageSize"
                 @current-change="changeBuyerPageNum"
                 layout="total, sizes, prev, pager, next, jumper">
-              </el-pagination-->
+              </el-pagination>
             </div>
           </div>
         </div>
@@ -331,6 +333,7 @@ export default {
         per_page: 10,
         page: 1
       },
+      pageKeys: ['similarityPage', 'buyerPage'],
       tableKeys: ['applicantTable', 'valueTable', 'similarityTable', 'buyerTable']
     }
   },
