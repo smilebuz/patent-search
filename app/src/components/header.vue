@@ -54,7 +54,8 @@ import { userState } from '../state/user/state.js'
 export default {
   data () {
     return {
-      keyword: '',
+      // keyword: '',
+      keywordInput: '',
       userInfo: {
         avatar: require('../assets/images/user.png'),
         userName: 'ZZZZ'
@@ -76,9 +77,20 @@ export default {
       ]
     }
   },
+  computed: {
+    keyword: {
+      get () {
+        return state.get('searchParams').query
+      },
+      set (newValue) {
+        this.keywordInput = newValue
+      }
+    }
+  },
   methods: {
     submitKeyword () {
-      state.setSearchParams('query', this.keyword)
+      state.setSearchParams('field', 'keywords')
+      state.setSearchParams('query', this.keywordInput)
     },
     logout () {
       sendRequest.logout.get().then((data) => {

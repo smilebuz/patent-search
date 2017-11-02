@@ -54,7 +54,11 @@
                 </div>
               </div>
               <div class="patentInfo__info">
-                <div class="info__item">申请人: <span class="info__link info__link-light">{{ patent.applicant_name }}</span></div>
+                <div class="info__item">申请人:  
+                  <span class="info__link info__link-light"
+                    @click="changeSearchParams('applicant', patent.applicant_name)">{{ patent.applicant_name }}
+                  </span>
+                </div>
                 <div class="info__item">发明人:
                   <span class="info__link"
                     v-for="(inventor, index) in patent.inventor_list"
@@ -235,6 +239,10 @@ export default {
       debugger
       // this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/' + patent.applicant_id)
       this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/778929080')
+    },
+    changeSearchParams (field, query) {
+      state.setSearchParams('field', field)
+      state.setSearchParams('query', query)
     },
     changePageSize (pageSize) {
       state.setSearchParams('per_page', pageSize)
