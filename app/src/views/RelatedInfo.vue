@@ -29,38 +29,42 @@
       <div class="tabs__body">
         <div class="body__sidePic"></div>
         <div class="body__content">
+
           <div class="tab__content-container" v-if="currentTab === 'applicant'">
             <el-table class="tab__content-table"
               border
               align="left"
-              :data="applicantTable">
+              :data="applicantTable"
+              :key="tableKeys[0]">
               <el-table-column prop="title" label="信息名称" class="table-row-title"></el-table-column>
               <el-table-column prop="text" label="信息内容"></el-table-column>
             </el-table>
           </div>
 
-          <div class="tab__content-container" v-else-if="currentTab === 'value'">
+          <div class="tab__content-container" v-if="currentTab === 'value'">
             <el-table class="tab__content-table"
               border
               aligh="left"
-              :data="valueTable">
+              :data="valueTable"
+              :key="tableKeys[1]">
               <el-table-column prop="similarity_score" label="评估项"></el-table-column>
               <el-table-column prop="invention_title" label="得分值"></el-table-column>
               <el-table-column prop="publish_date" label="总分"></el-table-column>
             </el-table>
           </div>
 
-          <div class="tab__content-container" v-else-if="currentTab === 'similarity'">
+          <div class="tab__content-container" v-if="currentTab === 'similarity'">
             <el-table class="tab__content-table"
               border
               aligh="left"
-              :data="similarityTable">
-              <el-table-column prop="similarity_score" label="相似度"></el-table-column>
+              :data="similarityTable"
+              :key="tableKeys[2]">
+              <el-table-column prop="similarity_score" label="相似度" width="70"></el-table-column>
               <el-table-column prop="invention_title" label="相似专利名称"></el-table-column>
-              <el-table-column prop="publish_date" label="公开号"></el-table-column>
+              <el-table-column prop="publish_date" label="公开号" width="100"></el-table-column>
               <el-table-column prop="applicant_name" label="申请人"></el-table-column>
               <el-table-column prop="inventor_list" label="发明人"></el-table-column>
-              <el-table-column prop="ipc_main_classification_no" label="分类号"></el-table-column>
+              <el-table-column prop="ipc_main_classification_no" label="分类号" width="100"></el-table-column>
               <el-table-column prop="product_classification_list" label="产品分类"></el-table-column>
               <el-table-column prop="neic_name_List" label="国民经济分类"></el-table-column>
             </el-table>
@@ -78,22 +82,23 @@
             </div>
           </div>
 
-          <div class="tab__content-container" v-else>
+          <div class="tab__content-container" v-if="currentTab === 'buyer'">
             <el-table class="tab__content-table"
               border
               align="left"
-              :data="buyerTable">
-              <el-table-column prop="applicant_name" label="买家名称"></el-table-column>
-              <el-table-column prop="area" label="所在地"></el-table-column>
-              <el-table-column prop="fount_year" label="成立时间"></el-table-column>
-              <el-table-column prop="registration_capital" label="注册资金"></el-table-column>
-              <el-table-column prop="annual_revenue" label="年营业额"></el-table-column>
-              <el-table-column prop="owned_patents_number" label="拥有专利数"></el-table-column>
+              :data="buyerTable"
+              :key="tableKeys[3]">
+              <el-table-column prop="applicant_name" label="买家名称" width="230"></el-table-column>
+              <el-table-column prop="area" label="所在地" width="75"></el-table-column>
+              <el-table-column prop="fount_year" label="成立时间" width="100"></el-table-column>
+              <el-table-column prop="registration_capital" label="注册资金" width="100"></el-table-column>
+              <el-table-column prop="annual_revenue" label="年营业额" width="100"></el-table-column>
+              <el-table-column prop="owned_patents_number" label="拥有专利数" width="95"></el-table-column>
               <el-table-column prop="main_product_list" label="主营产品"></el-table-column>
             </el-table>
             <div class="pagination">
               <span class="pagination__info">总计{{ buyerPageInfo.total_item_number }}条记录</span>
-              <el-pagination class="pagination__page"
+              <!--el-pagination class="pagination__page"
                 :page-size="buyerParams.per_page"
                 :page-sizes="[10, 20, 30]"
                 :current-page="buyerPageInfo.current_page"
@@ -101,7 +106,7 @@
                 @size-change="changeBuyerPageSize"
                 @current-change="changeBuyerPageNum"
                 layout="total, sizes, prev, pager, next, jumper">
-              </el-pagination>
+              </el-pagination-->
             </div>
           </div>
         </div>
@@ -325,7 +330,8 @@ export default {
       buyerParams: {
         per_page: 10,
         page: 1
-      }
+      },
+      tableKeys: ['applicantTable', 'valueTable', 'similarityTable', 'buyerTable']
     }
   },
   /*

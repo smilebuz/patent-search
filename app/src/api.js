@@ -17,7 +17,7 @@ export const Api = {
   'valuedegree': '/api/patents/{patentId}/values', // get
   'potentialBuyer': '/api/patents/{patentId}/potential_buyers', // get
 
-  'recentSearch': '/api/users/{userId}/recent_queries?per_page=5&page=1', // get
+  'recentSearch': '/api/recent_queries', // get
   'userPatent': '/api/users/{userId}/applicants?per_page=3&page=1', // get
 
   'getFavor': '/api/users/{userId}/favorites?per_page=4&page=1', // get

@@ -3,14 +3,18 @@
     <div class="buttongroup">
       <div class="buttongroup__button"
         v-for="(item, index) in navGroup"
-        :key="item.value">
+        :key="item.value"
+        :class="{ 'menu-activate': item.activate}"
+        @click="currentMenu = item.value">
         {{ item.name }}
       </div>
     </div>
     <!--div class="filterSelect">
       <el-select size="small"></el-select>
     </div-->
-    <el-collapse class="filter__collapse" v-model="filterCollapse">
+    <el-collapse class="filter__collapse"
+      v-model="filterCollapse"
+      v-if="currentMenu === 'filter'">
       <el-collapse-item class="filter__item"
         v-for="(value, key) in filterPairs"
         :key="key"
@@ -35,11 +39,19 @@
         </el-checkbox-group>
       </el-collapse-item>
     </el-collapse>
+    <div class="recentSearch__container" v-if="currentMenu === 'recentSearch'">
+      <div class="recentSearch__item"
+        v-for="(item, index) in recentSearchList"
+        :key="item.timestamp"
+        @click="submitSearchParams(item.field, item.query)">{{item.query}}
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import state from '../state/searchResult/state.js'
+import { sendRequest } from '../Api'
 
 export default {
   data () {
@@ -47,18 +59,21 @@ export default {
       navGroup: [
         {
           name: '过滤',
-          value: 'filter'
+          value: 'filter',
+          activate: false
         },
         {
           name: '最近搜索',
-          value: 'recentSearch'
+          value: 'recentSearch',
+          activate: false
         },
         {
           name: '分类导航',
-          value: 'categroyNav'
+          value: 'categroyNav',
+          activate: false
         }
       ],
-      currentNav: 'filter',
+      currentMenu: '',
       filterCollapse: '',
       filterPairs: {
         apply_type_list: '专利类型',
@@ -75,13 +90,46 @@ export default {
         national_economy_industry_list: [],
         applicant_name_list: [],
         area_list: []
-      }
+      },
+      recentSearchParams: {
+        per_page: 10,
+        page: 1
+      },
+      recentSearchList: []
     }
   },
   computed: {
     filterList: function () {
       return state.filterList
     }
+  },
+  watch: {
+    currentMenu: {
+      handler: function (newValue) {
+        this.navGroup.forEach(nav => {
+          if (nav.value === newValue) {
+            nav.activate = true
+          } else {
+            nav.activate = false
+          }
+        })
+        if (newValue === 'recentSearch') {
+          // 最近搜索应该没有参数才对
+          sendRequest.recentSearch.get(this.recentSearchParams).then(data => {
+            this.recentSearchList = data
+          })
+        }
+      }
+    }
+  },
+  methods: {
+    submitSearchParams (field, query) {
+      state.setSearchParams('field', field)
+      state.setSearchParams('query', query)
+    }
+  },
+  created () {
+    this.currentMenu = this.navGroup[0].value
   }
 }
 </script>
@@ -89,6 +137,7 @@ export default {
 <style lang="scss">
   .sideMenu {
     width: 200px;
+    min-width: 200px;
     display: flex;
     flex-direction: column;
   }
@@ -119,6 +168,10 @@ export default {
       }
     }
   }
+  .menu-activate {
+    background: #46b6e9;
+    color: #fff;
+  }
   .filterSelect {
     padding: 10px;
     border-bottom: 1px solid #e8e8e8;
@@ -148,6 +201,22 @@ export default {
       .el-checkbox__label {
         font-size: 12px;
       }
+    }
+  }
+  .recentSearch__container {
+    display: flex;
+    flex-direction: column;
+  }
+  .recentSearch__item {
+    height: 35px;
+    line-height: 35px;
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    border-bottom: 1px solid #e6ebf5;
+    cursor: pointer;
+    &:hover {
+      background: #e6ebf5;
     }
   }
 </style>
