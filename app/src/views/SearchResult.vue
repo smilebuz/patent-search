@@ -4,21 +4,22 @@
     <div class="resultPanel">
       <div class="toolbar">
         <el-button-group class="toolbox">
-          <el-button class="button">
+          <el-button class="button" @click="displayType = 'list'">
             <img src="../assets/images/list.png" alt="列表式"></img>
           </el-button>
-          <el-button class="button">
+          <el-button class="button" @click="displayType = 'table'">
             <img src="../assets/images/table.png" alt="表格式"></img>
           </el-button>
         </el-button-group>
         <el-select class="sortSelection toolbox"
           size="small"
-          v-model="sortSelected">
+          v-model="sortSelected"
+          @change="submitSortParams">
           <el-option
             v-for="(option, index) in sortOptions"
             :key="option.label"
             :label="option.label"
-            :value="option.value">
+            :value="index">
             <img :src="option.imgUrl" alt="排序方向">
             <span>{{ option.label }}</span>
           </el-option>
@@ -32,10 +33,12 @@
         </el-button>
       </div>
       <div class="listPanel">
-        <div class="selectAll">
+        <div class="selectAll" v-if="displayType === 'list'">
           <el-checkbox v-model="selectAll">全选</el-checkbox>
         </div>
-        <div class="patentList" v-loading="loadingPatentList">
+        <div class="patentList"
+          v-loading="loadingPatentList"
+          v-if="displayType === 'list'">
           <div class="patent"
             v-for="(patent, index) in patentList"
             :key="patent.patent_id">
@@ -86,11 +89,36 @@
             </div>
           </div>
         </div>
+        <div class="listTable" v-if="displayType === 'table'">
+          <el-table
+            border
+            align="left"
+            :data="patentList"
+            key="patentTable">
+            <el-table-column type="selection"></el-table-column>
+            <el-table-column prop="apply_type" label="专利类型" width="80"></el-table-column>
+            <el-table-column prop="publish_no" label="公开号" width="100"></el-table-column>
+            <el-table-column prop="invention_title" label="专利名称"></el-table-column>
+            <el-table-column prop="applicant_name" label="专利权人" width="165"></el-table-column>
+            <el-table-column label="发明人" width="180">
+              <template slot-scope="scope">
+                <span
+                  v-for="(inventor, index) in scope.row.inventor_list"
+                  :key="inventor"
+                  >{{ inventor }}
+                </span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="apply_date" label="申请日" width="100"></el-table-column>
+            <el-table-column prop="publish_date" label="公开日" width="100"></el-table-column>
+          </el-table>
+        </div>
         <div class="pagination">
           <span class="pagination__info">总计{{ pageInfo.total_item_number }}条记录</span>
           <el-pagination class="pagination__page"
             :page-size="10"
             :page-sizes="[10, 20, 30]"
+            :current-page="pageInfo.current_page"
             :page-count="pageInfo.total_page_number"
             @size-change="changePageSize"
             @current-change="changePageNum"
@@ -156,37 +184,37 @@ export default {
         {
           imgUrl: require('../assets/images/down.png'),
           label: '相关度',
-          value: '1',
+          value: 'relevance',
           direction: 'descending'
         },
         {
           imgUrl: require('../assets/images/top.png'),
           label: '相关度',
-          value: '2',
+          value: 'relevance',
           direction: 'ascending'
         },
         {
           imgUrl: require('../assets/images/down.png'),
           label: '申请时间',
-          value: '3',
+          value: 'apply_date',
           direction: 'descending'
         },
         {
           imgUrl: require('../assets/images/top.png'),
           label: '申请时间',
-          value: '4',
+          value: 'apply_date',
           direction: 'ascending'
         },
         {
           imgUrl: require('../assets/images/down.png'),
           label: '价值度',
-          value: '1',
+          value: 'value_degree',
           direction: 'descending'
         },
         {
           imgUrl: require('../assets/images/top.png'),
           label: '价值度',
-          value: '2',
+          value: 'value_degree',
           direction: 'ascending'
         }
       ],
@@ -208,18 +236,27 @@ export default {
         }
       ],
       selectAll: false,
-      loadingPatentList: false
+      displayType: 'list',
+      sortParams: {
+        target: '',
+        direction: '',
+        per_page: '',
+        page: ''
+      }
     }
   },
   computed: {
     patentList: function () {
-      return state.patentList
+      return state.get('patentList')
     },
     recommendList: function () {
       return state.recommendList
     },
     pageInfo: function () {
       return state.pageInfo
+    },
+    loadingPatentList: function () {
+      return state.get('loadingPatentList')
     }
   },
   methods: {
@@ -232,11 +269,16 @@ export default {
     },
     clickToolButton (command) {
     },
+    submitSortParams (targetIndex) {
+      state.setSortParams('target', this.sortOptions[targetIndex].value)
+      state.setSortParams('direction', this.sortOptions[targetIndex].direction)
+      state.setSortParams('per_page', state.get('searchParams').per_page)
+      state.setSortParams('page', state.get('searchParams').page)
+    },
     checkPatentInfo (patentId) {
       this.$router.push('/PatentInfo/' + patentId)
     },
     checkRelatedInfo (infoType, patent) {
-      debugger
       // this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/' + patent.applicant_id)
       this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/778929080')
     },
@@ -285,8 +327,7 @@ export default {
   .listPanel {
     background: #fff;
     margin-top: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 5px;
   }
   .selectAll {
     border-bottom: 2px solid #e5e5e5;
@@ -377,6 +418,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     font-size: 14px;
+    padding: 10px 0;
   }
   .recommendPanel {
     padding-top: 10px;

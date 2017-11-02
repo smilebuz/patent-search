@@ -34,6 +34,7 @@
             <el-table class="tab__content-table"
               border
               align="left"
+              v-loading="loadingApplicantTable"
               :data="applicantTable"
               :key="tableKeys[0]">
               <el-table-column prop="title" label="信息名称" class="table-row-title"></el-table-column>
@@ -57,6 +58,7 @@
             <el-table class="tab__content-table"
               border
               aligh="left"
+              v-loading="loadingSimilarityTable"
               :data="similarityTable"
               :key="tableKeys[2]">
               <el-table-column prop="similarity_score" label="相似度" width="70"></el-table-column>
@@ -87,6 +89,7 @@
             <el-table class="tab__content-table"
               border
               align="left"
+              v-loading="loadingBuyerTable"
               :data="buyerTable"
               :key="tableKeys[3]">
               <el-table-column prop="applicant_name" label="买家名称" width="230"></el-table-column>
@@ -165,6 +168,7 @@ export default {
         }
       ],
       currentTab: '',
+      loadingApplicantTable: false,
       applicantTable: [
         {
           title: '申请人名称',
@@ -313,12 +317,14 @@ export default {
         }
       ],
       valueTable: [],
+      loadingSimilarityTable: false,
       similarityTable: [],
       similarityPageInfo: {
         current_page: -1,
         total_page_number: -1,
         total_item_number: -1
       },
+      loadingBuyerTable: false,
       buyerTable: [],
       buyerPageInfo: {
         current_page: -1,
@@ -337,23 +343,19 @@ export default {
       tableKeys: ['applicantTable', 'valueTable', 'similarityTable', 'buyerTable']
     }
   },
-  /*
   watch: {
     similarityParams: {
-      handler: (newParams) => {
+      handler: function (newParams) {
         this.loadTabData('similarity')
       },
       deep: true
     },
     buyerParams: {
-      handler: (newParams) => {
+      handler: function (newParams) {
         this.loadTabData('buyer')
       },
       deep: true
-    }
-  },
-  */
-  watch: {
+    },
     currentTab: function (tabName) {
       this.tabs.forEach((tab, index, arr) => {
         if (tabName === tab.name) {
@@ -380,12 +382,13 @@ export default {
           ids = {
             applicantId: this.applicantId
           }
+          this.loadingApplicantTable = true
           sendRequest.applicant.get(null, ids).then(data => {
-            // 申请人信息
             for (let row of this.applicantTable) {
               let key = row.key
               row.text = data[key]
             }
+            this.loadingApplicantTable = false
           })
           break
         case 'value':
@@ -394,6 +397,7 @@ export default {
           ids = {
             patentId: this.patentId
           }
+          this.loadingSimilarityTable = true
           sendRequest.similarPatent.get(this.similarityParams, ids).then(data => {
             this.similarityTable = data.similarity_patent_list
             for (let patent of this.similarityTable) {
@@ -411,12 +415,14 @@ export default {
                 this.similarityPageInfo[prop] = data[prop]
               }
             }
+            this.loadingSimilarityTable = false
           })
           break
         case 'buyer':
           ids = {
             patentId: this.patentId
           }
+          this.loadingBuyerTable = true
           sendRequest.potentialBuyer.get(this.buyerParams, ids).then(data => {
             this.buyerTable = data.current_page_item_list
             for (let buyer of this.buyerTable) {
@@ -427,6 +433,7 @@ export default {
                 this.buyerPageInfo[prop] = data[prop]
               }
             }
+            this.loadingBuyerTable = false
           })
           break
         default:

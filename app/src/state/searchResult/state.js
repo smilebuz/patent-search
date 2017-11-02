@@ -7,6 +7,7 @@ export default new Vue({
     return {
       patentId: '', // 不同的信息读取 例如专利信息
       applicantId: '', // 不同的申请人ID
+
       searchParams: {
         apply_type: 'inventions',
         search_type: 'common',
@@ -15,6 +16,14 @@ export default new Vue({
         per_page: 10,
         page: 1
       },
+      sortParams: {
+        target: '',
+        direction: '',
+        per_page: 10,
+        page: 1
+      },
+
+      loadingPatentList: false,
       patentList: [],
       filterList: [],
       recommendList: {},
@@ -23,6 +32,7 @@ export default new Vue({
         total_page_number: -1,
         total_item_number: -1
       },
+
       favorId: '', // 收藏目录ID
       favorList: []
     }
@@ -37,8 +47,8 @@ export default new Vue({
     setSearchParams (key, val) {
       this.$set(this.searchParams, key, val)
     },
-    setSortParams (key, vale) {
-      this.$set(this.sortParams, key, vale)
+    setSortParams (key, val) {
+      this.$set(this.sortParams, key, val)
     }
   },
   watch: {
@@ -54,6 +64,7 @@ export default new Vue({
     searchParams: {
       handler: function (newParams) {
         // bus.$emit('updateSearchParams', newParams)
+        this.loadingPatentList = true
         sendRequest.search.get(newParams).then(data => {
           this.set('patentList', data.patent_list)
           this.set('recommendList', data.recommend_list)
@@ -63,10 +74,22 @@ export default new Vue({
               this.pageInfo[prop] = data[prop]
             }
           }
+          this.loadingPatentList = false
         })
       },
       deep: true
     },
+    sortParams: {
+      handler: function (newParams) {
+        this.loadingPatentList = true
+        sendRequest.sort.get(newParams).then(data => {
+          this.set('patentList', data.patent_list)
+          this.loadingPatentList = false
+        })
+      },
+      deep: true
+    },
+
     patentList: {
       handler: function (newList) {
         bus.$emit('updatePatentList', newList)
