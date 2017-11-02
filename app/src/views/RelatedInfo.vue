@@ -12,7 +12,7 @@
             v-for="(header, index) in tabs"
             :key="header.name"
             :class="{ 'header-activate': header.activate}"
-            @click="switchTab(header.name, index)"
+            @click="currentTab = header.name"
             >{{ header.label }}
           </div>
         </div>
@@ -65,10 +65,12 @@
               <el-table-column prop="neic_name_List" label="国民经济分类"></el-table-column>
             </el-table>
             <div class="pagination">
-              <span class="pagination__info">总计{{  }}条记录</span>
+              <span class="pagination__info">总计{{ similarityPageInfo.total_item_number }}条记录</span>
               <el-pagination class="pagination__page"
-                :page-size="10"
+                :page-size="similarityParams.per_page"
                 :page-sizes="[10, 20, 30]"
+                :current-page="similarityPageInfo.current_page"
+                :page-count="similarityPageInfo.total_page_number"
                 @size-change="changeSimilarityPageSize"
                 @current-change="changeSimilarityPageNum"
                 layout="total, sizes, prev, pager, next, jumper">
@@ -90,10 +92,12 @@
               <el-table-column prop="main_product_list" label="主营产品"></el-table-column>
             </el-table>
             <div class="pagination">
-              <span class="pagination__info">总计{{  }}条记录</span>
+              <span class="pagination__info">总计{{ buyerPageInfo.total_item_number }}条记录</span>
               <el-pagination class="pagination__page"
-                :page-size="10"
+                :page-size="buyerParams.per_page"
                 :page-sizes="[10, 20, 30]"
+                :current-page="buyerPageInfo.current_page"
+                :page-count="buyerPageInfo.total_page_number"
                 @size-change="changeBuyerPageSize"
                 @current-change="changeBuyerPageNum"
                 layout="total, sizes, prev, pager, next, jumper">
@@ -153,7 +157,7 @@ export default {
           imgUrl: require('../assets/images/analysis.png')
         }
       ],
-      currentTab: 'applicant',
+      currentTab: '',
       applicantTable: [
         {
           title: '申请人名称',
@@ -302,18 +306,54 @@ export default {
         }
       ],
       valueTable: [],
-      similarityTable: [
-      ],
+      similarityTable: [],
+      similarityPageInfo: {
+        current_page: -1,
+        total_page_number: -1,
+        total_item_number: -1
+      },
       buyerTable: [],
+      buyerPageInfo: {
+        current_page: -1,
+        total_page_number: -1,
+        total_item_number: -1
+      },
       similarityParams: {
         per_page: 10,
-        page: 1,
-        invention_title: '设备和电子设备' // 去掉
+        page: 1
       },
       buyerParams: {
         per_page: 10,
         page: 1
       }
+    }
+  },
+  /*
+  watch: {
+    similarityParams: {
+      handler: (newParams) => {
+        this.loadTabData('similarity')
+      },
+      deep: true
+    },
+    buyerParams: {
+      handler: (newParams) => {
+        this.loadTabData('buyer')
+      },
+      deep: true
+    }
+  },
+  */
+  watch: {
+    currentTab: function (tabName) {
+      this.tabs.forEach((tab, index, arr) => {
+        if (tabName === tab.name) {
+          tab.activate = true
+        } else {
+          tab.activate = false
+        }
+      })
+      this.loadTabData(tabName)
     }
   },
   methods: {
@@ -324,26 +364,14 @@ export default {
         paddingRight: '5px'
       }
     },
-    switchTab (tabName, targetIndex) {
-      this.tabs.forEach((tab, index, arr) => {
-        if (index === targetIndex) {
-          tab.activate = true
-        } else {
-          tab.activate = false
-        }
-      })
-      this.loadTabData(tabName)
-    },
-    loadTabData (infoType) {
-      this.currentTab = infoType
+    loadTabData (tabName) {
       let ids = {}
-      switch (infoType) {
+      switch (tabName) {
         case 'applicant':
           ids = {
             applicantId: this.applicantId
           }
           sendRequest.applicant.get(null, ids).then(data => {
-            debugger
             // 申请人信息
             for (let row of this.applicantTable) {
               let key = row.key
@@ -358,8 +386,7 @@ export default {
             patentId: this.patentId
           }
           sendRequest.similarPatent.get(this.similarityParams, ids).then(data => {
-            debugger
-            this.similarityTable = data
+            this.similarityTable = data.similarity_patent_list
             for (let patent of this.similarityTable) {
               let tempClassificationList = ''
               patent.similarity_score = parseFloat((patent.similarity_score * 100).toFixed(2)) + '%'
@@ -370,6 +397,11 @@ export default {
               })
               patent.product_classification_list = tempClassificationList
             }
+            for (let prop in this.similarityPageInfo) {
+              if (this.similarityPageInfo.hasOwnProperty(prop)) {
+                this.similarityPageInfo[prop] = data[prop]
+              }
+            }
           })
           break
         case 'buyer':
@@ -377,9 +409,14 @@ export default {
             patentId: this.patentId
           }
           sendRequest.potentialBuyer.get(this.buyerParams, ids).then(data => {
-            this.buyerTable = data
+            this.buyerTable = data.current_page_item_list
             for (let buyer of this.buyerTable) {
               buyer.main_product_list = buyer.main_product_list.join(';')
+            }
+            for (let prop in this.buyerPageInfo) {
+              if (this.buyerPageInfo.hasOwnProperty(prop)) {
+                this.buyerPageInfo[prop] = data[prop]
+              }
             }
           })
           break
@@ -401,10 +438,9 @@ export default {
     }
   },
   created () {
-    let infoType = this.$route.params.infoType
     this.applicantId = this.$route.params.applicantId
     this.patentId = this.$route.params.patentId
-    this.loadTabData(infoType)
+    this.currentTab = this.$route.params.infoType
   }
 }
 </script>
@@ -460,5 +496,8 @@ export default {
   .tab__content-container {
     width: 90%;
     margin: 0 auto;
+  }
+  .pagination {
+    padding: 10px 0;
   }
 </style>
