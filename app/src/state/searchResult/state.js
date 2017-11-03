@@ -64,12 +64,14 @@ export default new Vue({
     },
     searchParams: {
       handler: function (newParams) {
+        debugger
         // bus.$emit('updateSearchParams', newParams)
         this.loadingData = true
-        debugger
         sendRequest.search.get(newParams).then(data => {
-          debugger
           this.set('patentList', data.patent_list)
+          for (let patent of this.patentList) {
+            patent.abstractExpand = !(patent.abstract_info.length > 140)
+          }
           this.set('recommendList', data.recommend_list)
           this.set('filterList', data.filter_sidebar_list)
           for (let prop in this.pageInfo) {

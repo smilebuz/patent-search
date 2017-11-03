@@ -83,9 +83,16 @@
                 <div class="info__item">公开日: <span>{{ patent.publish_date }}</span></div>
                 <div class="info__item">公开号: <span>{{ patent.publish_no }}</span></div>
               </div>
-              <div class="patentInfo__abstract">
+              <div class="patentInfo__abstract"
+                :class="{ 'patentInfo__abstract-collapse': !patent.abstractExpand }"
+                v-if="!patent.abstractExpand">
+                摘要: {{ patent.abstract_info.substr(0,140) }}
+                <span class="abstract__button"
+                  @click="expandAbstract(patent)">更多
+                </span>
+              </div>
+              <div class="patentInfo__abstract" v-if="patent.abstractExpand">
                 摘要: {{ patent.abstract_info }}
-                <span class="abstract__button">更多</span>
               </div>
               <div class="patentInfo__links">
                 <span class="info__link" @click="checkRelatedInfo('applicant', patent)">申请人经营信息</span>
@@ -140,7 +147,7 @@
             type="primary"
             v-for="(keyword, index) in recommendList.keyword_list"
             :key="keyword"
-            @click="changeSearchParams('keywords', keyword)"
+            @click.native="changeSearchParams('keywords', keyword)"
             >{{ keyword }}
           </el-tag>
         </div>
@@ -150,7 +157,7 @@
             type="primary"
             v-for="(ipc, index) in recommendList.ipc_main_classification_list"
             :key="ipc"
-            @click="changeSearchParams('ipc_main_classification_no', ipc)"
+            @click.native="changeSearchParams('ipc_main_classification_no', ipc)"
             >{{ ipc }}
           </el-tag>
         </div>
@@ -160,7 +167,7 @@
             type="primary"
             v-for="(applicant, index) in recommendList.applicant_list"
             :key="applicant"
-            @click="changeSearchParams('applicant', applicant)"
+            @click.native="changeSearchParams('applicant', applicant)"
             >{{ applicant }}
           </el-tag>
         </div>
@@ -170,7 +177,7 @@
             type="primary"
             v-for="(product, index) in recommendList.product_list"
             :key="product"
-            @click="changeSearchParams('keywords', product)"
+            @click.native="changeSearchParams('keywords', product)"
             >{{ applicant }}
           </el-tag>
         </div>
@@ -270,6 +277,13 @@ export default {
     },
     loadingData: function () {
       return state.get('loadingData')
+    },
+    abstractLength: function () {
+      let container = document.querySelector('.patentInfo__abstract')
+      let containerWidth = container.clientWidth
+      let textSize = parseInt(getComputedStyle(container, null).fontSize)
+      let textCount = containerWidth / textSize
+      return parseInt(textCount * 1.8)
     }
   },
   methods: {
@@ -298,6 +312,9 @@ export default {
     checkRelatedInfo (infoType, patent) {
       // this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/' + patent.applicant_id)
       this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/778929080')
+    },
+    expandAbstract (patent) {
+      patent.abstractExpand = true
     },
     changeSearchParams (field, query) {
       debugger
@@ -410,13 +427,17 @@ export default {
     color: #ec0000;
   }
   .patentInfo__abstract {
+    background: #f8f8f8;
+  }
+  .patentInfo__abstract-collapse {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     text-overflow: ellipsis;
     overflow: hidden;
-    background: #f8f8f8;
     position: relative;
+  }
+  .patentInfo__abstract-all {
   }
   .abstract__button {
     position: absolute;
