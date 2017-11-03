@@ -23,6 +23,7 @@ export default new Vue({
         page: 1
       },
 
+      loadingData: false,
       loadingPatentList: false,
       patentList: [],
       filterList: [],
@@ -64,8 +65,10 @@ export default new Vue({
     searchParams: {
       handler: function (newParams) {
         // bus.$emit('updateSearchParams', newParams)
-        this.loadingPatentList = true
+        this.loadingData = true
+        debugger
         sendRequest.search.get(newParams).then(data => {
+          debugger
           this.set('patentList', data.patent_list)
           this.set('recommendList', data.recommend_list)
           this.set('filterList', data.filter_sidebar_list)
@@ -74,7 +77,7 @@ export default new Vue({
               this.pageInfo[prop] = data[prop]
             }
           }
-          this.loadingPatentList = false
+          this.loadingData = false
         })
       },
       deep: true

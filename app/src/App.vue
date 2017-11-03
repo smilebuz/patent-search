@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!--img src="./assets/logo.png"-->
-    <myHeader v-if="this.$route.name !== 'Login'"></myHeader>
+    <myHeader v-if="this.$route.name !== 'Login' && this.$route.name!== 'Register'"></myHeader>
     <router-view class="container"></router-view>
   </div>
 </template>

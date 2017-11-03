@@ -1,5 +1,5 @@
 <template>
-  <div class="searchResult">
+  <div class="searchResult" v-loading="loadingData">
     <SideMenu></SideMenu>
     <div class="resultPanel">
       <div class="toolbar">
@@ -13,6 +13,7 @@
         </el-button-group>
         <el-select class="sortSelection toolbox"
           size="small"
+          clearable
           v-model="sortSelected"
           @change="submitSortParams">
           <el-option
@@ -66,10 +67,15 @@
                   <span class="info__link"
                     v-for="(inventor, index) in patent.inventor_list"
                     :key="inventor"
+                    @click="changeSearchParams('inventor', inventor)"
                     >{{ inventor }}
                   </span>
                 </div>
-                <div class="info__item">IPC分类号: <span class="info__link">{{ patent.ipc_main_classification_no }}</span></div>
+                <div class="info__item">IPC分类号:
+                  <span class="info__link"
+                    @click="changeSearchParams('ipc_main_classification_no', patent.ipc_main_classification_no)"
+                    >{{ patent.ipc_main_classification_no }}</span>
+                </div>
               </div>
               <div class="patentInfo__info">
                 <div class="info__item">申请日: <span>{{ patent.apply_date }}</span></div>
@@ -134,6 +140,7 @@
             type="primary"
             v-for="(keyword, index) in recommendList.keyword_list"
             :key="keyword"
+            @click="changeSearchParams('keywords', keyword)"
             >{{ keyword }}
           </el-tag>
         </div>
@@ -143,6 +150,7 @@
             type="primary"
             v-for="(ipc, index) in recommendList.ipc_main_classification_list"
             :key="ipc"
+            @click="changeSearchParams('ipc_main_classification_no', ipc)"
             >{{ ipc }}
           </el-tag>
         </div>
@@ -152,6 +160,7 @@
             type="primary"
             v-for="(applicant, index) in recommendList.applicant_list"
             :key="applicant"
+            @click="changeSearchParams('applicant', applicant)"
             >{{ applicant }}
           </el-tag>
         </div>
@@ -161,6 +170,7 @@
             type="primary"
             v-for="(product, index) in recommendList.product_list"
             :key="product"
+            @click="changeSearchParams('keywords', product)"
             >{{ applicant }}
           </el-tag>
         </div>
@@ -257,6 +267,9 @@ export default {
     },
     loadingPatentList: function () {
       return state.get('loadingPatentList')
+    },
+    loadingData: function () {
+      return state.get('loadingData')
     }
   },
   methods: {
@@ -270,10 +283,14 @@ export default {
     clickToolButton (command) {
     },
     submitSortParams (targetIndex) {
-      state.setSortParams('target', this.sortOptions[targetIndex].value)
-      state.setSortParams('direction', this.sortOptions[targetIndex].direction)
-      state.setSortParams('per_page', state.get('searchParams').per_page)
-      state.setSortParams('page', state.get('searchParams').page)
+      if (typeof targetIndex === 'number') {
+        state.setSortParams('target', this.sortOptions[targetIndex].value)
+        state.setSortParams('direction', this.sortOptions[targetIndex].direction)
+        state.setSortParams('per_page', state.get('searchParams').per_page)
+        state.setSortParams('page', state.get('searchParams').page)
+      } else {
+        // 清空
+      }
     },
     checkPatentInfo (patentId) {
       this.$router.push('/PatentInfo/' + patentId)
@@ -283,6 +300,7 @@ export default {
       this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/778929080')
     },
     changeSearchParams (field, query) {
+      debugger
       state.setSearchParams('field', field)
       state.setSearchParams('query', query)
     },

@@ -297,7 +297,6 @@ export default {
       patentId: this.patentId
     }
     sendRequest.patentInfo.get(null, ids).then(data => {
-      debugger
       this.fillInfo(data)
     })
   }

@@ -288,6 +288,7 @@ export default {
     display: flex;
     flex-direction: column;
     width: 60%;
+    margin: 0 auto;
     color: #848484;
     font-size: 12px;
     font-weight: 700;

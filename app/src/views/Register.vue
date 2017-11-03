@@ -1,68 +1,73 @@
 <template>
-  <div>
-    <h1>{{ header }}</h1>
-    <main>
-      <el-form ref="form" :model="form" :rules="rules" id="register-form" label-width="100px">
-        <div class="form-part">
-          <el-form-item label="账号:" prop="account">
-            <el-input v-model="form.account" placeholder="6-20位英文、数字或者常用符号"></el-input>
-          </el-form-item>
-          <el-form-item label="密码:" prop="password">
-            <el-input v-model="form.password" placeholder="6-20位英文、数字或者常用符号" type="password"></el-input>
-          </el-form-item>
-          <el-form-item label="确认密码:" prop="password_confirm">
-            <el-input v-model="form.password_confirm" placeholder="请再次输入密码" type="password"></el-input>
-          </el-form-item>
-          <el-form-item label="姓名:" prop="name">
-            <el-input v-model="form.name"></el-input>
-          </el-form-item>
-          <el-form-item label="座机:">
-            <el-input v-model="form.telephone"></el-input>
-          </el-form-item>
-          <el-form-item label="手机:">
-            <el-input v-model="form.mobile"></el-input>
-          </el-form-item>
-          <el-form-item label="E-mail:" prop="email">
-            <el-input v-model="form.email"></el-input>
-          </el-form-item>
-          <el-form-item label="地址:">
-            <el-input v-model="form.address"></el-input>
-          </el-form-item>
-          <el-form-item id="register-btn-group">
-            <el-button type="primary" @click="register" id="register">注册</el-button>
-            <el-button type="primary" @click="" id="trial">申请试用</el-button>
-          </el-form-item>
-        </div>
-        <div class="form-part">
-          <el-form-item label="工作岗位:">
-            <el-select v-model="form.post" placeholder="请选择">
-              <el-option v-for="(option, index) in form.post_options" :key="index" :value="option">{{ option }}</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="工作单位:">
-            <el-input v-model="form.organization"></el-input>
-          </el-form-item>
-          <el-form-item label="所属行业:">
-            <el-select v-model="form.industry" placeholder="请选择">
-              <el-option v-for="(option, index) in form.industries" :key="index" :value="option">{{ option }}</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="获知渠道:">
-            <el-select v-model="form.source" placeholder="请选择">
-              <el-option v-for="(option, index) in form.sources" :key="index" :value="option">{{ option }}</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="所属地区:">
-            <el-input v-model="form.district"></el-input>
-          </el-form-item>
-          <el-form-item label="采购计划:">
-            <el-select v-model="form.purchase" placeholder="请选择">
-              <el-option v-for="(option, index) in form.purchase_time" :key="index" :value="option">{{ option }}</el-option>
-            </el-select>
-          </el-form-item>
-        </div>
+  <div class="register">
+    <div class="formContainer">
+      <el-form ref="form" :model="form" label-width="90px">
+        <el-form-item label="账号:" prop="account" class="form__item">
+          <el-input v-model="form.account" placeholder="6-20位英文、数字或者常用符号" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="工作岗位:" class="form__item">
+          <el-select v-model="form.post" placeholder="请选择" size="small">
+            <el-option
+              v-for="(option, index) in form.post_options"
+              :key="index"
+              :value="option">{{ option }}
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="密码:" prop="password" class="form__item">
+          <el-input placeholder="6-20位英文、数字或者常用符号" type="password"
+            v-model="form.password"
+            size="small">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="工作单位:" class="form__item">
+          <el-input v-model="form.organization" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码:" prop="password_confirm" class="form__item">
+          <el-input placeholder="请再次输入密码" type="password"
+            v-model="form.password_confirm"
+            size="small">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="所属行业:" class="form__item">
+          <el-select v-model="form.industry" placeholder="请选择" size="small">
+            <el-option v-for="(option, index) in form.industries" :key="index" :value="option">{{ option }}</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="姓名:" prop="name" class="form__item">
+          <el-input v-model="form.name" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="获知渠道:" class="form__item">
+          <el-select v-model="form.source" placeholder="请选择" size="small">
+            <el-option v-for="(option, index) in form.sources" :key="index" :value="option">{{ option }}</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="座机:" class="form__item">
+          <el-input v-model="form.telephone" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="所属地区:" class="form__item">
+          <el-input v-model="form.district" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="手机:" class="form__item">
+          <el-input v-model="form.mobile" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="采购计划:" class="form__item">
+          <el-select v-model="form.purchase" placeholder="请选择" size="small">
+            <el-option v-for="(option, index) in form.purchase_time" :key="index" :value="option">{{ option }}</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="E-mail:" prop="email" class="form__item">
+          <el-input v-model="form.email" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="地址:" class="form__item">
+          <el-input v-model="form.address" size="small"></el-input>
+        </el-form-item>
       </el-form>
-    </main>
+      <div class="buttons">      
+        <el-button type="button" class="button-register button" @click="submitRegisterParams">注册</el-button>
+        <el-button type="button" class="button-tiral button">申请试用</el-button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -141,25 +146,49 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  $head-color: #00f;
-  $head-font: 40px SimSun;
-  h1 {
-    margin-bottom: 50px;
-    color: $head-color;
-    font: $head-font;
-  }
-  #register-form {
+  .formContainer {
     display: flex;
-    width: 80%;
-    margin: 0 auto;
-    .form-part {
-      width: 50%;
-      .el-form-item__content {
-        width: 60%;
-        & > .el-select {
-          width: 100%;
+    flex-direction: column;
+    margin: 60px auto;
+    border: 2px solid #cdcdcd;
+    width: 60%;
+    form {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      overflow: auto;
+      padding: 5%;
+      padding-bottom: 0;
+      .el-form-item {
+        .form-select {
+          padding: 0;
+          width: 60px;
+          text-align: center;
         }
       }
+    }
+  }
+  .form__item {
+    margin-bottom: 0;
+    float: left;
+    flex-basis: 40%;
+  }
+  .buttons {
+    margin-top: 10px;
+    padding-bottom: 5%;
+    text-align: center;
+    border: 1px solid #fff;
+    .button {
+      border-radius: 2px;
+      color: #fff;
+    }
+    .button-register {
+      border-color: #51b2b0;
+      background: #51b2b0;
+    }
+    .button-tiral {
+      border-color: #46b6e9;
+      background: #46b6e9;
     }
   }
 </style>
