@@ -20,13 +20,14 @@ export const Api = {
   'recentSearch': '/api/recent_queries', // get
   'userPatent': '/api/users/{userId}/applicants?per_page=3&page=1', // get
 
-  'getFavor': '/api/users/{userId}/favorites?per_page=4&page=1', // get
-  'createFavor': '/api/users/{userId}/favorites', // post
-  'deleteFavorMenu': '/api/users/{userId}/favorites/{favorId}', // delete
-  'deleteFavor': '/api/users/{userId}/favorites/{favorId}/patents/{patentId}', // delete
-  'addFavor': '/api/users/{userId}/favorites/{favorId}/patents/{patentId}', // put
-  'favorPatent': '/api/users/{userId}/favorites/{favorId}' // get
-
+  // 收藏api
+  'getAllFavor': '/api/favorites?per_page=4&page=1', // get 获取用户所有收藏夹
+  'getFavorInfo': '/api/favorites/{favorId}', // get 获取单个收藏夹信息
+  'addFavor': '/api/favorites/{favorId}/patents/{patentId}', // put 添加单个专利至收藏夹
+  'addFavors': '/api//favorites/{favorId}/patents', // put 批次添加专利至收藏夹
+  'deleteFavorPatent': '/api/favorites/{favorId}/patents/{patentId}', // delete 从收藏夹删除某个专利
+  'deleteFavor': '/api/favorites/{favorId}', // delete 删除收藏夹
+  'createFavor': '/api/favorites' // post 创建收藏夹
 }
 
 export const sendRequest = ((apilist) => {
@@ -79,7 +80,7 @@ export const sendRequest = ((apilist) => {
             })
         }
       },
-      put: ids => {
+      put: (params, ids) => {
         let idkeys = apilist[api].match(apiReg)
         if (idkeys) {
           for (let idkey of idkeys) {
@@ -87,13 +88,23 @@ export const sendRequest = ((apilist) => {
           }
         }
         console.log('api put:', apilist[api])
-        return axios.put(apilist[api])
-          .then(response => {
-            return Promise.resolve(response.data.result)
-          })
-          .catch(error => {
-            console.log(error)
-          })
+        if (params) {
+          return axios.put(apilist[api], params)
+            .then(response => {
+              return Promise.resolve(response.data.result)
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        } else {
+          return axios.put(apilist[api])
+            .then(response => {
+              return Promise.resolve(response.data.result)
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        }
       },
       delete: ids => {
         let idkeys = apilist[api].match(apiReg)

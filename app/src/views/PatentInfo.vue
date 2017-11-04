@@ -5,84 +5,108 @@
       <span class="title__id">{{ patentId }}</span>
       <span class="title__name">{{ inventionTitle }}</span>
     </div>
-    <el-tabs class="tab" type="border-card"
-      v-model="activeTab"
-      @tab-click="switchTab">
-      <el-tab-pane
-        v-for="(tab, index) in tabs"
-        :key="index"
-        :label="tab.message"
-        :name="tab.value">
-
-        <el-table v-if="activeTab === 'info'" :data="infoTable" border align="left">
-          <el-table-column prop="title" label="信息名称" class="table-row-title"></el-table-column>
-          <el-table-column prop="text" label="信息内容"></el-table-column>
-        </el-table>
-
-        <p class="para"
-          v-if="activeTab === 'claimInfo'"
-          v-for="(claim, index) in claimList"
-          :key="index"
-          >{{ claim }}
-        </p>
-
-        <div v-if="activeTab === 'specification'" class="specification">
-          <h4 class="specification-title">{{ specification.technicalField.title }}</h4>
-          <p class="para"
-            v-for="item, index in specification.technicalField.text"
-            :key="index"
-            >{{ item }}
-          </p>
-          <h4 class="specification-title">{{ specification.backgroundArt.title }}</h4>
-          <p class="para"
-            v-for="item, index in specification.backgroundArt.text"
-            :key="index"
-            >{{ item }}
-          </p>
-          <h4 class="specification-title">{{ specification.disclosure.title }}</h4>
-          <p class="para"
-            v-for="item, index in specification.disclosure.text"
-            :key="index"
-            >{{ item }}
-          </p>
-          <h4 class="specification-title">{{ specification.descofPic.title }}</h4>
-          <p class="para"
-            v-for="item, index in specification.descofPic.text"
-            :key="index"
-            >{{ item }}
-          </p>
-          <h4 class="specification-title">{{ specification.modeforInvention.title }}</h4>
-          <p class="para"
-            v-for="item, index in specification.modeforInvention.text"
-            :key="index"
-          >{{ item }}
-          </p>
+    <div class="tabs">
+      <div class="tabs__headers">
+        <div class="tabs__headers-container">
+          <div class="tabs__header-item"
+            v-for="(header, index) in tabs"
+            :key="header.name"
+            :class="{ 'header-activate': header.activate}"
+            @click="currentTab = header.name"
+            >{{ header.label }}
+          </div>
         </div>
-
-        <el-table v-if="activeTab === 'legalStatus'" :data="legalTable" border>
-          <el-table-column prop="date" label="日期"></el-table-column>
-          <el-table-column prop="status" label="法律状态"></el-table-column>
-          <el-table-column prop="countryCode" label="相关国家代码"></el-table-column>
-          <el-table-column prop="patentNo" label="专利号"></el-table-column>
-          <el-table-column prop="country" label="专利国家"></el-table-column>
-        </el-table>
-
-        <div v-if="activeTab === 'pics'">
-          <img v-for="url in imgUrls" :src="url" alt="附图"></img>
+        <div class="tabs__toolbuttons">
+          <el-button class="toolbox button toolbox-button"
+            v-for="(button, index) in buttons"
+            :key="button.value"
+            :style="buttonStyle(button.imgUrl)"
+            @click="clickToolButton(button.value)">
+            {{ button.name }}
+          </el-button>
         </div>
+      </div>
+      <div class="tabs__body">
+        <div class="body__sidePic"></div>
+        <div class="body__content">
 
-        <el-table v-if="activeTab === 'similarPatent'" :data="patentTable" border align="center">
-          <el-table-column prop="applyType" label="专利类型"></el-table-column>
-          <el-table-column prop="inventionTitle" label="相似专利名称"></el-table-column>
-          <el-table-column prop="applicant" label="申请人"></el-table-column>
-          <el-table-column prop="inventorList" label="发明人"></el-table-column>
-          <el-table-column prop="ipcClassificationNumber" label="分类号"></el-table-column>
-          <el-table-column prop="productCategory" label="产品分类"></el-table-column>
-          <el-table-column prop="nationalEconomyCategory" label="国民经济分类"></el-table-column>
-        </el-table>
-        
-      </el-tab-pane>
-    </el-tabs>
+          <div class="tab__content-container" v-if="currentTab === 'info'">
+            <el-table class="tab__content-table"
+              border
+              align="left"
+              v-if="currentTab === 'info'"
+              v-loading="loadingInfoTable"
+              :data="infoTable"
+              :key="tableKeys[0]">
+              <el-table-column prop="title" label="信息名称" class="table-row-title"></el-table-column>
+              <el-table-column prop="text" label="信息内容"></el-table-column>
+            </el-table>
+          </div>
+
+          <div class="tab__content-container" v-if="currentTab === 'claim'">
+            <p class="para"
+              v-if="currentTab === 'claimInfo'"
+              v-for="(claim, index) in claimList"
+              :key="index"
+              >{{ claim }}
+            </p>
+          </div>
+
+          <div class="tab__content-container" v-if="currentTab === 'description'">
+            <h4 class="specification-title">{{ specification.technicalField.title }}</h4>
+            <p class="para"
+              v-for="item, index in specification.technicalField.text"
+              :key="index"
+              >{{ item }}
+            </p>
+            <h4 class="specification-title">{{ specification.backgroundArt.title }}</h4>
+            <p class="para"
+              v-for="item, index in specification.backgroundArt.text"
+              :key="index"
+              >{{ item }}
+            </p>
+            <h4 class="specification-title">{{ specification.disclosure.title }}</h4>
+            <p class="para"
+              v-for="item, index in specification.disclosure.text"
+              :key="index"
+              >{{ item }}
+            </p>
+            <h4 class="specification-title">{{ specification.descofPic.title }}</h4>
+            <p class="para"
+              v-for="item, index in specification.descofPic.text"
+              :key="index"
+              >{{ item }}
+            </p>
+            <h4 class="specification-title">{{ specification.modeforInvention.title }}</h4>
+            <p class="para"
+              v-for="item, index in specification.modeforInvention.text"
+              :key="index"
+            >{{ item }}
+            </p>
+          </div>
+
+          <div class="tab__content-container" v-if="currentTab === 'legal'">
+            <el-table class="tab__content-table"
+              border
+              align="left"
+              v-loading="loadingLegalTable"
+              :data="legalTable"
+              :key="tableKeys[3]">
+              <el-table-column prop="date" label="日期"></el-table-column>
+              <el-table-column prop="status" label="法律状态"></el-table-column>
+              <el-table-column prop="countryCode" label="相关国家代码"></el-table-column>
+              <el-table-column prop="patentNo" label="专利号"></el-table-column>
+              <el-table-column prop="country" label="专利国家"></el-table-column>
+            </el-table>
+          </div>
+
+          <div class="tab__content-container" v-if="currentTab === 'picture'">
+            <img v-for="url in imgUrls" :src="url" alt="附图"></img>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -93,33 +117,51 @@ import { sendRequest } from '../Api'
 export default {
   data () {
     return {
-      activeTab: 'info',
+      currentTab: '',
       patentId: '',
       inventionTitle: '',
       tabs: [
         {
-          message: '著录项目信息',
-          value: 'info'
+          name: 'info',
+          label: '著录项目信息',
+          activate: false
         },
         {
-          message: '权利要求',
-          value: 'claimInfo'
+          name: 'claim',
+          label: '权利要求',
+          activate: false
         },
         {
-          message: '说明书',
-          value: 'specification'
+          name: 'description',
+          label: '说明书',
+          activate: false
         },
         {
-          message: '法律状态',
-          value: 'legalStatus'
+          name: 'legal',
+          label: '法律状态',
+          activate: false
         },
         {
-          message: '附图',
-          value: 'pics'
+          name: 'pic',
+          label: '附图',
+          activate: false
+        }
+      ],
+      buttons: [
+        {
+          name: '保存',
+          value: 'save',
+          imgUrl: require('../assets/images/save.png')
         },
         {
-          message: '相似专利',
-          value: 'similarPatent'
+          name: '加入收藏',
+          value: 'favor',
+          imgUrl: require('../assets/images/favor.png')
+        },
+        {
+          name: '加入分析库',
+          value: '',
+          imgUrl: require('../assets/images/analysis.png')
         }
       ],
       infoTable: [
@@ -238,33 +280,62 @@ export default {
         }
       },
       legalTable: [],
-      patentTable: [],
-      imgUrls: []
+      imgUrls: [],
+      tableKeys: ['infoTable', 'claimTable', 'desTable', 'legalTable', 'picTable'],
+      loadingInfoTable: false,
+      loadingLegalTable: false
+    }
+  },
+  watch: {
+    currentTab: function (tabName) {
+      this.tabs.forEach((tab, index, arr) => {
+        if (tabName === tab.name) {
+          tab.activate = true
+        } else {
+          tab.activate = false
+        }
+      })
+      this.loadTabData(tabName)
     }
   },
   methods: {
     prev () {
       this.$router.push('/SearchResult')
     },
-    switchTab (tab, event) {
-      if (this.activeTab === 'legalStatus') {
-        let ids = {
-          patentId: this.patentId
-        }
-        sendRequest.legalStatus.get(null, ids).then(data => {
-          this.legalTable = data
-        })
+    buttonStyle (imgUrl) {
+      return {
+        background: 'url(' + imgUrl + ') no-repeat 5px center #fff',
+        paddingLeft: '25px',
+        paddingRight: '5px'
       }
-      if (this.activeTab === 'similarPatent') {
-        let ids = {
-          patentId: this.patentId
-        }
-        sendRequest.similarPatent.get(null, ids).then(data => {
-          this.patentTable = data
-          for (let patent of this.patentTable) {
-            patent.inventorList = patent.inventorList.join(' ')
+    },
+    loadTabData (tabName) {
+      let ids = {}
+      switch (tabName) {
+        case 'info':
+          ids = {
+            patentId: this.patentId
           }
-        })
+          this.loadingInfoTable = true
+          sendRequest.patentInfo.get(null, ids).then(data => {
+            this.fillInfo(data)
+            this.loadingInfoTable = false
+          })
+          break
+        case 'value':
+          break
+        case 'legal':
+          ids = {
+            patentId: this.patentId
+          }
+          this.loadingLegalTable = true
+          sendRequest.legalStatus.get(null, ids).then(data => {
+            this.legalTable = data
+            this.loadingLegalTable = false
+          })
+          break
+        default:
+          break
       }
     },
     fillInfo (info) {
@@ -293,12 +364,7 @@ export default {
   },
   created () {
     this.patentId = this.$route.params.patentId
-    let ids = {
-      patentId: this.patentId
-    }
-    sendRequest.patentInfo.get(null, ids).then(data => {
-      this.fillInfo(data)
-    })
+    this.currentTab = this.$route.params.infoType
   }
 }
 </script>
@@ -306,39 +372,61 @@ export default {
 <style lang="scss">
   .info {
     flex-direction: column;
+    height: 100%;
   }
-  .info__title {
+  .tabs {
+    padding-top: 20px;
+    flex: 1;
     display: flex;
-    height: 30px;
-    line-height: 30px;
-    .title__prev {
+    flex-direction: column;
+  }
+  .tabs__headers {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 40px;
+    padding-right: 40px;
+    border-bottom: 2px solid #1ab0e6;
+    font-size: 14px;
+  }
+  .tabs__headers-container {
+    display: flex;
+    .tabs__header-item {
+      height: 35px;
+      line-height: 35px;
+      padding-left: 10px;
+      padding-right: 10px;
+      margin-right: 5px;
+      background: #eee;
+      color: #000;
       cursor: pointer;
+      &:hover {
+        background: #1ab0e6;
+        color: #fff;
+      }
     }
-    .title__id {
-      padding: 0 5px;
-      background: #f5f5f5;
-    }
-    .title__name {
-      padding: 0 10px;
+    .header-activate {
+      background: #1ab0e6;
+      color: #fff;
     }
   }
-  .tab {
-    width: 70%;
-    margin: 10px auto;
+  .tabs__body {
+    display: flex;
+    flex: 1;
   }
-  .table-row-title {
-    width: 20%;
+  .body__sidePic {
+    flex-basis: 170px;
+    background: #f4f4f4;
   }
-  .para {
-    text-align: left;
+  .body__content {
+    flex: 1;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
-  .specification {
-    .specification-title {
-      margin-bottom: 0;
-      text-align: left;
-    }
-    .para {
-      margin-top: 0;
-    }
+  .tab__content-container {
+    width: 90%;
+    margin: 0 auto;
+  }
+  .pagination {
+    padding: 10px 0;
   }
 </style>

@@ -75,7 +75,7 @@ export default {
     width: 280px;
   }
   .login__item {
-    margin-bottom: 20px;
+    margin-bottom: 20px!important;
   }
   .login__button {
     color: #fff;

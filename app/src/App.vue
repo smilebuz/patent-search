@@ -44,5 +44,6 @@ export default {
 }
 .container {
   display: flex;
+  height: 100%;
 }
 </style>

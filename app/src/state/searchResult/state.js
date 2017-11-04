@@ -50,6 +50,9 @@ export default new Vue({
     },
     setSortParams (key, val) {
       this.$set(this.sortParams, key, val)
+    },
+    updatePatentList (index, patent) {
+      this.$set(this.patentList, index, patent)
     }
   },
   watch: {
@@ -64,13 +67,13 @@ export default new Vue({
     },
     searchParams: {
       handler: function (newParams) {
-        debugger
         // bus.$emit('updateSearchParams', newParams)
         this.loadingData = true
         sendRequest.search.get(newParams).then(data => {
           this.set('patentList', data.patent_list)
           for (let patent of this.patentList) {
             patent.abstractExpand = !(patent.abstract_info.length > 140)
+            patent.selected = false
           }
           this.set('recommendList', data.recommend_list)
           this.set('filterList', data.filter_sidebar_list)

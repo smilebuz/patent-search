@@ -91,6 +91,9 @@ export default {
     submitKeyword () {
       state.setSearchParams('field', 'keywords')
       state.setSearchParams('query', this.keywordInput)
+      if (this.$route.name !== 'SearchResult') {
+        this.$router.push('/SearchResult')
+      }
     },
     logout () {
       sendRequest.logout.get().then((data) => {

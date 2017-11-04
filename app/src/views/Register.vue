@@ -1,7 +1,11 @@
 <template>
   <div class="register">
     <div class="formContainer">
-      <el-form ref="registerForm" :rules="rules" :model="registerForm" label-width="90px">
+      <el-form
+        status-icon
+        ref="registerForm"
+        label-width="90px"
+        :model="registerForm">
         <el-form-item label="账号:" prop="username" class="form__item">
           <el-input placeholder="6-20位英文、数字或者常用符号" size="small"
             v-model="registerForm.username">
@@ -55,9 +59,9 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <!--el-form-item label="座机:" class="form__item">
-          <el-input v-model="registerForm.telephone" size="small"></el-input>
-        </el-form-item-->
+        <el-form-item label="座机:" class="form__item">
+          <el-input v-model="registerForm.land_line_phone_number" size="small"></el-input>
+        </el-form-item>
         <el-form-item label="所属地区:" class="form__item">
           <el-input v-model="registerForm.area" size="small"></el-input>
         </el-form-item>
@@ -80,12 +84,12 @@
         <el-form-item label="地址:" class="form__item">
           <el-input v-model="registerForm.address" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="" class="form__item form__item-placeholder">
+        <!--el-form-item label="" class="form__item form__item-placeholder">
           <el-input size="small"></el-input>
-        </el-form-item>
+        </el-form-item-->
       </el-form>
       <div class="buttons">      
-        <el-button type="button" class="button-register button" @click="submitRegisterParams">注册</el-button>
+        <el-button type="button" class="button-register button" @click="submitRegisterParams('registerForm')">注册</el-button>
         <el-button type="button" class="button-tiral button">申请试用</el-button>
       </div>
     </div>
@@ -93,38 +97,50 @@
 </template>
 
 <script>
-import sendRequest from '../Api'
+import { sendRequest } from '../Api'
 
 export default {
   data: () => {
     var validatorPassword = (rule, value, callback) => {
+      // if (value === '') {
+      //   callback(new Error('请输入密码'))
+      // } else if (value.length < 6 || value.length > 20) {
+      //   callback(new Error('请输入6-20位英文、数字或者常用符号'))
+      // } else {
+      //   if (this.registerForm.password_confirm !== '') {
+      //     this.$refs.registerForm.validateField('password_confirm')
+      //   }
+      //   callback()
+      // }
       if (value === '') {
         callback(new Error('请输入密码'))
       } else if (value.length < 6 || value.length > 20) {
         callback(new Error('请输入6-20位英文、数字或者常用符号'))
       } else {
-        if (this.registerForm.password_confirm !== '') {
-          this.$refs.registerForm.validateField('password_confirm')
-        }
         callback()
       }
     }
     var validatePwConfirm = (rule, value, callback) => {
+      // if (value === '') {
+      //   callback(new Error('请再次输入密码'))
+      // } else if (value !== this.registerForm.password) {
+      //   callback(new Error('两次输入密码不一致!'))
+      // } else {
+      //   callback()
+      // }
       if (value === '') {
         callback(new Error('请再次输入密码'))
-      } else if (value !== this.registerForm.password) {
-        callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
       }
     }
     return {
-      header: 'INNOPRO专利精准推荐系统',
       registerForm: {
         username: '',
         password: '',
         fullname: '',
         cell_phone_number: '',
+        landline_phone_number: '',
         email: '',
         address: '',
         job_title: '',
@@ -143,6 +159,7 @@ export default {
         password: '',
         fullname: '',
         cell_phone_number: '',
+        landline_phone_number: '',
         email: '',
         address: '',
         job_title: '',
@@ -173,20 +190,38 @@ export default {
     }
   },
   methods: {
-    submitRegisterParams: function () {
-      this.$refs['registerForm'].validate((valid) => {
-        if (valid) {
-          for (let prop in this.registerParams) {
-            if (this.registerParams.hasOwnProperty(prop)) {
-              this.registerParams[prop] = this.form[prop]
-            }
-          }
-          sendRequest.register.post(this.registerParams).then(data => {
-            this.$router.push('Login')
+    submitRegisterParams: function (formName) {
+      // this.$refs[formName].validate((valid) => {
+      //   if (valid) {
+      //     for (let prop in this.registerParams) {
+      //       if (this.registerParams.hasOwnProperty(prop)) {
+      //         this.registerParams[prop] = this.form[prop]
+      //       }
+      //     }
+      //     sendRequest.register.post(this.registerParams).then(data => {
+      //       debugger
+      //       // this.$router.push('Login')
+      //     })
+      //   } else {
+      //     this.$message({
+      //       message: '注册信息验证失败',
+      //       type: 'error'
+      //     })
+      //     return false
+      //   }
+      // })
+      sendRequest.register.post(this.registerParams).then(data => {
+        console.log(this.registerParams)
+        debugger
+        if (!data) {
+          this.$message({
+            message: '注册成功',
+            type: 'success'
           })
+          this.$router.push('Login')
         } else {
           this.$message({
-            message: '注册信息验证失败',
+            message: '注册失败',
             type: 'error'
           })
           return false

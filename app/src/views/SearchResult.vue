@@ -4,10 +4,10 @@
     <div class="resultPanel">
       <div class="toolbar">
         <el-button-group class="toolbox">
-          <el-button class="button" @click="displayType = 'list'">
+          <el-button class="button" @click="switchDisplayType('list')">
             <img src="../assets/images/list.png" alt="列表式"></img>
           </el-button>
-          <el-button class="button" @click="displayType = 'table'">
+          <el-button class="button" @click="switchDisplayType('table')">
             <img src="../assets/images/table.png" alt="表格式"></img>
           </el-button>
         </el-button-group>
@@ -25,30 +25,56 @@
             <span>{{ option.label }}</span>
           </el-option>
         </el-select>
-        <el-button class="toolbox button"
+        <el-button class="toolbox button toolbox-button"
           v-for="(button, index) in buttons"
           :key="button.value"
           :style="buttonStyle(button.imgUrl)"
           @click="clickToolButton(button.value)">
           {{ button.name }}
         </el-button>
+        <el-popover
+          border
+          v-model="favorPopover"
+          placement="bottom"
+          width="400"
+          trigger="click">
+          <el-table
+            key="favorTable"
+            :data="favorTable"
+            width="100%">
+            <el-table-column type="selection" width="50"></el-table-column>
+            <el-table-column label="收藏夹" prop="name" width="100"></el-table-column>
+            <el-table-column label="创建时间" prop="createTime" width="150"></el-table-column>
+            <el-table-column label="操作" width="100">
+              <template slot-scope="scope">
+                <el-button @click="addFavor(scope.row)" size="small">收藏</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-popover>
       </div>
       <div class="listPanel">
-        <div class="selectAll" v-if="displayType === 'list'">
-          <el-checkbox v-model="selectAll">全选</el-checkbox>
+        <div class="selectAll" v-show="displayType === 'list'">
+          <el-checkbox
+            :value="selectedPatentIds.length === 10"
+            @change="changeSelectAllCb">全选
+          </el-checkbox>
         </div>
         <div class="patentList"
           v-loading="loadingPatentList"
-          v-if="displayType === 'list'">
+          v-show="displayType === 'list'">
           <div class="patent"
             v-for="(patent, index) in patentList"
             :key="patent.patent_id">
-            <el-checkbox v-model="patent.selected"></el-checkbox>
+            <el-checkbox
+              :value="patent.selected"
+              @change="selectSinglePatent(patent.selected, index)">
+            </el-checkbox>
             <img :src="patent.src" class="thumbnail"></img>
             <div class="patentInfo">
               <div class="patentInfo__header">
                 <span class="header__title"
-                  @click="checkPatentInfo(patent.patent_id)"
+                  @click="checkPatentInfo('info', patent.patent_id)"
                   >{{ patent.invention_title }}
                 </span>
                 <div class="header__tags">
@@ -83,15 +109,15 @@
                 <div class="info__item">公开日: <span>{{ patent.publish_date }}</span></div>
                 <div class="info__item">公开号: <span>{{ patent.publish_no }}</span></div>
               </div>
-              <div class="patentInfo__abstract"
-                :class="{ 'patentInfo__abstract-collapse': !patent.abstractExpand }"
+              <div class="patentInfo__abstract patentInfo__abstract-collapse"
                 v-if="!patent.abstractExpand">
                 摘要: {{ patent.abstract_info.substr(0,140) }}
                 <span class="abstract__button"
-                  @click="expandAbstract(patent)">更多
+                  @click="expandAbstract(index)">更多
                 </span>
               </div>
-              <div class="patentInfo__abstract" v-if="patent.abstractExpand">
+              <div class="patentInfo__abstract"
+                v-if="patent.abstractExpand">
                 摘要: {{ patent.abstract_info }}
               </div>
               <div class="patentInfo__links">
@@ -102,12 +128,14 @@
             </div>
           </div>
         </div>
-        <div class="listTable" v-if="displayType === 'table'">
+        <div class="listTable" v-show="displayType === 'table'">
           <el-table
             border
             align="left"
+            ref="patentTable"
             :data="patentList"
-            key="patentTable">
+            key="patentTable"
+            @selection-change="tableSelectionChange">
             <el-table-column type="selection"></el-table-column>
             <el-table-column prop="apply_type" label="专利类型" width="80"></el-table-column>
             <el-table-column prop="publish_no" label="公开号" width="100"></el-table-column>
@@ -191,6 +219,7 @@ import SideMenu from '../components/SideMenu'
 import SearchList from '../components/SearchList'
 
 // import bus from '../bus.js'
+import { sendRequest } from '../Api'
 import state from '../state/searchResult/state.js'
 
 export default {
@@ -259,7 +288,19 @@ export default {
         direction: '',
         per_page: '',
         page: ''
-      }
+      },
+      favorPopover: false,
+      favorTable: [
+        {
+          name: '收藏1',
+          createTime: '2015-09-14'
+        },
+        {
+          name: '收藏2',
+          createTime: '2016-09-14'
+        }
+      ],
+      selectedPatentIds: []
     }
   },
   computed: {
@@ -289,12 +330,112 @@ export default {
   methods: {
     buttonStyle (imgUrl) {
       return {
-        background: 'url(' + imgUrl + ') no-repeat 5px center #fff',
-        paddingLeft: '25px',
-        paddingRight: '5px'
+        background: 'url(' + imgUrl + ') no-repeat 5px center #fff'
+      }
+    },
+    switchDisplayType (type) {
+      if (this.displayType !== type) {
+        this.displayType = type
+        if (type === 'table') {
+          let rows = []
+          this.patentList.forEach(patent => {
+            if (patent.selected) {
+              rows.push(patent)
+            }
+          })
+          this.$refs.patentTable.clearSelection()
+          this.tableSelectionChange(rows)
+          // for (let id of this.selectedPatentIds) {
+          //   let patent = this.patentList.find(el => {
+          //     return el.patent_id === id
+          //   })
+          //   this.$refs.patentTable.toggleRowSelection(patent, true)
+          // }
+        }
       }
     },
     clickToolButton (command) {
+      switch (command) {
+        case 'save':
+          console.log(this.selectedPatentIds)
+          break
+        case 'favor':
+          // let params = {
+          //   per_page: 10,
+          //   page: 1
+          // }
+          // sendRequest.getAllFavor.get(params).then(data => {
+          //   this.favorTable = data.favor_list
+          //   this.favorPopover = true
+          // })
+          this.favorPopover = true
+          break
+        default:
+          break
+      }
+    },
+    changeSelectAllCb (flag) {
+      if (flag) {
+        // 全选
+        this.selectedPatentIds = []
+        for (let patent of this.patentList) {
+          this.selectedPatentIds.push(patent.patent_id)
+        }
+        this.patentList.forEach((patent, index, arr) => {
+          patent.selected = true
+          state.updatePatentList(index, patent)
+        })
+      } else {
+        // 取消全选
+        this.selectedPatentIds = []
+        this.patentList.forEach((patent, index, arr) => {
+          patent.selected = false
+          state.updatePatentList(index, patent)
+        })
+      }
+      console.log(this.selectedPatentIds.length)
+    },
+    selectSinglePatent (flag, index) {
+      let targetFlag = !flag
+      let patent = this.patentList[index]
+      patent.selected = targetFlag
+      state.updatePatentList(index, patent)
+      // 重新填充selectedPatentIds
+      this.selectedPatentIds = []
+      for (let patent of this.patentList) {
+        if (patent.selected) {
+          this.selectedPatentIds.push(patent.patent_id)
+        }
+      }
+    },
+    addFavor (favor) {
+      let ids = {
+        favorId: favor.id
+      }
+      sendRequest.addFavors.put(this.coll, ids).then(data => {
+        this.$message({
+          message: '收藏成功',
+          type: 'success'
+        })
+      })
+    },
+    tableSelectionChange (rows) {
+      this.selectedPatentIds = []
+      this.patentList.forEach((patent, index, arr) => {
+        patent.selected = false
+        state.updatePatentList(index, patent)
+      })
+      // 重新填充
+      for (let patent of rows) {
+        this.selectedPatentIds.push(patent.patent_id)
+        let index = this.patentList.findIndex(el => {
+          return el.patent_id === patent.patent_id
+        })
+        let targetPatent = this.patentList[index]
+        targetPatent.selected = true
+        state.updatePatentList(index, targetPatent)
+        this.$refs.patentTable.toggleRowSelection(patent, true)
+      }
     },
     submitSortParams (targetIndex) {
       if (typeof targetIndex === 'number') {
@@ -306,18 +447,19 @@ export default {
         // 清空
       }
     },
-    checkPatentInfo (patentId) {
-      this.$router.push('/PatentInfo/' + patentId)
+    checkPatentInfo (infoType, patentId) {
+      this.$router.push('/PatentInfo/' + infoType + '/' + patentId)
     },
     checkRelatedInfo (infoType, patent) {
       // this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/' + patent.applicant_id)
       this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/778929080')
     },
-    expandAbstract (patent) {
+    expandAbstract (index) {
+      let patent = this.patentList[index]
       patent.abstractExpand = true
+      state.updatePatentList(index, patent)
     },
     changeSearchParams (field, query) {
-      debugger
       state.setSearchParams('field', field)
       state.setSearchParams('query', query)
     },
@@ -352,7 +494,11 @@ export default {
     height: 30px;
   }
   .button {
-    padding: 5px 10px;
+    padding: 5px 10px!important;
+  }
+  .toolbox-button {
+    padding-left: 25px!important;
+    padding-right: 5px!important;
   }
   .sortSelection {
     width: 120px;

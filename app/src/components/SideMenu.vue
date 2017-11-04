@@ -9,7 +9,7 @@
         {{ item.name }}
       </div>
     </div>
-    <!--div class="filterSelect">
+    <!--div class="filterSelect sideMenu__select">
       <el-select size="small"></el-select>
     </div-->
     <el-collapse class="filter__collapse"
@@ -44,6 +44,32 @@
         v-for="(item, index) in recentSearchList"
         :key="item.timestamp"
         @click="submitSearchParams(item.field, item.query)">{{item.query}}
+      </div>
+    </div>
+    <div class="" v-if="currentMenu === 'categroyNav'">
+      <div class="navSelect sideMenu__select">
+        <el-select size="small" v-model="navType">
+          <el-option
+            v-for="(option, index) in navOptions"
+            :key="option.value"
+            :label="option.label"
+            :value="option.value">{{ option.label }}
+          </el-option>
+        </el-select>
+      </div>
+      <div class="navToolbox">
+        <span class="navToolbox__item">上一级</span>
+        <div class="navToolbox__pagination">
+          <span class="navToolbox__item">上一页</span>
+          <span class="navToolbox__item">下一页</span>
+        </div>
+      </div>
+      <div class="navContent">
+        <div class="navContent__item"
+          v-for="(content, index) in navList"
+          :key="content.name"
+          >{{ content.name }}({{ content.number }})
+        </div>
       </div>
     </div>
   </div>
@@ -95,7 +121,36 @@ export default {
         per_page: 10,
         page: 1
       },
-      recentSearchList: []
+      recentSearchList: [],
+      navType: '',
+      navOptions: [
+        {
+          label: 'ipc',
+          value: 'ipc'
+        },
+        {
+          label: '国民经济',
+          value: 'national_economy'
+        },
+        {
+          label: '产品类型',
+          value: 'product_type'
+        }
+      ],
+      navList: [
+        {
+          name: '发明专利',
+          number: 2
+        },
+        {
+          name: '实用新型专利',
+          number: 18
+        },
+        {
+          name: '外观设计专利',
+          number: 218
+        }
+      ]
     }
   },
   computed: {
@@ -119,6 +174,11 @@ export default {
             this.recentSearchList = data
           })
         }
+      }
+    },
+    navType: {
+      handler: function (newType) {
+        // 接口
       }
     }
   },
@@ -172,7 +232,7 @@ export default {
     background: #46b6e9;
     color: #fff;
   }
-  .filterSelect {
+  .sideMenu__select {
     padding: 10px;
     border-bottom: 1px solid #e8e8e8;
   }
@@ -217,6 +277,24 @@ export default {
     cursor: pointer;
     &:hover {
       background: #e6ebf5;
+    }
+  }
+  .navToolbox {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+  }
+  .navToolbox__item {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .navContent {
+    font-size: 14px;
+    padding: 10px;
+    .navContent__item {
+      padding-bottom: 5px;
     }
   }
 </style>

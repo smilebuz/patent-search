@@ -413,10 +413,6 @@ export default {
     margin-top: 1em;
     margin-bottom: 1em;
   }
-  .toolbar {
-    margin-top: 2em;
-    margin-bottom: 2em;
-  }
   #recentSearch {
     text-align: left;
     padding-left: 1em;

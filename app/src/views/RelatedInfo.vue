@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="tabs__toolbuttons">
-          <el-button class="toolbox button"
+          <el-button class="toolbox button toolbox-button"
             v-for="(button, index) in buttons"
             :key="button.value"
             :style="buttonStyle(button.imgUrl)"
@@ -464,9 +464,13 @@ export default {
 <style lang="scss">
   .relatedInfo {
     flex-direction: column;
+    height: 100%;
   }
   .tabs {
     padding-top: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
   .tabs__headers {
     display: flex;
@@ -499,6 +503,7 @@ export default {
   }
   .tabs__body {
     display: flex;
+    flex: 1;
   }
   .body__sidePic {
     flex-basis: 170px;
