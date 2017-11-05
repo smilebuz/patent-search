@@ -211,8 +211,6 @@ export default {
       //   }
       // })
       sendRequest.register.post(this.registerParams).then(data => {
-        console.log(this.registerParams)
-        debugger
         if (!data) {
           this.$message({
             message: '注册成功',

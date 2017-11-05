@@ -21,10 +21,10 @@ export const Api = {
   'userPatent': '/api/users/{userId}/applicants?per_page=3&page=1', // get
 
   // 收藏api
-  'getAllFavor': '/api/favorites?per_page=4&page=1', // get 获取用户所有收藏夹
+  'getAllFavor': '/api/favorites', // get 获取用户所有收藏夹
   'getFavorInfo': '/api/favorites/{favorId}', // get 获取单个收藏夹信息
   'addFavor': '/api/favorites/{favorId}/patents/{patentId}', // put 添加单个专利至收藏夹
-  'addFavors': '/api//favorites/{favorId}/patents', // put 批次添加专利至收藏夹
+  'addFavors': '/api/favorites/{favorId}/patents', // put 批次添加专利至收藏夹
   'deleteFavorPatent': '/api/favorites/{favorId}/patents/{patentId}', // delete 从收藏夹删除某个专利
   'deleteFavor': '/api/favorites/{favorId}', // delete 删除收藏夹
   'createFavor': '/api/favorites' // post 创建收藏夹

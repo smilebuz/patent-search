@@ -1,9 +1,34 @@
 <template lang="html">
   <div class="favor">
     <div class="favor__sidemenu">
-      <div class="favor__toolbuttongroup">
-        <el-button class="button button-create">新建</el-button>
-        <el-button class="button button-search">搜索</el-button>
+      <div class="favor__toolbuttongroup" :class="{'favor__createItems': showCreateItems}">
+        <el-input class="sidemenu-input"
+          size="small"
+          v-if="showCreateItems"
+          v-model="createFavorParams.name">
+        </el-input>
+        <div>
+          <img class="folder__img folder__img-tool"
+            src="../assets/images/right.png"
+            alt="创建收藏夹"
+            v-if="showCreateItems"
+            @click="submitCreateFavorParams">
+          </img>
+          <img class="folder__img folder__img-tool"
+            src="../assets/images/not.png"
+            alt="取消操作"
+            v-if="showCreateItems"
+            @click="showCreateItems = false">
+          </img>
+        </div>
+        <el-button class="button button-create"
+          v-if="!showCreateItems"
+          @click="showCreateItems = true">新建
+        </el-button>
+        <el-button class="button button-search"
+          v-if="!showCreateItems"
+          @click="">搜索
+        </el-button>
       </div>
       <div class="folder__list">
         <div class="folder__item"
@@ -11,7 +36,11 @@
           :key="favor.id">
           <div class="folder__info">
             <img src="../assets/images/folder.png" alt="文件夹" class="folder__img"></img>
-            <span v-if="!favor.editStatus">{{ favor.name }}</span>
+            <span class="folder__name"
+              v-if="!favor.editStatus"
+              @click="getFavorPatents(favor.id)"
+              >{{ favor.name }}
+            </span>
             <el-input class="folder__name-input"
               size="small"
               v-if="favor.editStatus"
@@ -43,6 +72,17 @@
             </img>
           </div>
         </div>
+      </div>
+      <div class="pagination sidemenu-pagination">
+        <span class="pagination__info">总计{{ favorPageInfo.total_item_number }}条记录</span>
+        <el-pagination
+          small
+          layout="prev, next"
+          :current-page="favorPageInfo.current_page"
+          :page-size="getFavorParams.per_page"
+          :page-count="favorPageInfo.total_page_number"
+          @current-change="changeFavorPageNum">
+        </el-pagination>
       </div>
     </div>
     <div class="resultPanel">
@@ -77,12 +117,14 @@
 <script>
 import myheader from '../components/Header'
 
-import state from '../state/searchResult/state.js'
+// import state from '../state/searchResult/state.js'
 import { sendRequest } from '../Api'
 
 export default {
   data () {
     return {
+      showCreateItems: false,
+      showSearchItems: false,
       favorList: [
         {
           name: '发电机',
@@ -93,7 +135,21 @@ export default {
           id: 1
         }
       ],
-      favors: [],
+      createFavorParams: {
+        name: '',
+        patent_id_list: []
+      },
+      getFavorParams: {
+        per_page: 10,
+        page: 1
+      },
+      favorPageInfo: {
+        current_page: 1,
+        total_page_number: 1,
+        current_page_item_number: 2,
+        total_item_number: 2
+      },
+
       favorTable: [],
       favorColumns: [
         {
@@ -129,27 +185,75 @@ export default {
     }
   },
   methods: {
+    submitCreateFavorParams () {
+      sendRequest.createFavor.post(this.createFavorParams).then(data => {
+        this.$message({
+          message: '创建收藏夹成功',
+          type: 'success'
+        })
+        this.showCreateItems = false
+      })
+      console.log(this.createFavorParams)
+      debugger
+    },
     showNameInput (index) {
       let favor = this.favorList[index]
       favor.editStatus = true
       this.$set(this.favorList, index, favor)
     },
-    fetchFavorPatents (favorId) {
-      state.set('favorId', favorId)
+    getFavorPatents (favorId) {
       let ids = {
-        userId: state.get('userId'),
-        favorId: state.get('favorId')
+        favorId: favorId
       }
-      sendRequest.favorPatent.get(null, ids).then(data => {
-        this.favorTable = [...data.patent_list]
+      sendRequest.getFavorInfo.get(null, ids).then(data => {
+        this.favorTable = data.patent_id_list
       })
+    },
+    changeFavorPageNum (pageNum) {
+      this.getFavorParams.page = pageNum
     },
     editFavorFolder (favor) {
     },
     deleteFavorFolder (favorId) {
+      this.$confirm('确定删除收藏夹？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let ids = {
+          favorId: favorId
+        }
+        sendRequest.deleteFavor.delete(ids).then(data => {
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+        })
+      }).catch(() => {
+        this.$message({
+          message: '已取消删除',
+          type: 'info'
+        })
+      })
     }
   },
   created () {
+    /*
+    sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
+      this.favorList = data.favor_list
+      for (let prop in this.favorPageInfo) {
+        if (this.favorPageInfo.hasOwnProperty(prop)) {
+          this.favorPageInfo[prop] = data[prop]
+        }
+      }
+      for (let favor of this.favorList) {
+        Object.assign(favor, {
+          nameEdit: favor.name,
+          editStatus: false
+        })
+      }
+    })
+    */
     for (let favor of this.favorList) {
       Object.assign(favor, {
         nameEdit: favor.name,
@@ -159,16 +263,6 @@ export default {
       // favor.$set('editStatus', false)
     }
   },
-  /*
-  mounted () {
-    let ids = {
-      userId: state.get('userId')
-    }
-    sendRequest.getFavor.get(null, ids).then(data => {
-      this.favors = [...data]
-    })
-  },
-  */
   components: {
     myheader
   }
@@ -182,10 +276,22 @@ export default {
     display: flex;
     flex-direction: column;
   }
+  .sidemenu-input {
+    flex-basis: 120px;
+  }
+  .sidemenu-pagination {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .favor__createItems {
+    justify-content: space-around!important;
+  }
   .favor__toolbuttongroup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding-top: 10px;
     padding-bottom: 10px;
-    text-align: center;
     border-bottom: 2px solid #d7d7d7;
     .button {
       border-radius: 2px;
@@ -223,6 +329,9 @@ export default {
   .folder__img-tool {
     cursor: pointer;
     height: 16px;
+  }
+  .folder__name {
+    cursor: pointer;
   }
   .folder__name-input {
     height: 10px;

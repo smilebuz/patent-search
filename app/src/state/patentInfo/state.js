@@ -22,12 +22,12 @@ export const infoState = new Vue({
   },
   watch: {
     patentId (newId) {
-      debugger
+      // debugger
       let ids = {
         patentId: newId
       }
       sendRequest.patentInfo.get(null, ids).then(data => {
-        debugger
+        // debugger
         this.bibliographicData = data.bibliographic_data
         this.detailClaim = data.detail_claim
         this.detailDescription = data.detail_description

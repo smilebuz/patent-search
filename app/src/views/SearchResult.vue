@@ -38,6 +38,15 @@
           placement="bottom"
           width="400"
           trigger="click">
+          <div class="popover-header">
+            <div>收藏夹名称:</div>
+            <el-input class="popover-header__input"
+              size="small"
+              v-model="createFavorParams.name">
+            </el-input>
+            <el-button class="button" @click="submitCreateFavorParams">创建并加入</el-button>
+            <i class="el-icon-close" @click="closeFavorPopover"></i>
+          </div>
           <el-table
             key="favorTable"
             :data="favorTable"
@@ -51,6 +60,15 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="pagination popover-pagination">
+            <el-pagination
+              small
+              layout="prev, next"
+              :page-count="favorPageInfo.total_page_number"
+              :current-page="favorPageInfo.current_page"
+              @current-change="changeFavorPageNum">
+            </el-pagination>
+          </div>
         </el-popover>
       </div>
       <div class="listPanel">
@@ -290,16 +308,32 @@ export default {
         page: ''
       },
       favorPopover: false,
+      getFavorParams: {
+        per_page: 5,
+        page: 1
+      },
+      createFavorParams: {
+        name: '',
+        patent_id_list: []
+      },
       favorTable: [
         {
           name: '收藏1',
-          createTime: '2015-09-14'
+          createTime: '2015-09-14',
+          id: 1
         },
         {
           name: '收藏2',
-          createTime: '2016-09-14'
+          createTime: '2016-09-14',
+          id: 2
         }
       ],
+      favorPageInfo: {
+        current_page: 1,
+        total_page_number: 1,
+        current_page_item_number: 2,
+        total_item_number: 2
+      },
       selectedPatentIds: []
     }
   },
@@ -360,11 +394,7 @@ export default {
           console.log(this.selectedPatentIds)
           break
         case 'favor':
-          // let params = {
-          //   per_page: 10,
-          //   page: 1
-          // }
-          // sendRequest.getAllFavor.get(params).then(data => {
+          // sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
           //   this.favorTable = data.favor_list
           //   this.favorPopover = true
           // })
@@ -408,11 +438,39 @@ export default {
         }
       }
     },
+    // 收藏弹框
+    closeFavorPopover () {
+      this.favorPopover = false
+    },
+    changeFavorPageNum (pageNum) {
+      this.getFavorParams.page = pageNum
+      sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
+        this.favorTable = data.favor_list
+      })
+    },
+    submitCreateFavorParams () {
+      this.createFavorParams.patent_id_list = this.selectedPatentIds
+      sendRequest.createFavor.post(this.createFavorParams).then(data => {
+        this.$message({
+          message: '创建目录并收藏成功',
+          type: 'success'
+        })
+      })
+      console.log(this.createFavorParams)
+      debugger
+    },
     addFavor (favor) {
       let ids = {
         favorId: favor.id
       }
-      sendRequest.addFavors.put(this.coll, ids).then(data => {
+      if (this.selectedPatentIds.length === 0) {
+        this.$message({
+          message: '请勾选要收藏的专利',
+          type: 'warning'
+        })
+        return false
+      }
+      sendRequest.addFavors.put(this.selectedPatentIds, ids).then(data => {
         this.$message({
           message: '收藏成功',
           type: 'success'
@@ -462,12 +520,15 @@ export default {
     changeSearchParams (field, query) {
       state.setSearchParams('field', field)
       state.setSearchParams('query', query)
+      this.selectedPatentIds = []
     },
     changePageSize (pageSize) {
       state.setSearchParams('per_page', pageSize)
+      this.selectedPatentIds = []
     },
     changePageNum (pageNum) {
       state.setSearchParams('page', pageNum)
+      this.selectedPatentIds = []
     }
   },
   components: {
@@ -623,5 +684,22 @@ export default {
       margin-right: 10px;
       cursor: pointer;
     }
+  }
+  .popover-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .popover-header__input {
+      flex-basis: 120px;
+      flex-grow: 1;
+      max-width: 200px;
+    }
+  }
+  .popover-pagination {
+    justify-content: flex-end;
+    padding-bottom: 0;
+  }
+  .el-icon-close {
+    cursor: pointer;
   }
 </style>
