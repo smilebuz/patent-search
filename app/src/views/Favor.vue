@@ -125,16 +125,7 @@ export default {
     return {
       showCreateItems: false,
       showSearchItems: false,
-      favorList: [
-        {
-          name: '发电机',
-          id: 0
-        },
-        {
-          name: '设备',
-          id: 1
-        }
-      ],
+      favorList: [],
       createFavorParams: {
         name: '',
         patent_id_list: []
@@ -144,10 +135,10 @@ export default {
         page: 1
       },
       favorPageInfo: {
-        current_page: 1,
-        total_page_number: 1,
-        current_page_item_number: 2,
-        total_item_number: 2
+        current_page: -1,
+        total_page_number: -1,
+        current_page_item_number: -1,
+        total_item_number: -1
       },
 
       favorTable: [],
@@ -187,14 +178,28 @@ export default {
   methods: {
     submitCreateFavorParams () {
       sendRequest.createFavor.post(this.createFavorParams).then(data => {
+        debugger
         this.$message({
           message: '创建收藏夹成功',
           type: 'success'
         })
+        sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
+          debugger
+          this.favorList = data.favorite_list
+          for (let prop in this.favorPageInfo) {
+            if (this.favorPageInfo.hasOwnProperty(prop)) {
+              this.favorPageInfo[prop] = data[prop]
+            }
+          }
+          for (let favor of this.favorList) {
+            Object.assign(favor, {
+              nameEdit: favor.name,
+              editStatus: false
+            })
+          }
+        })
         this.showCreateItems = false
       })
-      console.log(this.createFavorParams)
-      // debugger
     },
     showNameInput (index) {
       let favor = this.favorList[index]
@@ -238,9 +243,9 @@ export default {
     }
   },
   created () {
-    /*
     sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
-      this.favorList = data.favor_list
+      debugger
+      this.favorList = data.favorite_list
       for (let prop in this.favorPageInfo) {
         if (this.favorPageInfo.hasOwnProperty(prop)) {
           this.favorPageInfo[prop] = data[prop]
@@ -253,15 +258,14 @@ export default {
         })
       }
     })
-    */
-    for (let favor of this.favorList) {
-      Object.assign(favor, {
-        nameEdit: favor.name,
-        editStatus: false
-      })
-      // this.$set('nameEdit', favor.name)
-      // favor.$set('editStatus', false)
-    }
+    // for (let favor of this.favorList) {
+    //   Object.assign(favor, {
+    //     nameEdit: favor.name,
+    //     editStatus: false
+    //   })
+    //   this.$set('nameEdit', favor.name)
+    //   favor.$set('editStatus', false)
+    // }
   },
   components: {
     myheader

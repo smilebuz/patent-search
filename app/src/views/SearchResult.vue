@@ -322,18 +322,7 @@ export default {
         name: '',
         patent_id_list: []
       },
-      favorTable: [
-        {
-          name: '收藏1',
-          createTime: '2015-09-14',
-          id: 1
-        },
-        {
-          name: '收藏2',
-          createTime: '2016-09-14',
-          id: 2
-        }
-      ],
+      favorTable: [],
       favorPageInfo: {
         current_page: 1,
         total_page_number: 1,
@@ -400,11 +389,16 @@ export default {
           console.log(this.selectedPatentIds)
           break
         case 'favor':
-          // sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
-          //   this.favorTable = data.favor_list
-          //   this.favorPopover = true
-          // })
-          this.favorPopover = true
+          sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
+            debugger
+            this.favorTable = data.favorite_list[0]
+            for (let prop in this.favorPageInfo) {
+              if (this.favorPageInfo.hasOwnProperty(prop)) {
+                this.favorPageInfo[prop] = data[prop]
+              }
+            }
+            this.favorPopover = true
+          })
           break
         default:
           break

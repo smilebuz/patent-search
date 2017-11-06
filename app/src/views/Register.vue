@@ -4,6 +4,7 @@
       <el-form
         status-icon
         ref="registerForm"
+        :rules="rules"
         label-width="90px"
         :model="registerForm">
         <el-form-item label="账号:" prop="username" class="form__item">
@@ -100,36 +101,24 @@
 import { sendRequest } from '../Api'
 
 export default {
-  data: () => {
+  data () {
     var validatorPassword = (rule, value, callback) => {
-      // if (value === '') {
-      //   callback(new Error('请输入密码'))
-      // } else if (value.length < 6 || value.length > 20) {
-      //   callback(new Error('请输入6-20位英文、数字或者常用符号'))
-      // } else {
-      //   if (this.registerForm.password_confirm !== '') {
-      //     this.$refs.registerForm.validateField('password_confirm')
-      //   }
-      //   callback()
-      // }
       if (value === '') {
         callback(new Error('请输入密码'))
       } else if (value.length < 6 || value.length > 20) {
         callback(new Error('请输入6-20位英文、数字或者常用符号'))
       } else {
+        if (this.registerForm.password_confirm !== '') {
+          this.$refs['registerForm'].validateField('password_confirm')
+        }
         callback()
       }
     }
     var validatePwConfirm = (rule, value, callback) => {
-      // if (value === '') {
-      //   callback(new Error('请再次输入密码'))
-      // } else if (value !== this.registerForm.password) {
-      //   callback(new Error('两次输入密码不一致!'))
-      // } else {
-      //   callback()
-      // }
       if (value === '') {
         callback(new Error('请再次输入密码'))
+      } else if (value !== this.registerForm.password) {
+        callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
       }
@@ -191,40 +180,34 @@ export default {
   },
   methods: {
     submitRegisterParams: function (formName) {
-      // this.$refs[formName].validate((valid) => {
-      //   if (valid) {
-      //     for (let prop in this.registerParams) {
-      //       if (this.registerParams.hasOwnProperty(prop)) {
-      //         this.registerParams[prop] = this.form[prop]
-      //       }
-      //     }
-      //     sendRequest.register.post(this.registerParams).then(data => {
-      //       debugger
-      //       // this.$router.push('Login')
-      //     })
-      //   } else {
-      //     this.$message({
-      //       message: '注册信息验证失败',
-      //       type: 'error'
-      //     })
-      //     return false
-      //   }
-      // })
-      sendRequest.register.post(this.registerParams).then(data => {
-        if (!data) {
-          this.$message({
-            message: '注册成功',
-            type: 'success'
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          for (let prop in this.registerParams) {
+            if (this.registerParams.hasOwnProperty(prop)) {
+              this.registerParams[prop] = this.form[prop]
+            }
+          }
+          sendRequest.register.post(this.registerParams).then(data => {
+            debugger
+            // this.$router.push('Login')
           })
-          this.$router.push('Login')
         } else {
           this.$message({
-            message: '注册失败',
+            message: '注册信息验证失败',
             type: 'error'
           })
           return false
         }
       })
+      // sendRequest.register.post(this.registerParams).then(data => {
+      //   if (data) {
+      //     this.$message({
+      //       message: '注册成功',
+      //       type: 'success'
+      //     })
+      //     this.$router.push('Login')
+      //   }
+      // })
     }
   }
 }
