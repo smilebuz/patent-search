@@ -1,6 +1,8 @@
 // import Vue from 'Vue'
 import axios from 'axios'
 
+import { Message } from 'element-ui'
+
 export const Api = {
   'login': '/api/login', // post
   'logout': '/api/logout', // post
@@ -48,7 +50,18 @@ export const sendRequest = ((apilist) => {
         console.log('api post:', apilist[api])
         return axios.post(apilist[api], params)
           .then(response => {
-            return Promise.resolve(response.data.result) // 将response.data.result转成Promise对象
+            if (response.data.error_code) {
+              // 报错
+              if (response.data.error_msg) {
+                Message({
+                  message: response.data.error_msg,
+                  type: 'warning'
+                })
+              }
+              return Promise.reject(new Error(response.error_msg))
+            } else {
+              return Promise.resolve(response.data.result) // 将response.data.result转成Promise对象
+            }
           })
           .catch(error => {
             console.log(error)

@@ -1,5 +1,7 @@
 <template>
-  <div class="searchResult" v-loading="loadingData">
+  <div class="searchResult"
+    v-loading="loadingData"
+    element-loading-text="加载中">
     <SideMenu></SideMenu>
     <div class="resultPanel">
       <div class="toolbar">
@@ -80,6 +82,7 @@
         </div>
         <div class="patentList"
           v-loading="loadingPatentList"
+          element-loading-text="加载中"
           v-show="displayType === 'list'">
           <div class="patent"
             v-for="(patent, index) in patentList"
@@ -134,9 +137,12 @@
                   @click="expandAbstract(index)">更多
                 </span>
               </div>
-              <div class="patentInfo__abstract"
+              <div class="patentInfo__abstract patentInfo__abstract-expand"
                 v-if="patent.abstractExpand">
                 摘要: {{ patent.abstract_info }}
+                <span class="abstract__button"
+                  @click="collapseAbstract(index)">收起
+                </span>
               </div>
               <div class="patentInfo__links">
                 <span class="info__link" @click="checkRelatedInfo('applicant', patent)">申请人经营信息</span>
@@ -283,21 +289,21 @@ export default {
         }
       ],
       buttons: [
-        {
-          name: '保存',
-          value: 'save',
-          imgUrl: require('../assets/images/save.png')
-        },
+        // {
+        //   name: '保存',
+        //   value: 'save',
+        //   imgUrl: require('../assets/images/save.png')
+        // },
         {
           name: '加入收藏',
           value: 'favor',
           imgUrl: require('../assets/images/favor.png')
-        },
-        {
-          name: '加入分析库',
-          value: '',
-          imgUrl: require('../assets/images/analysis.png')
         }
+        // {
+        //   name: '加入分析库',
+        //   value: '',
+        //   imgUrl: require('../assets/images/analysis.png')
+        // }
       ],
       selectAll: false,
       displayType: 'list',
@@ -457,7 +463,7 @@ export default {
         })
       })
       console.log(this.createFavorParams)
-      debugger
+      // debugger
     },
     addFavor (favor) {
       let ids = {
@@ -517,7 +523,13 @@ export default {
       patent.abstractExpand = true
       state.updatePatentList(index, patent)
     },
+    collapseAbstract (index) {
+      let patent = this.patentList[index]
+      patent.abstractExpand = false
+      state.updatePatentList(index, patent)
+    },
     changeSearchParams (field, query) {
+      document.documentElement.scrollTop = 0
       state.setSearchParams('field', field)
       state.setSearchParams('query', query)
       this.selectedPatentIds = []
@@ -644,7 +656,8 @@ export default {
     overflow: hidden;
     position: relative;
   }
-  .patentInfo__abstract-all {
+  .patentInfo__abstract-expand {
+    position: relative;
   }
   .abstract__button {
     position: absolute;

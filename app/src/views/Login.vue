@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="login__form">
-      <img src="../assets/images/logo.png" alt="logo" class="login__item">
+      <img src="../assets/images/logo-login.png" alt="logo" class="login__item">
       <div class="login__form">
         <el-input placeholder="Username" class="form__input login__item"
           v-model="loginForm.username"
@@ -56,6 +56,8 @@ export default {
         userState.set('isLogin', true)
         userState.set('userId', data.user_id)
         this.$router.push('SearchResult')
+      }).catch(errorInfo => {
+        console.log('error:', errorInfo.message)
       })
     }
   }
@@ -64,6 +66,7 @@ export default {
 
 <style lang="scss">
   .login {
+    align-self: center;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -72,7 +75,7 @@ export default {
   .login__form {
     display: flex;
     flex-direction: column;
-    width: 280px;
+    width: 227px;
   }
   .login__item {
     margin-bottom: 20px!important;

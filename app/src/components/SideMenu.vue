@@ -117,10 +117,6 @@ export default {
         applicant_name_list: [],
         area_list: []
       },
-      recentSearchParams: {
-        per_page: 10,
-        page: 1
-      },
       recentSearchList: [],
       navType: '',
       navOptions: [
@@ -170,7 +166,7 @@ export default {
         })
         if (newValue === 'recentSearch') {
           // 最近搜索应该没有参数才对
-          sendRequest.recentSearch.get(this.recentSearchParams).then(data => {
+          sendRequest.recentSearch.get(null).then(data => {
             this.recentSearchList = data
           })
         }

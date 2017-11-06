@@ -36,6 +36,7 @@
               align="left"
               v-if="currentTab === 'info'"
               v-loading="loadingInfoTable"
+              element-loading-text="加载中"
               :data="infoTable"
               :key="tableKeys[0]">
               <el-table-column prop="title" label="信息名称" class="table-row-title"></el-table-column>
@@ -90,6 +91,7 @@
               border
               align="left"
               v-loading="loadingLegalTable"
+              element-loading-text="加载中"
               :data="legalTable"
               :key="tableKeys[3]">
               <el-table-column prop="date" label="日期"></el-table-column>

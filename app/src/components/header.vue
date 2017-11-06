@@ -62,10 +62,10 @@ export default {
       },
       showUserMenu: false,
       userMenu: [
-        {
-          label: '个人资料',
-          commend: ''
-        },
+        // {
+        //   label: '个人资料',
+        //   commend: ''
+        // },
         {
           label: '我的收藏',
           command: 'favor'

@@ -194,7 +194,7 @@ export default {
         this.showCreateItems = false
       })
       console.log(this.createFavorParams)
-      debugger
+      // debugger
     },
     showNameInput (index) {
       let favor = this.favorList[index]

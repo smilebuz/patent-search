@@ -35,6 +35,7 @@
               border
               align="left"
               v-loading="loadingApplicantTable"
+              element-loading-text="加载中"
               :data="applicantTable"
               :key="tableKeys[0]">
               <el-table-column prop="title" label="信息名称" class="table-row-title"></el-table-column>
@@ -59,6 +60,7 @@
               border
               aligh="left"
               v-loading="loadingSimilarityTable"
+              element-loading-text="加载中"
               :data="similarityTable"
               :key="tableKeys[2]">
               <el-table-column prop="similarity_score" label="相似度" width="70"></el-table-column>
@@ -90,6 +92,7 @@
               border
               align="left"
               v-loading="loadingBuyerTable"
+              element-loading-text="加载中"
               :data="buyerTable"
               :key="tableKeys[3]">
               <el-table-column prop="applicant_name" label="买家名称" width="230"></el-table-column>

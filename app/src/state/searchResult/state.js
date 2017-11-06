@@ -72,6 +72,10 @@ export default new Vue({
         sendRequest.search.get(newParams).then(data => {
           this.set('patentList', data.patent_list)
           for (let patent of this.patentList) {
+            if (!patent.abstract_info) {
+              // 将null改为空字符串
+              patent.abstract_info = ''
+            }
             patent.abstractExpand = !(patent.abstract_info.length > 140)
             patent.selected = false
           }
@@ -92,6 +96,14 @@ export default new Vue({
         this.loadingPatentList = true
         sendRequest.sort.get(newParams).then(data => {
           this.set('patentList', data.patent_list)
+          for (let patent of this.patentList) {
+            if (!patent.abstract_info) {
+              // 将null改为空字符串
+              patent.abstract_info = ''
+            }
+            patent.abstractExpand = !(patent.abstract_info.length > 140)
+            patent.selected = false
+          }
           this.loadingPatentList = false
         })
       },
