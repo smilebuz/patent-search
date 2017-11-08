@@ -179,7 +179,8 @@
           </el-table>
         </div>
         <div class="pagination">
-          <span class="pagination__info">总计{{ pageInfo.total_item_number }}条记录</span>
+          <span class="pagination__info">搜索结果: {{ }}条 搜索时间: 约{{ }}秒</span>
+          <!--span class="pagination__info">总计{{ pageInfo.total_item_number }}条记录</span-->
           <el-pagination class="pagination__page"
             :page-size="10"
             :page-sizes="[10, 20, 30]"

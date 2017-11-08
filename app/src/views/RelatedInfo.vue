@@ -62,9 +62,14 @@
               v-loading="loadingSimilarityTable"
               element-loading-text="加载中"
               :data="similarityTable"
-              :key="tableKeys[2]">
+              :key="tableKeys[2]"
+              :cell-class-name="cellClass"
+              @cell-click="checkPatentInfo">
               <el-table-column prop="similarity_score" label="相似度" width="70"></el-table-column>
-              <el-table-column prop="invention_title" label="相似专利名称"></el-table-column>
+              <el-table-column
+                prop="invention_title"
+                label="相似专利名称">
+              </el-table-column>
               <el-table-column prop="publish_date" label="公开号" width="100"></el-table-column>
               <el-table-column prop="applicant_name" label="申请人"></el-table-column>
               <el-table-column prop="inventor_list" label="发明人"></el-table-column>
@@ -94,7 +99,9 @@
               v-loading="loadingBuyerTable"
               element-loading-text="加载中"
               :data="buyerTable"
-              :key="tableKeys[3]">
+              :key="tableKeys[3]"
+              :cell-class-name="cellClass"
+              @cell-click="checkPatentInfo">
               <el-table-column prop="applicant_name" label="买家名称" width="230"></el-table-column>
               <el-table-column prop="area" label="所在地" width="75"></el-table-column>
               <el-table-column prop="fount_year" label="成立时间" width="100"></el-table-column>
@@ -374,7 +381,8 @@ export default {
   },
   methods: {
     prev () {
-      this.$router.push('/SearchResult')
+      // this.$router.push('/SearchResult')
+      this.$router.go(-1)
     },
     buttonStyle (imgUrl) {
       return {
@@ -459,6 +467,27 @@ export default {
     },
     changeBuyerPageNum (pageNum) {
       this.buyerParams.page = pageNum
+    },
+    cellClass (cellInfo) {
+      let column = cellInfo.column
+      if (column.property === 'invention_title' || column.property === 'applicant_name') {
+        return 'cell-link'
+      } else {
+        return ''
+      }
+    },
+    checkPatentInfo (row, column, cell, event) {
+      debugger
+      let patentId = row.patent_id
+      let applicantId = row.applicant_id
+      let infoType = ''
+      if (column.property === 'invention_title') {
+        infoType = 'info'
+        this.$router.push('/PatentInfo/' + infoType + '/' + patentId)
+      } else if (column.property === 'applicant_name') {
+        infoType = 'applicant'
+        this.$router.push('/RelatedInfo/' + infoType + '/' + patentId + '/' + applicantId)
+      }
     }
   },
   created () {

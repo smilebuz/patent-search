@@ -304,7 +304,8 @@ export default {
   },
   methods: {
     prev () {
-      this.$router.push('/SearchResult')
+      // this.$router.push('/SearchResult')
+      this.$router.go(-1)
     },
     buttonStyle (imgUrl) {
       return {
