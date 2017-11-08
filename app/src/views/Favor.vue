@@ -178,13 +178,13 @@ export default {
   methods: {
     submitCreateFavorParams () {
       sendRequest.createFavor.post(this.createFavorParams).then(data => {
-        debugger
+        // debugger
         this.$message({
           message: '创建收藏夹成功',
           type: 'success'
         })
         sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
-          debugger
+          // debugger
           this.favorList = data.favorite_list
           for (let prop in this.favorPageInfo) {
             if (this.favorPageInfo.hasOwnProperty(prop)) {
@@ -211,6 +211,7 @@ export default {
         favorId: favorId
       }
       sendRequest.getFavorInfo.get(null, ids).then(data => {
+        // debugger
         this.favorTable = data.patent_id_list
       })
     },
@@ -228,10 +229,27 @@ export default {
         let ids = {
           favorId: favorId
         }
+        // debugger
         sendRequest.deleteFavor.delete(ids).then(data => {
           this.$message({
             message: '删除成功',
             type: 'success'
+          })
+          // debugger
+          sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
+            // debugger
+            this.favorList = data.favorite_list
+            for (let prop in this.favorPageInfo) {
+              if (this.favorPageInfo.hasOwnProperty(prop)) {
+                this.favorPageInfo[prop] = data[prop]
+              }
+            }
+            for (let favor of this.favorList) {
+              Object.assign(favor, {
+                nameEdit: favor.name,
+                editStatus: false
+              })
+            }
           })
         })
       }).catch(() => {
@@ -244,7 +262,7 @@ export default {
   },
   created () {
     sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
-      debugger
+      // debugger
       this.favorList = data.favorite_list
       for (let prop in this.favorPageInfo) {
         if (this.favorPageInfo.hasOwnProperty(prop)) {

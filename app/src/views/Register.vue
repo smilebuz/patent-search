@@ -188,8 +188,7 @@ export default {
             }
           }
           sendRequest.register.post(this.registerParams).then(data => {
-            debugger
-            // this.$router.push('Login')
+            this.$router.push('Login')
           })
         } else {
           this.$message({

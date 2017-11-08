@@ -250,6 +250,8 @@ export default {
     }
   }
   .checkboxgroup {
+    padding: 0;
+    text-align: left;
     display: flex;
     flex-direction: column;
     .checkbox {

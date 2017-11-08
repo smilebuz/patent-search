@@ -337,10 +337,10 @@ export default {
       return state.get('patentList')
     },
     recommendList: function () {
-      return state.recommendList
+      return state.get('recommendList')
     },
     pageInfo: function () {
-      return state.pageInfo
+      return state.get('pageInfo')
     },
     loadingPatentList: function () {
       return state.get('loadingPatentList')
@@ -390,8 +390,8 @@ export default {
           break
         case 'favor':
           sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
-            debugger
-            this.favorTable = data.favorite_list[0]
+            // debugger
+            this.favorTable = data.favorite_list
             for (let prop in this.favorPageInfo) {
               if (this.favorPageInfo.hasOwnProperty(prop)) {
                 this.favorPageInfo[prop] = data[prop]
@@ -450,14 +450,22 @@ export default {
     },
     submitCreateFavorParams () {
       this.createFavorParams.patent_id_list = this.selectedPatentIds
+      console.log(this.createFavorParams)
+      // debugger
       sendRequest.createFavor.post(this.createFavorParams).then(data => {
         this.$message({
           message: '创建目录并收藏成功',
           type: 'success'
         })
+        sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
+          this.favorTable = data.favorite_list
+          for (let prop in this.favorPageInfo) {
+            if (this.favorPageInfo.hasOwnProperty(prop)) {
+              this.favorPageInfo[prop] = data[prop]
+            }
+          }
+        })
       })
-      console.log(this.createFavorParams)
-      // debugger
     },
     addFavor (favor) {
       let ids = {
@@ -509,8 +517,8 @@ export default {
       this.$router.push('/PatentInfo/' + infoType + '/' + patentId)
     },
     checkRelatedInfo (infoType, patent) {
-      // this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/' + patent.applicant_id)
-      this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/778929080')
+      this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/' + patent.applicant_id)
+      // this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/778929080')
     },
     expandAbstract (index) {
       let patent = this.patentList[index]
