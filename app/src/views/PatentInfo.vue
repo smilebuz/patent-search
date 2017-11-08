@@ -1,9 +1,9 @@
 <template lang="html">
   <div class="info">
     <div class="info__title">
-      <img src="" alt="返回上一页" class="title__prev" @click="prev"></img>
-      <span class="title__id">{{ patentId }}</span>
-      <span class="title__name">{{ inventionTitle }}</span>
+      <img src="../assets/images/back.png" alt="返回上一页" class="title__prev" @click="prev"></img>
+      <div class="title__id">{{ patentId }}</div>
+      <div class="title__name">{{ inventionTitle }}</div>
     </div>
     <div class="tabs">
       <div class="tabs__headers">
@@ -375,6 +375,28 @@ export default {
   .info {
     flex-direction: column;
     height: 100%;
+  }
+  .info__title {
+    display: flex;
+    position: relative;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 30px;
+    .title__prev {
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      cursor: pointer;
+    }
+    .title__id {
+      padding-left: 5px;
+      padding-right: 5px;
+      background: #f4f4f4;
+    }
+    .title__name {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
   }
   .tabs {
     padding-top: 20px;

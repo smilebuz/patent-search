@@ -1,7 +1,7 @@
 <template>
   <div class="relatedInfo">
     <div class="info__title">
-      <img src="" alt="返回上一页" class="title__prev"></img>
+      <img src="../assets/images/back.png" alt="返回上一页" class="title__prev"></img>
       <span class="title__id">{{ patentId }}</span>
       <span class="title__name">{{ inventionTitle }}</span>
     </div>
@@ -130,7 +130,7 @@ export default {
   data () {
     return {
       patentId: '1',
-      inventionTitle: 'a',
+      inventionTitle: '',
       tabs: [
         {
           name: 'applicant',
