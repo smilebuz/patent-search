@@ -116,6 +116,8 @@
 // import { infoState } from '../state/patentInfo/state.js'
 import { sendRequest } from '../Api'
 
+require('../assets/scss/patent-info.scss')
+
 export default {
   data () {
     return {
@@ -372,85 +374,4 @@ export default {
 </script>
 
 <style lang="scss">
-  .info {
-    flex-direction: column;
-    height: 100%;
-  }
-  .info__title {
-    display: flex;
-    position: relative;
-    height: 30px;
-    line-height: 30px;
-    padding: 0 30px;
-    .title__prev {
-      position: absolute;
-      left: 5px;
-      top: 5px;
-      cursor: pointer;
-    }
-    .title__id {
-      padding-left: 5px;
-      padding-right: 5px;
-      background: #f4f4f4;
-    }
-    .title__name {
-      padding-left: 5px;
-      padding-right: 5px;
-    }
-  }
-  .tabs {
-    padding-top: 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  .tabs__headers {
-    display: flex;
-    justify-content: space-between;
-    padding-left: 40px;
-    padding-right: 40px;
-    border-bottom: 2px solid #1ab0e6;
-    font-size: 14px;
-  }
-  .tabs__headers-container {
-    display: flex;
-    .tabs__header-item {
-      height: 35px;
-      line-height: 35px;
-      padding-left: 10px;
-      padding-right: 10px;
-      margin-right: 5px;
-      background: #eee;
-      color: #000;
-      cursor: pointer;
-      &:hover {
-        background: #1ab0e6;
-        color: #fff;
-      }
-    }
-    .header-activate {
-      background: #1ab0e6;
-      color: #fff;
-    }
-  }
-  .tabs__body {
-    display: flex;
-    flex: 1;
-  }
-  .body__sidePic {
-    flex-basis: 170px;
-    background: #f4f4f4;
-  }
-  .body__content {
-    flex: 1;
-    padding-top: 20px;
-    padding-bottom: 20px;
-  }
-  .tab__content-container {
-    width: 90%;
-    margin: 0 auto;
-  }
-  .pagination {
-    padding: 10px 0;
-  }
 </style>

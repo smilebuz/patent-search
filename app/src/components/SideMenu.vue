@@ -79,6 +79,8 @@
 import state from '../state/searchResult/state.js'
 import { sendRequest } from '../Api'
 
+require('../assets/scss/side-menu.scss')
+
 export default {
   data () {
     return {
@@ -176,6 +178,12 @@ export default {
       handler: function (newType) {
         // 接口
       }
+    },
+    filterParams: {
+      handler: function (newParams) {
+        // 提交过滤
+      },
+      deep: true
     }
   },
   methods: {
@@ -191,108 +199,4 @@ export default {
 </script>
 
 <style lang="scss">
-  .sideMenu {
-    width: 200px;
-    min-width: 200px;
-    display: flex;
-    flex-direction: column;
-  }
-  .buttongroup {
-    display: flex;
-    justify-content: space-between;
-    height: 40px;
-    line-height: 40px;
-    border-bottom: 1px solid #e8e8e8;
-    font-size: 15px;
-    font-weight: 700;
-    .buttongroup__button {
-      //border-right: 1px solid #e8e8e8;
-      text-align: center;
-      cursor: pointer;
-      &:hover {
-        background: #46b6e9;
-        color: #fff;
-      }
-      &:nth-child(1) {
-        flex: 1;
-      }
-      &:nth-child(2) {
-        flex: 2;
-      }
-      &:nth-child(3) {
-        flex: 2;
-      }
-    }
-  }
-  .menu-activate {
-    background: #46b6e9;
-    color: #fff;
-  }
-  .sideMenu__select {
-    padding: 10px;
-    border-bottom: 1px solid #e8e8e8;
-  }
-  .filter__collpase {
-
-  }
-  .filter__item {
-    padding-left: 10px;
-    padding-right: 10px;
-    .el-collapse-item__header {
-      height: 35px;
-      line-height: 35px;
-    }
-    .el-collapse-item__arrow {
-      line-height: 35px;
-    }
-    .el-collapse-item__content {
-      padding-bottom: 10px;
-    }
-  }
-  .checkboxgroup {
-    padding: 0;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    .checkbox {
-      margin-left: 0;
-      .el-checkbox__label {
-        font-size: 12px;
-      }
-    }
-  }
-  .recentSearch__container {
-    display: flex;
-    flex-direction: column;
-  }
-  .recentSearch__item {
-    height: 35px;
-    line-height: 35px;
-    padding-left: 10px;
-    font-size: 14px;
-    font-weight: 700;
-    border-bottom: 1px solid #e6ebf5;
-    cursor: pointer;
-    &:hover {
-      background: #e6ebf5;
-    }
-  }
-  .navToolbox {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 10px;
-  }
-  .navToolbox__item {
-    cursor: pointer;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-  .navContent {
-    font-size: 14px;
-    padding: 10px;
-    .navContent__item {
-      padding-bottom: 5px;
-    }
-  }
 </style>

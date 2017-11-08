@@ -100,6 +100,8 @@
 <script>
 import { sendRequest } from '../Api'
 
+require('../assets/scss/register.scss')
+
 export default {
   data () {
     var validatorPassword = (rule, value, callback) => {
@@ -212,62 +214,5 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-  .formContainer {
-    display: flex;
-    flex-direction: column;
-    margin: 60px auto;
-    border: 2px solid #cdcdcd;
-    width: 60%;
-    form {
-      display: flex;
-      flex-wrap: wrap;
-      overflow: auto;
-      padding: 5%;
-      padding-bottom: 0;
-      .el-form-item {
-        .form-select {
-          padding: 0;
-          width: 60px;
-          text-align: center;
-        }
-      }
-    }
-  }
-  .form__item {
-    margin: 0 auto;
-    margin-bottom: 20px;
-    float: left;
-    flex-basis: 40%;
-    &:nth-child(2n+1) {
-      margin-right: 0;
-    }
-    &:nth-child(2n) {
-      margin-left: 0;
-    }
-  }
-  .form__item-placeholder {
-    visibility: hidden;
-  }
-  .form__item-select {
-    width: 100%;
-  }
-  .buttons {
-    margin-top: 10px;
-    padding-bottom: 5%;
-    text-align: center;
-    border: 1px solid #fff;
-    .button {
-      border-radius: 2px;
-      color: #fff;
-    }
-    .button-register {
-      border-color: #51b2b0;
-      background: #51b2b0;
-    }
-    .button-tiral {
-      border-color: #46b6e9;
-      background: #46b6e9;
-    }
-  }
+<style lang="scss">
 </style>

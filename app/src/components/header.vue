@@ -51,6 +51,8 @@ import { sendRequest } from '../Api'
 import state from '../state/searchResult/state.js'
 import { userState } from '../state/user/state.js'
 
+require('../assets/scss/header.scss')
+
 export default {
   data () {
     return {
@@ -122,112 +124,4 @@ export default {
 </script>
 
 <style lang="scss">
-  $border-color: #383838;
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 45px;
-    width: 100%;
-    top: 0;
-    font-size: 14px;
-    color: #fff;
-    background: #434343;
-    .header-user {
-      font-size: 13px;
-      #help {
-        cursor: pointer;
-      }
-    }
-  }
-  .logo {
-    width: 310px;
-    height: inherit;
-    border-right: 1px solid $border-color;
-    background: url('../assets/images/logo.png')  20px center no-repeat;
-  }
-  .searchContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    //width: 500px;
-    flex: 1;
-    border-right: 1px solid $border-color;
-    .searchbox {
-      width: 650px;
-      height: 35px;
-      display: flex;
-      .searchbox__input {
-        height: inherit;
-        flex: 1;
-        .el-input__inner {
-          height: 100%;
-          border-radius: 0;
-        }
-      }
-      .searchbox__icon {
-        width: 45px;
-        cursor: pointer;
-        background: url('../assets/images/search.png') center no-repeat #46b6e9;
-        background-size: 50%;
-      }
-    }
-    .advancedSearch__link {
-      height: 30px;
-      width: 75px;
-      line-height: 30px;
-      text-align: center;
-      border-radius: 2px;
-      cursor: pointer;
-      background: #8ebe73;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-  .userContainer {
-    display: flex;
-    flex-direction: column;
-    .userDropdown__header {
-      height: 45px;
-      line-height: 45px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      width: 100px;
-      padding-left: 10px;
-      padding-right: 10px;
-      border-right: 1px solid $border-color;
-      cursor: pointer;
-    }
-    .userDropdown__menu {
-      width: 121px;
-      position: absolute;
-      top: 45px;
-      z-index: 999;
-      .userDropdownMenu__item {
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        cursor: pointer;
-        background: #434343;
-        &:hover {
-          background: #383838;
-        }
-      }
-    }
-  }
-  .logout__link {
-    width: 60px;
-    padding-left: 10px;
-    padding-right: 10px;
-    height: 100%;
-    line-height: 45px;
-    text-align: right;
-    cursor: pointer;
-    background: url('../assets/images/out.png') 10px center no-repeat;
-    &:hover {
-      background-color: #626262;
-    }
-  }
 </style>

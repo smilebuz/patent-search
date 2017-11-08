@@ -30,6 +30,8 @@ import { userState } from '../state/user/state.js'
 // import bus from '../Bus.js'
 import { sendRequest } from '../Api'
 
+require('../assets/scss/login.scss')
+
 export default {
   name: 'Login',
   data () {
@@ -65,36 +67,4 @@ export default {
 </script>
 
 <style lang="scss">
-  .login {
-    align-self: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
-  .login__form {
-    display: flex;
-    flex-direction: column;
-    width: 227px;
-  }
-  .login__item {
-    margin-bottom: 20px!important;
-  }
-  .login__button {
-    color: #fff;
-    border-color: #3fb5e8;
-    border-radius: 50px;
-    background: #3fb5e8;
-  }
-  .login__options {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-  }
-  .login__link {
-    cursor: pointer;
-    &:hover {
-      color: #3fb5e8;
-    }
-  }
 </style>
