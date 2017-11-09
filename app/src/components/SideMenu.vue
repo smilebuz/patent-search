@@ -48,7 +48,7 @@
     </div>
     <div class="" v-if="currentMenu === 'categroyNav'">
       <div class="navSelect sideMenu__select">
-        <el-select size="small" v-model="navType">
+        <el-select size="small" v-model="navParams.navType">
           <el-option
             v-for="(option, index) in navOptions"
             :key="option.value"
@@ -60,8 +60,12 @@
       <div class="navToolbox">
         <span class="navToolbox__item">上一级</span>
         <div class="navToolbox__pagination">
-          <span class="navToolbox__item">上一页</span>
-          <span class="navToolbox__item">下一页</span>
+          <span class="navToolbox__item"
+            @click="navParams.navPage += 1">上一页
+          </span>
+          <span class="navToolbox__item"
+            @click="navParams.navPage -= 1">下一页
+          </span>
         </div>
       </div>
       <div class="navContent">
@@ -120,7 +124,6 @@ export default {
         area_list: []
       },
       recentSearchList: [],
-      navType: '',
       navOptions: [
         {
           label: 'ipc',
@@ -148,7 +151,11 @@ export default {
           name: '外观设计专利',
           number: 218
         }
-      ]
+      ],
+      navParams: {
+        navType: '',
+        navPage: 1 // 当前导航页数
+      }
     }
   },
   computed: {
@@ -174,7 +181,7 @@ export default {
         }
       }
     },
-    navType: {
+    'navParams.navType': {
       handler: function (newType) {
         // 接口
       }
@@ -190,6 +197,9 @@ export default {
     submitSearchParams (field, query) {
       state.setSearchParams('field', field)
       state.setSearchParams('query', query)
+    },
+    submitNavParams () {
+
     }
   },
   created () {

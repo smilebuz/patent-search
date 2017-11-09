@@ -78,6 +78,7 @@ export default new Vue({
             }
             patent.abstractExpand = !(patent.abstract_info.length > 140)
             patent.selected = false
+            patent.value_degree.value = Math.floor(patent.value_degree.value)
           }
           this.set('recommendList', data.recommend_list)
           this.set('filterList', data.filter_sidebar_list)

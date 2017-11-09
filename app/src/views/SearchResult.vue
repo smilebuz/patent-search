@@ -53,9 +53,8 @@
             key="favorTable"
             :data="favorTable"
             width="100%">
-            <el-table-column type="selection" width="50"></el-table-column>
             <el-table-column label="收藏夹" prop="name" width="100"></el-table-column>
-            <el-table-column label="创建时间" prop="createTime" width="150"></el-table-column>
+            <!--el-table-column label="创建时间" prop="createTime" width="150"></el-table-column-->
             <el-table-column label="操作" width="100">
               <template slot-scope="scope">
                 <el-button @click="addFavor(scope.row)" size="small">收藏</el-button>
@@ -100,7 +99,24 @@
                 </span>
                 <div class="header__tags">
                   <el-tag class="header__tag">存活期: {{ patent.maintenance_period }}年 </el-tag>
-                  <el-tag class="header__tag header__tag-value">价值度: {{ patent.value_degree.value }}</el-tag>
+                  <el-tag class="header__tag header__tag-value"
+                    >价值度: {{ patent.value_degree.value }}
+                    <img
+                      src="../assets/images/star-full.png"
+                      alt="full star"
+                      v-for="n in patent.value_degree.value / 2"
+                      :key="n">
+                    <img
+                      src="../assets/images/star-half.png"
+                      alt="half star"
+                      v-if="patent.value_degree.value % 2">
+                    <img
+                      src="../assets/images/star-blank.png"
+                      alt="blank star"
+                      v-for="n in (10 - patent.value_degree.value) / 2"
+                      :key="n"
+                    >
+                  </el-tag>
                   <el-tag class="header__tag" v-if="patent.award">{{ patent.award }}</el-tag>
                 </div>
               </div>
