@@ -25,10 +25,10 @@
           <el-checkbox class="checkbox"
             v-for="(item, index) in filterList[key]"
             :key="index"
-            :label="item">{{ item }}
+            :label="item.item">{{ item.item }}({{item.frequency}})
           </el-checkbox>
         </el-checkbox-group>
-        <el-checkbox-group class="checkboxgroup"
+        <!--el-checkbox-group class="checkboxgroup"
           v-else
           v-model="filterParams[key]">
           <el-checkbox class="checkbox"
@@ -36,7 +36,7 @@
             :key="ipc.section"
             :label="ipc.section">{{ ipc.description }}
           </el-checkbox>
-        </el-checkbox-group>
+        </el-checkbox-group-->
       </el-collapse-item>
     </el-collapse>
     <div class="recentSearch__container" v-if="currentMenu === 'recentSearch'">
@@ -109,7 +109,7 @@ export default {
       filterCollapse: '',
       filterPairs: {
         apply_type_list: '专利类型',
-        ipc_list: 'IPC分类',
+        // ipc_list: 'IPC分类',
         product_type_list: '产品类型',
         national_economy_industry_list: '国民经济产业',
         applicant_name_list: '申请人',
@@ -117,11 +117,16 @@ export default {
       },
       filterParams: {
         apply_type_list: [],
-        ipc_list: [],
+        // ipc_list: [],
         product_type_list: [],
         national_economy_industry_list: [],
         applicant_name_list: [],
-        area_list: []
+        area_list: [],
+        maintenance_period_list: [],
+        application_time_span_list: [],
+        registered_capital_list: [],
+        per_page: 10,
+        page: 1
       },
       recentSearchList: [],
       navOptions: [
@@ -189,6 +194,11 @@ export default {
     filterParams: {
       handler: function (newParams) {
         // 提交过滤
+        for (let prop in newParams) {
+          if (newParams.hasOwnProperty(prop)) {
+            state.setFilterParams(prop, newParams[prop])
+          }
+        }
       },
       deep: true
     }

@@ -1,0 +1,65 @@
+.favor__sidemenu {
+  width: 220px;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+}
+.sidemenu-input {
+  flex-basis: 120px;
+}
+.sidemenu-pagination {
+  padding-left: 5px!important;
+}
+.favor__createItems {
+  justify-content: space-around!important;
+}
+.favor__toolbuttongroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #d7d7d7;
+  .button {
+    border-radius: 2px;
+    color: #fff;
+  }
+  .button-create {
+    border-color: #51b2b0;
+    background: #51b2b0;
+  }
+  .button-search {
+    border-color: #46b6e9;
+    background: #46b6e9;
+  }
+}
+.folder__list {
+  font-size: 14px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.folder__item {
+  display: flex;
+  justify-content: space-between;
+  height: 25px;
+  padding: 5px;
+}
+.folder__info {
+  display: flex;
+  height: 25px;
+}
+.folder__img {
+  margin-right: 5px;
+  width: 16px;
+  height: 12px;
+}
+.folder__img-tool {
+  cursor: pointer;
+  height: 16px;
+}
+.folder__name {
+  cursor: pointer;
+}
+.folder__name-input {
+  height: 10px;
+}

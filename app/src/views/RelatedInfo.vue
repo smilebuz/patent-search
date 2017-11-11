@@ -477,7 +477,6 @@ export default {
       }
     },
     checkPatentInfo (row, column, cell, event) {
-      debugger
       let patentId = row.patent_id
       let applicantId = row.applicant_id
       let infoType = ''

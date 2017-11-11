@@ -104,7 +104,7 @@
                     <img
                       src="../assets/images/star-full.png"
                       alt="full star"
-                      v-for="n in patent.value_degree.value / 2"
+                      v-for="n in Math.floor(patent.value_degree.value / 2)"
                       :key="n">
                     <img
                       src="../assets/images/star-half.png"
@@ -113,7 +113,7 @@
                     <img
                       src="../assets/images/star-blank.png"
                       alt="blank star"
-                      v-for="n in (10 - patent.value_degree.value) / 2"
+                      v-for="n in Math.floor((10 - patent.value_degree.value) / 2)"
                       :key="n"
                     >
                   </el-tag>
@@ -195,7 +195,7 @@
           </el-table>
         </div>
         <div class="pagination">
-          <span class="pagination__info">搜索结果: {{ }}条 搜索时间: 约{{ }}秒</span>
+          <span class="pagination__info">搜索结果: {{ pageInfo.total_hits }}条 搜索时间: 约{{ pageInfo.took }}秒</span>
           <!--span class="pagination__info">总计{{ pageInfo.total_item_number }}条记录</span-->
           <el-pagination class="pagination__page"
             :page-size="10"

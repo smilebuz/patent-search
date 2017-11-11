@@ -90,7 +90,7 @@
         <el-table
           border
           align="left"
-          :data="patentList"
+          :data="patentListAfterPage"
           key="patentTable">
           <el-table-column type="selection"></el-table-column>
           <el-table-column prop="apply_type" label="专利类型" width="80"></el-table-column>
@@ -109,6 +109,18 @@
           <el-table-column prop="apply_date" label="申请日" width="100"></el-table-column>
           <el-table-column prop="publish_date" label="公开日" width="100"></el-table-column>
         </el-table>
+        <div class="pagination">
+          <span class="pagination__info">总计{{ patentPageInfo.total_item_number }}条记录</span>
+          <el-pagination class="pagination__page"
+            :page-size="10"
+            :page-sizes="[1, 10, 20, 30]"
+            :current-page="patentPageInfo.current_page"
+            :page-count="patentPageInfo.total_page_number"
+            @size-change="changePatentPageSize"
+            @current-change="changePatentPageNum"
+            layout="total, sizes, prev, pager, next, jumper">
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -119,6 +131,8 @@ import myheader from '../components/Header'
 
 // import state from '../state/searchResult/state.js'
 import { sendRequest } from '../Api'
+
+require('../assets/scss/favor.scss')
 
 export default {
   data () {
@@ -141,38 +155,18 @@ export default {
         total_item_number: -1
       },
 
-      favorTable: [],
-      favorColumns: [
-        {
-          'prop': 'apply_type',
-          'label': '专利类型'
-        },
-        {
-          'prop': 'application_doc_number',
-          'label': '申请号'
-        },
-        {
-          'prop': 'invention_title',
-          'label': '专利名称'
-        },
-        {
-          'prop': 'applicant_name',
-          'label': '申请人'
-        },
-        {
-          'prop': 'inventor_list',
-          'label': '发明人'
-        },
-        {
-          'prop': 'apply_date',
-          'label': '申请日'
-        },
-        {
-          'prop': 'ipc_main_classification_no',
-          'label': '分类号'
-        }
-      ],
-      patentList: []
+      patentParams: {
+        per_page: 10,
+        page: 1
+      },
+      patentList: [],
+      patentListAfterPage: [],
+      patentPageInfo: {
+        current_page: -1,
+        total_page_number: -1,
+        current_page_item_number: -1,
+        total_item_number: -1
+      }
     }
   },
   methods: {
@@ -211,8 +205,12 @@ export default {
         favorId: favorId
       }
       sendRequest.getFavorInfo.get(null, ids).then(data => {
-        // debugger
-        this.favorTable = data.patent_id_list
+        this.patentList = data.patent_list
+        this.patentPageInfo.current_page = this.patentParams.page
+        this.patentPageInfo.total_item_number = data.patent_list.length
+        this.patentPageInfo.current_page_item_number = this.patentParams.per_page
+        this.patentPageInfo.total_page_number = Math.round(data.patent_list.length / this.patentParams.per_page)
+        this.patentListAfterPage = this.filterPatentList()
       })
     },
     changeFavorPageNum (pageNum) {
@@ -258,6 +256,27 @@ export default {
           type: 'info'
         })
       })
+    },
+
+    filterPatentList () {
+      return this.patentList.filter((el, index, arr) => {
+        return index >= (this.patentParams.page - 1) * this.patentParams.per_page &&
+          index < this.patentParams.page * this.patentParams.per_page
+      })
+    },
+    changePatentPageSize (pageSize) {
+      this.patentParams.per_page = pageSize
+    },
+    changePatentPageNum (pageNum) {
+      this.patentParams.page = pageNum
+    }
+  },
+  watch: {
+    patentParams: {
+      handler: function (newParams) {
+        this.patentListAfterPage = this.filterPatentList()
+      },
+      deep: true
     }
   },
   created () {
@@ -291,71 +310,5 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-  .favor__sidemenu {
-    width: 200px;
-    min-width: 200px;
-    display: flex;
-    flex-direction: column;
-  }
-  .sidemenu-input {
-    flex-basis: 120px;
-  }
-  .sidemenu-pagination {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-  .favor__createItems {
-    justify-content: space-around!important;
-  }
-  .favor__toolbuttongroup {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #d7d7d7;
-    .button {
-      border-radius: 2px;
-      color: #fff;
-    }
-    .button-create {
-      border-color: #51b2b0;
-      background: #51b2b0;
-    }
-    .button-search {
-      border-color: #46b6e9;
-      background: #46b6e9;
-    }
-  }
-  .folder__list {
-    font-size: 14px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-  .folder__item {
-    display: flex;
-    justify-content: space-between;
-    height: 25px;
-    padding: 5px;
-  }
-  .folder__info {
-    display: flex;
-    height: 25px;
-  }
-  .folder__img {
-    margin-right: 5px;
-    width: 16px;
-    height: 12px;
-  }
-  .folder__img-tool {
-    cursor: pointer;
-    height: 16px;
-  }
-  .folder__name {
-    cursor: pointer;
-  }
-  .folder__name-input {
-    height: 10px;
-  }
+<style lang="scss">
 </style>
