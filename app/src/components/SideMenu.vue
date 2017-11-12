@@ -48,7 +48,7 @@
     </div>
     <div class="" v-if="currentMenu === 'categroyNav'">
       <div class="navSelect sideMenu__select">
-        <el-select size="small" v-model="navParams.navType">
+        <el-select size="small" v-model="navType">
           <el-option
             v-for="(option, index) in navOptions"
             :key="option.value"
@@ -58,7 +58,7 @@
         </el-select>
       </div>
       <div class="navToolbox">
-        <span class="navToolbox__item">上一级</span>
+        <span class="navToolbox__item" @click="backLevel">上一级</span>
         <div class="navToolbox__pagination">
           <span class="navToolbox__item"
             @click="navParams.navPage += 1">上一页
@@ -157,15 +157,80 @@ export default {
           number: 218
         }
       ],
+      navType: '',
       navParams: {
-        navType: '',
-        navPage: 1 // 当前导航页数
+        query: '',
+        field: '',
+        per_page: 5,
+        page: 1 // 当前导航页数
+      },
+      // nav搜索记录栈
+      navIpcParamsStack: [],
+      navIpcParams: {
+        preQuery: '',
+        preField: '',
+        query: '',
+        field: ''
+      },
+      navNeicParams: {
+        preQuery: '',
+        preField: '',
+        query: '',
+        field: ''
+      },
+      navProductTypeParams: {
+        preQuery: '',
+        preField: '',
+        query: '',
+        field: ''
+      },
+      navIpcLevelList: {
+        1: 'ipc_main_section',
+        2: 'ipc_main_class',
+        3: 'ipc_main_subclass',
+        4: 'ipc_main_group_stroke_main'
+      },
+      navNeicLevelList: {
+        1: '',
+        2: '',
+        3: ''
+      },
+      navProductTypeLevelList: {
+        1: '',
+        2: '',
+        3: ''
       }
     }
   },
   computed: {
     filterList: function () {
       return state.filterList
+    }
+  },
+  methods: {
+    submitSearchParams (field, query) {
+      state.setSearchParams('field', field)
+      state.setSearchParams('query', query)
+    },
+    backLevel () {
+      switch (this.navType) {
+        case 'ipc':
+          let lastNav = this.navIpcParamsStack.pop()
+          this.navParams.query = lastNav.query
+          this.navParams.field = lastNav.field
+          break
+        case 'neic':
+          break
+        case 'product_type':
+          break
+        default:
+          break
+      }
+    },
+    nextLevel () {
+      this.navParams.query = ''
+      this.navParams.field = ''
+      this.navIpcParamsStack.push({query: this.navParams.query, field: this.navParams.field})
     }
   },
   watch: {
@@ -186,7 +251,7 @@ export default {
         }
       }
     },
-    'navParams.navType': {
+    navType: {
       handler: function (newType) {
         // 接口
       }
@@ -201,15 +266,12 @@ export default {
         }
       },
       deep: true
-    }
-  },
-  methods: {
-    submitSearchParams (field, query) {
-      state.setSearchParams('field', field)
-      state.setSearchParams('query', query)
     },
-    submitNavParams () {
-
+    navParams: {
+      handler: function (newParams) {
+        // 请求
+      },
+      deep: true
     }
   },
   created () {
