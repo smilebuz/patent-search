@@ -3,7 +3,7 @@
     v-loading="loadingData"
     element-loading-text="加载中">
     <SideMenu></SideMenu>
-    <div class="resultPanel">
+    <!--div class="resultPanel">
       <div class="toolbar">
         <el-button-group class="toolbox">
           <el-button class="button" @click="switchDisplayType('list')">
@@ -54,7 +54,6 @@
             :data="favorTable"
             width="100%">
             <el-table-column label="收藏夹" prop="name" width="100"></el-table-column>
-            <!--el-table-column label="创建时间" prop="createTime" width="150"></el-table-column-->
             <el-table-column label="操作" width="100">
               <template slot-scope="scope">
                 <el-button @click="addFavor(scope.row)" size="small">收藏</el-button>
@@ -196,7 +195,6 @@
         </div>
         <div class="pagination">
           <span class="pagination__info">搜索结果: {{ pageInfo.total_hits }}条 搜索时间: 约{{ pageInfo.took }}秒</span>
-          <!--span class="pagination__info">总计{{ pageInfo.total_item_number }}条记录</span-->
           <el-pagination class="pagination__page"
             :page-size="10"
             :page-sizes="[10, 20, 30]"
@@ -251,7 +249,7 @@
           </el-tag>
         </div>
       </div>
-    </div>
+    </div-->
   </div>
 </template>
 

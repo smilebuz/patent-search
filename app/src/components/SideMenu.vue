@@ -59,20 +59,38 @@
       </div>
       <div class="navToolbox">
         <span class="navToolbox__item" @click="backLevel">上一级</span>
-        <div class="navToolbox__pagination">
+        <!--div class="navToolbox__pagination">
           <span class="navToolbox__item"
             @click="navParams.navPage += 1">上一页
           </span>
           <span class="navToolbox__item"
             @click="navParams.navPage -= 1">下一页
           </span>
-        </div>
+        </div-->
+        <div class="pagination sidemenu-pagination">
+          <el-pagination
+            small
+            layout="prev, next"
+            :current-page="navPageInfo.current_page"
+            :page-size="navParams.per_page"
+            :page-count="navPageInfo.total_page_number"
+            @current-change="changeNavPageNum">
+          </el-pagination>
+      </div>
       </div>
       <div class="navContent">
         <div class="navContent__item"
           v-for="(content, index) in navList"
-          :key="content.name"
-          >{{ content.name }}({{ content.number }})
+          :key="content.description"
+          >
+          <span class="navContent__item-span"
+            @click="submitSearchParams('ipc_main_classification_no', 'content.symbol')"
+            >{{ content.description }}
+          </span>
+          <span class="navContent__item-span"
+            @click="nextLevel(content.symbol)"
+            >({{ content.child_count }})
+          </span>
         </div>
       </div>
     </div>
@@ -143,62 +161,37 @@ export default {
           value: 'product_type'
         }
       ],
-      navList: [
-        {
-          name: '发明专利',
-          number: 2
-        },
-        {
-          name: '实用新型专利',
-          number: 18
-        },
-        {
-          name: '外观设计专利',
-          number: 218
-        }
-      ],
+      navList: [],
       navType: '',
       navParams: {
-        query: '',
-        field: '',
+        symbol: '',
         per_page: 5,
         page: 1 // 当前导航页数
       },
       // nav搜索记录栈
-      navIpcParamsStack: [],
-      navIpcParams: {
-        preQuery: '',
-        preField: '',
-        query: '',
-        field: ''
-      },
-      navNeicParams: {
-        preQuery: '',
-        preField: '',
-        query: '',
-        field: ''
-      },
-      navProductTypeParams: {
-        preQuery: '',
-        preField: '',
-        query: '',
-        field: ''
-      },
-      navIpcLevelList: {
-        1: 'ipc_main_section',
-        2: 'ipc_main_class',
-        3: 'ipc_main_subclass',
-        4: 'ipc_main_group_stroke_main'
-      },
-      navNeicLevelList: {
-        1: '',
-        2: '',
-        3: ''
-      },
-      navProductTypeLevelList: {
-        1: '',
-        2: '',
-        3: ''
+      navParamsStack: [],
+      // navIpcParams: {
+      //   preQuery: '',
+      //   preField: '',
+      //   query: '',
+      //   field: ''
+      // },
+      // navNeicParams: {
+      //   preQuery: '',
+      //   preField: '',
+      //   query: '',
+      //   field: ''
+      // },
+      // navProductTypeParams: {
+      //   preQuery: '',
+      //   preField: '',
+      //   query: '',
+      //   field: ''
+      // },
+      navPageInfo: {
+        total_page_number: -1,
+        total_item_number: -1,
+        current_page: -1
       }
     }
   },
@@ -215,9 +208,11 @@ export default {
     backLevel () {
       switch (this.navType) {
         case 'ipc':
-          let lastNav = this.navIpcParamsStack.pop()
-          this.navParams.query = lastNav.query
-          this.navParams.field = lastNav.field
+          let lastSymbol = this.navParamsStack.pop()
+          lastSymbol = this.navParamsStack.pop()
+          // 需要判断是不是最高级
+          debugger
+          this.navParams.symbol = lastSymbol
           break
         case 'neic':
           break
@@ -227,10 +222,12 @@ export default {
           break
       }
     },
-    nextLevel () {
-      this.navParams.query = ''
-      this.navParams.field = ''
-      this.navIpcParamsStack.push({query: this.navParams.query, field: this.navParams.field})
+    nextLevel (symbol) {
+      debugger
+      this.navParams.symbol = symbol
+    },
+    changeNavPageNum (pageNum) {
+      this.navParams.page = pageNum
     }
   },
   watch: {
@@ -253,7 +250,14 @@ export default {
     },
     navType: {
       handler: function (newType) {
-        // 接口
+        switch (newType) {
+          case 'ipc':
+            this.navParamsStack = []
+            this.navParams.symbol = 'IPC'
+            break
+          default:
+            break
+        }
       }
     },
     filterParams: {
@@ -270,12 +274,24 @@ export default {
     navParams: {
       handler: function (newParams) {
         // 请求
+        sendRequest.categoryNav.get(this.navParams).then(data => {
+          debugger
+          this.navList = data.current_page_item_list
+          for (let prop in this.navPageInfo) {
+            if (this.navPageInfo.hasOwnProperty(prop)) {
+              this.navPageInfo[prop] = data[prop]
+            }
+          }
+          this.navParamsStack.push(this.navParams.symbol)
+        })
       },
       deep: true
     }
   },
   created () {
-    this.currentMenu = this.navGroup[0].value
+    // this.currentMenu = this.navGroup[0].value
+    this.currentMenu = this.navGroup[2].value
+    this.navType = 'ipc'
   }
 }
 </script>

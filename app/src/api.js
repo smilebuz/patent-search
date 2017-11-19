@@ -29,7 +29,10 @@ export const Api = {
   'addFavors': '/api/favorites/{favorId}/patents', // put 批次添加专利至收藏夹
   'deleteFavorPatent': '/api/favorites/{favorId}/patents/{patentId}', // delete 从收藏夹删除某个专利
   'deleteFavor': '/api/favorites/{favorId}', // delete 删除收藏夹
-  'createFavor': '/api/favorites' // post 创建收藏夹
+  'createFavor': '/api/favorites', // post 创建收藏夹
+
+  // 分类导航
+  'categoryNav': '/api/ipcs' // get 获取分类导航信息
 }
 
 export const sendRequest = ((apilist) => {

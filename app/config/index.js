@@ -38,7 +38,7 @@ module.exports = {
       }
       */
       '/api': {
-        target: 'http://1tu8555153.51mypc.cn:9898/v1',
+        target: 'http://106.2.12.59:9898/v1',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

@@ -118,7 +118,7 @@ export default {
   },
   created () {
     this.keyword = '设备'
-    this.submitKeyword()
+    // this.submitKeyword()
   }
 }
 </script>
