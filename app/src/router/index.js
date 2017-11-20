@@ -6,11 +6,7 @@ import Register from '@/views/Register'
 import Home from '@/views/Home'
 import AdvancedSearch from '@/views/AdvancedSearch'
 import Search from '@/views/Search'
-import CategoryNav from '@/views/CategoryNav'
 import PatentInfo from '@/views/PatentInfo'
-import ValueDegree from '@/views/ValueDegree'
-import ApplicantInfo from '@/views/ApplicantInfo'
-import PotentialBuyer from '@/views/PotentialBuyer'
 import Favor from '@/views/Favor'
 import UserManagement from '@/views/UserManagement'
 
@@ -76,34 +72,10 @@ let router = new Router({
       meta: { requiresAuth: true }
     },
     {
-      path: '/ValueDegree',
-      name: 'ValueDegree',
-      component: ValueDegree,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/ApplicantInfo',
-      name: 'ApplicantInfo',
-      component: ApplicantInfo,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/PotentialBuyer',
-      name: 'PotentialBuyer',
-      component: PotentialBuyer,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/CategoryNav',
-      name: 'Category',
-      component: CategoryNav,
-      meta: { requiresAuth: true }
-    },
-    {
       path: '/Favor',
       name: 'Favor',
-      component: Favor
-      // meta: { requiresAuth: true }
+      component: Favor,
+      meta: { requiresAuth: true }
     },
     {
       path: '/UserManagement',

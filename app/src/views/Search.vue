@@ -132,9 +132,7 @@ import axios from 'axios'
 
 import myfilter from '../components/Filter'
 import searchlist from '../components/SearchList'
-import recommend from '../components/Recommend'
 import searchbar from '../components/SearchBar'
-import sideNav from '../components/sideNav'
 
 export default {
   data () {
@@ -340,7 +338,7 @@ export default {
     bus.$emit('updateSearchParams', state.get('searchParams'))
   },
   components: {
-    myfilter, searchlist, recommend, searchbar, sideNav
+    myfilter, searchlist, searchbar
   }
 }
 </script>
