@@ -3,7 +3,7 @@
     v-loading="loadingData"
     element-loading-text="加载中">
     <SideMenu></SideMenu>
-    <!--div class="resultPanel">
+    <div class="resultPanel">
       <div class="toolbar">
         <el-button-group class="toolbox">
           <el-button class="button" @click="switchDisplayType('list')">
@@ -249,7 +249,7 @@
           </el-tag>
         </div>
       </div>
-    </div-->
+    </div>
   </div>
 </template>
 

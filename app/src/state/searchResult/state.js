@@ -139,6 +139,7 @@ export default new Vue({
       handler: function (newParams) {
         this.loadingPatentList = true
         sendRequest.filter.post(newParams).then(data => {
+          debugger
           this.set('patentList', data.patent_list)
           for (let patent of this.patentList) {
             if (!patent.abstract_info) {

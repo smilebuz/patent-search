@@ -211,6 +211,7 @@ export default {
           let lastSymbol = this.navParamsStack.pop()
           lastSymbol = this.navParamsStack.pop()
           // 需要判断是不是最高级
+          // this.navParams.Stack.length = []
           debugger
           this.navParams.symbol = lastSymbol
           break
@@ -262,6 +263,7 @@ export default {
     },
     filterParams: {
       handler: function (newParams) {
+        debugger
         // 提交过滤
         for (let prop in newParams) {
           if (newParams.hasOwnProperty(prop)) {
