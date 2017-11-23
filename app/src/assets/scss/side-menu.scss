@@ -87,7 +87,13 @@
 .navToolbox {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 5px 10px;
+  &-backLevel {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
   .pagination {
     padding: 0;
   }

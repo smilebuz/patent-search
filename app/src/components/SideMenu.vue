@@ -46,7 +46,7 @@
         @click="submitSearchParams(item.field, item.query)">{{item.query}}
       </div>
     </div>
-    <div class="" v-if="currentMenu === 'categroyNav'">
+    <div class="" v-if="currentMenu === 'categoryNav'">
       <div class="navSelect sideMenu__select">
         <el-select size="small" v-model="navType">
           <el-option
@@ -58,7 +58,10 @@
         </el-select>
       </div>
       <div class="navToolbox">
-        <span class="navToolbox__item" @click="backLevel">上一级</span>
+        <img class="navToolbox-backLevel"
+          src="../assets/images/back-level.png"
+          alt="返回上一级"
+          @click="backLevel">
         <!--div class="navToolbox__pagination">
           <span class="navToolbox__item"
             @click="navParams.navPage += 1">上一页
@@ -84,7 +87,7 @@
           :key="content.description"
           >
           <span class="navContent__item-span"
-            @click="submitSearchParams('ipc_main_classification_no', 'content.symbol')"
+            @click="submitSearchParams('ipc_main_classification_no', content.symbol)"
             >{{ content.description }}
           </span>
           <span class="navContent__item-span"
@@ -119,7 +122,7 @@ export default {
         },
         {
           name: '分类导航',
-          value: 'categroyNav',
+          value: 'categoryNav',
           activate: false
         }
       ],
@@ -211,9 +214,14 @@ export default {
           let lastSymbol = this.navParamsStack.pop()
           lastSymbol = this.navParamsStack.pop()
           // 需要判断是不是最高级
-          // this.navParams.Stack.length = []
-          debugger
-          this.navParams.symbol = lastSymbol
+          if (!lastSymbol) {
+            this.$message({
+              message: '当前已经是最高级',
+              type: 'warning'
+            })
+          } else {
+            this.navParams.symbol = lastSymbol
+          }
           break
         case 'neic':
           break
@@ -224,7 +232,6 @@ export default {
       }
     },
     nextLevel (symbol) {
-      debugger
       this.navParams.symbol = symbol
     },
     changeNavPageNum (pageNum) {
@@ -241,11 +248,18 @@ export default {
             nav.activate = false
           }
         })
-        if (newValue === 'recentSearch') {
-          // 最近搜索应该没有参数才对
-          sendRequest.recentSearch.get(null).then(data => {
-            this.recentSearchList = data
-          })
+        switch (newValue) {
+          case 'recentSearch':
+            // 最近搜索应该没有参数才对
+            sendRequest.recentSearch.get(null).then(data => {
+              this.recentSearchList = data
+            })
+            break
+          case 'categoryNav':
+            this.navType = this.navOptions[0].value
+            break
+          default:
+            break
         }
       }
     },
@@ -263,7 +277,6 @@ export default {
     },
     filterParams: {
       handler: function (newParams) {
-        debugger
         // 提交过滤
         for (let prop in newParams) {
           if (newParams.hasOwnProperty(prop)) {
@@ -277,7 +290,6 @@ export default {
       handler: function (newParams) {
         // 请求
         sendRequest.categoryNav.get(this.navParams).then(data => {
-          debugger
           this.navList = data.current_page_item_list
           for (let prop in this.navPageInfo) {
             if (this.navPageInfo.hasOwnProperty(prop)) {
@@ -291,9 +303,7 @@ export default {
     }
   },
   created () {
-    // this.currentMenu = this.navGroup[0].value
     this.currentMenu = this.navGroup[0].value
-    this.navType = 'ipc'
   }
 }
 </script>

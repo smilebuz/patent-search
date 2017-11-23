@@ -94,7 +94,6 @@ export default new Vue({
         // bus.$emit('updateSearchParams', newParams)
         this.loadingData = true
         sendRequest.search.get(newParams).then(data => {
-          debugger
           let filterList = []
           this.set('patentList', data.patent_list)
           for (let patent of this.patentList) {
@@ -102,9 +101,15 @@ export default new Vue({
               // 将null改为空字符串
               patent.abstract_info = ''
             }
-            patent.abstractExpand = !(patent.abstract_info.length > 140)
+            if (patent.abstract_info.length > 140) {
+              patent.abstractExpand = '1'
+            } else {
+              patent.abstractExpand = '3'
+            }
             patent.selected = false
             patent.value_degree.value = Math.floor(patent.value_degree.value)
+            patent.fullStarNum = Math.floor(patent.value_degree.value / 2)
+            patent.blankStarNum = Math.floor((10 - patent.value_degree.value) / 2)
           }
           this.set('recommendList', data.recommend_list)
           filterList.apply_type_list = data.filter_sidebar_list.filter_item_map.apply_type
@@ -133,10 +138,21 @@ export default new Vue({
               // 将null改为空字符串
               patent.abstract_info = ''
             }
-            patent.abstractExpand = !(patent.abstract_info.length > 140)
+            // patent.abstractExpand = !(patent.abstract_info.length > 140)
+            if (patent.abstract_info.length > 140) {
+              patent.abstractExpand = '1'
+            } else {
+              patent.abstractExpand = '3'
+            }
             patent.selected = false
+            patent.value_degree.value = Math.floor(patent.value_degree.value)
+            patent.fullStarNum = Math.floor(patent.value_degree.value / 2)
+            patent.blankStarNum = Math.floor((10 - patent.value_degree.value) / 2)
           }
           this.loadingPatentList = false
+          this.patentList.forEach(patent => {
+            console.log(patent.value_degree.value)
+          })
         })
       },
       deep: true
@@ -145,16 +161,22 @@ export default new Vue({
       handler: function (newParams) {
         this.loadingPatentList = true
         sendRequest.filter.post(newParams).then(data => {
-          debugger
           this.set('patentList', data.patent_list)
           for (let patent of this.patentList) {
             if (!patent.abstract_info) {
               // 将null改为空字符串
               patent.abstract_info = ''
             }
-            patent.abstractExpand = !(patent.abstract_info.length > 140)
+            // patent.abstractExpand = !(patent.abstract_info.length > 140)
+            if (patent.abstract_info.length > 140) {
+              patent.abstractExpand = '1'
+            } else {
+              patent.abstractExpand = '3'
+            }
             patent.selected = false
             patent.value_degree.value = Math.floor(patent.value_degree.value)
+            patent.fullStarNum = Math.floor(patent.value_degree.value / 2)
+            patent.blankStarNum = Math.floor((10 - patent.value_degree.value) / 2)
           }
           this.loadingPatentList = false
         })

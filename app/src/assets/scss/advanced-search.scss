@@ -12,6 +12,7 @@
   margin: 0 auto;
   border: 2px solid #cdcdcd;
   width: 60%;
+  height: 70%;
   form {
     display: flex;
     justify-content: center;
@@ -50,7 +51,7 @@
   }
 }
 .formula__input {
-  width: 50%;
+  width: 50%!important;
   margin: 0 auto;
 }
 .buttons {

@@ -25,13 +25,14 @@ $border-color: #383838;
 .searchContainer {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   //width: 500px;
   flex: 1;
   border-right: 1px solid $border-color;
   .searchbox {
     width: 650px;
     height: 35px;
+    margin-right: 15px;
     display: flex;
     .searchbox__input {
       height: inherit;
@@ -52,6 +53,7 @@ $border-color: #383838;
     height: 30px;
     width: 75px;
     line-height: 30px;
+    margin-left: 15px;
     text-align: center;
     border-radius: 2px;
     cursor: pointer;

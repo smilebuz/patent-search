@@ -44,8 +44,8 @@ let router = new Router({
     {
       path: '/AdvancedSearch',
       name: 'AdvancedSearch',
-      component: AdvancedSearch
-      // meta: { requiresAuth: true }
+      component: AdvancedSearch,
+      meta: { requiresAuth: true }
     },
     {
       path: '/Search',

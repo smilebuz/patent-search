@@ -10,7 +10,7 @@
         <div class="tabs__headers-container">
           <div class="tabs__header-item"
             v-for="(header, index) in tabs"
-            :key="header.name"
+            :key="index"
             :class="{ 'header-activate': header.activate}"
             @click="currentTab = header.name"
             >{{ header.label }}
@@ -19,11 +19,48 @@
         <div class="tabs__toolbuttons">
           <el-button class="toolbox button toolbox-button"
             v-for="(button, index) in buttons"
-            :key="button.value"
+            :key="index"
             :style="buttonStyle(button.imgUrl)"
             @click="clickToolButton(button.value)">
             {{ button.name }}
           </el-button>
+          <el-popover
+            class="popover"
+            border
+            v-model="favorPopover"
+            placement="left"
+            width="400"
+            trigger="click">
+            <div class="popover-header">
+              <div>收藏夹名称:</div>
+              <el-input class="popover-header__input"
+                size="small"
+                v-model="createFavorParams.name">
+              </el-input>
+              <el-button class="button" @click="submitCreateFavorParams">创建并加入</el-button>
+              <i class="el-icon-close" @click="closeFavorPopover"></i>
+            </div>
+            <el-table
+              key="favorTable"
+              :data="favorTable"
+              width="100%">
+              <el-table-column label="收藏夹" prop="name"></el-table-column>
+              <el-table-column label="操作" width="100">
+                <template slot-scope="scope">
+                  <el-button @click="addFavor(scope.row)" size="small">收藏</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div class="pagination popover-pagination">
+              <el-pagination
+                small
+                layout="prev, next"
+                :page-count="favorPageInfo.total_page_number"
+                :current-page="favorPageInfo.current_page"
+                @current-change="changeFavorPageNum">
+              </el-pagination>
+            </div>
+          </el-popover>
         </div>
       </div>
       <div class="tabs__body">
@@ -146,11 +183,11 @@ export default {
           label: '申请人经营信息',
           activate: false
         },
-        {
-          name: 'value',
-          label: '综合价值评估',
-          activate: false
-        },
+        // {
+        //   name: 'value',
+        //   label: '综合价值评估',
+        //   activate: false
+        // },
         {
           name: 'similarity',
           label: '相似专利',
@@ -163,21 +200,21 @@ export default {
         }
       ],
       buttons: [
-        {
-          name: '保存',
-          value: 'save',
-          imgUrl: require('../assets/images/save.png')
-        },
+        // {
+        //   name: '保存',
+        //   value: 'save',
+        //   imgUrl: require('../assets/images/save.png')
+        // },
         {
           name: '加入收藏',
           value: 'favor',
           imgUrl: require('../assets/images/favor.png')
-        },
-        {
-          name: '加入分析库',
-          value: '',
-          imgUrl: require('../assets/images/analysis.png')
         }
+        // {
+        //   name: '加入分析库',
+        //   value: '',
+        //   imgUrl: require('../assets/images/analysis.png')
+        // }
       ],
       currentTab: '',
       loadingApplicantTable: false,
@@ -352,7 +389,24 @@ export default {
         page: 1
       },
       pageKeys: ['similarityPage', 'buyerPage'],
-      tableKeys: ['applicantTable', 'valueTable', 'similarityTable', 'buyerTable']
+      tableKeys: ['applicantTable', 'valueTable', 'similarityTable', 'buyerTable'],
+
+      favorPopover: false,
+      getFavorParams: {
+        per_page: 5,
+        page: 1
+      },
+      createFavorParams: {
+        name: '',
+        patent_id_list: []
+      },
+      favorTable: [],
+      favorPageInfo: {
+        current_page: 1,
+        total_page_number: 1,
+        current_page_item_number: 2,
+        total_item_number: 2
+      }
     }
   },
   watch: {
@@ -391,6 +445,66 @@ export default {
         paddingRight: '5px'
       }
     },
+
+    clickToolButton (command) {
+      switch (command) {
+        case 'favor':
+          sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
+            // debugger
+            this.favorTable = data.favorite_list
+            for (let prop in this.favorPageInfo) {
+              if (this.favorPageInfo.hasOwnProperty(prop)) {
+                this.favorPageInfo[prop] = data[prop]
+              }
+            }
+            this.favorPopover = true
+          })
+          break
+        default:
+          break
+      }
+    },
+    // 收藏弹框
+    closeFavorPopover () {
+      this.favorPopover = false
+    },
+    changeFavorPageNum (pageNum) {
+      this.getFavorParams.page = pageNum
+      sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
+        this.favorTable = data.favor_list
+      })
+    },
+    submitCreateFavorParams () {
+      this.createFavorParams.patent_id_list.push(this.patentId)
+      console.log(this.createFavorParams)
+      // debugger
+      sendRequest.createFavor.post(this.createFavorParams).then(data => {
+        this.$message({
+          message: '创建目录并收藏成功',
+          type: 'success'
+        })
+        sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
+          this.favorTable = data.favorite_list
+          for (let prop in this.favorPageInfo) {
+            if (this.favorPageInfo.hasOwnProperty(prop)) {
+              this.favorPageInfo[prop] = data[prop]
+            }
+          }
+        })
+      })
+    },
+    addFavor (favor) {
+      let ids = {
+        favorId: favor.id
+      }
+      sendRequest.addFavors.put(this.selectedPatentIds, ids).then(data => {
+        this.$message({
+          message: '收藏成功',
+          type: 'success'
+        })
+      })
+    },
+
     loadTabData (tabName) {
       let ids = {}
       switch (tabName) {
@@ -493,6 +607,9 @@ export default {
     this.applicantId = this.$route.params.applicantId
     this.patentId = this.$route.params.patentId
     this.currentTab = this.$route.params.infoType
+    if (this.applicantId === 'null') {
+      this.tabs.shift()
+    }
   }
 }
 </script>

@@ -53,7 +53,7 @@
             key="favorTable"
             :data="favorTable"
             width="100%">
-            <el-table-column label="收藏夹" prop="name" width="100"></el-table-column>
+            <el-table-column label="收藏夹" prop="name"></el-table-column>
             <el-table-column label="操作" width="100">
               <template slot-scope="scope">
                 <el-button @click="addFavor(scope.row)" size="small">收藏</el-button>
@@ -98,13 +98,29 @@
                 </span>
                 <div class="header__tags">
                   <el-tag class="header__tag">存活期: {{ patent.maintenance_period }}年 </el-tag>
+                  <!-- <el-tag class="header__tag header__tag-value"
+                    >价值度: {{ patent.value_degree.value }}
+                    <div class="header__tag-value-full">
+                      <img
+                      src="../assets/images/star-full.png"
+                      alt="full star"
+                      v-for="n in 5"
+                      :key="n">
+                    </div>
+                    <div class="header__tag-value-blank">
+                      <img
+                        src="../assets/images/star-blank.png"
+                        alt="blank star"
+                        v-for="n in 5"
+                        :key="n">
+                    </div>
+                  </el-tag> -->
                   <el-tag class="header__tag header__tag-value"
                     >价值度: {{ patent.value_degree.value }}
                     <img
                       src="../assets/images/star-full.png"
                       alt="full star"
-                      v-for="n in Math.floor(patent.value_degree.value / 2)"
-                      :key="n">
+                      v-for="n in patent.fullStarNum">
                     <img
                       src="../assets/images/star-half.png"
                       alt="half star"
@@ -112,9 +128,7 @@
                     <img
                       src="../assets/images/star-blank.png"
                       alt="blank star"
-                      v-for="n in Math.floor((10 - patent.value_degree.value) / 2)"
-                      :key="n"
-                    >
+                      v-for="n in patent.blankStarNum">
                   </el-tag>
                   <el-tag class="header__tag" v-if="patent.award">{{ patent.award }}</el-tag>
                 </div>
@@ -146,21 +160,28 @@
                 <div class="info__item">公开号: <span>{{ patent.publish_no }}</span></div>
               </div>
               <div class="patentInfo__abstract patentInfo__abstract-collapse"
-                v-if="!patent.abstractExpand">
+                v-if="patent.abstractExpand === '1'">
                 摘要: {{ patent.abstract_info.substr(0,140) }}
                 <span class="abstract__button"
                   @click="expandAbstract(index)">更多
                 </span>
               </div>
               <div class="patentInfo__abstract patentInfo__abstract-expand"
-                v-if="patent.abstractExpand">
+                v-if="patent.abstractExpand === '2'">
                 摘要: {{ patent.abstract_info }}
                 <span class="abstract__button"
                   @click="collapseAbstract(index)">收起
                 </span>
               </div>
+              <div class="patentInfo__abstract patentInfo__abstract-collapse"
+                v-if="patent.abstractExpand === '3'">
+                摘要: {{ patent.abstract_info.substr(0,140) }}
+              </div>
               <div class="patentInfo__links">
-                <span class="info__link" @click="checkRelatedInfo('applicant', patent)">申请人经营信息</span>
+                <span class="info__link"
+                  v-if="patent.applicant_id"
+                  @click="checkRelatedInfo('applicant', patent)">申请人经营信息
+                </span>
                 <span class="info__link" @click="checkRelatedInfo('similarity', patent)">相似专利</span>
                 <span class="info__link" @click="checkRelatedInfo('buyer', patent)">潜在买家</span>
               </div>
@@ -194,7 +215,7 @@
           </el-table>
         </div>
         <div class="pagination">
-          <span class="pagination__info">搜索结果: {{ pageInfo.total_hits }}条 搜索时间: 约{{ pageInfo.took }}秒</span>
+          <span class="pagination__info">搜索结果: {{ pageInfo.total_hits }}条 搜索时间: 约{{ pageInfo.took }}ms</span>
           <el-pagination class="pagination__page"
             :page-size="10"
             :page-sizes="[10, 20, 30]"
@@ -270,37 +291,37 @@ export default {
       sortOptions: [
         {
           imgUrl: require('../assets/images/down.png'),
-          label: '相关度',
+          label: '相关度(降序)',
           value: 'relevance',
           direction: 'descending'
         },
         {
           imgUrl: require('../assets/images/top.png'),
-          label: '相关度',
+          label: '相关度(升序)',
           value: 'relevance',
           direction: 'ascending'
         },
         {
           imgUrl: require('../assets/images/down.png'),
-          label: '申请时间',
+          label: '申请时间(降序)',
           value: 'apply_date',
           direction: 'descending'
         },
         {
           imgUrl: require('../assets/images/top.png'),
-          label: '申请时间',
+          label: '申请时间(升序)',
           value: 'apply_date',
           direction: 'ascending'
         },
         {
           imgUrl: require('../assets/images/down.png'),
-          label: '价值度',
+          label: '价值度(降序)',
           value: 'value_degree',
           direction: 'descending'
         },
         {
           imgUrl: require('../assets/images/top.png'),
-          label: '价值度',
+          label: '价值度(升序)',
           value: 'value_degree',
           direction: 'ascending'
         }
@@ -528,24 +549,24 @@ export default {
         state.setSortParams('page', state.get('searchParams').page)
       } else {
         // 清空
+        state.setSortParams('target', this.sortOptions[0].value)
       }
     },
     checkPatentInfo (infoType, patentId) {
       this.$router.push('/PatentInfo/' + infoType + '/' + patentId)
     },
     checkRelatedInfo (infoType, patent) {
-      debugger
       this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/' + patent.applicant_id)
       // this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/778929080')
     },
     expandAbstract (index) {
       let patent = this.patentList[index]
-      patent.abstractExpand = true
+      patent.abstractExpand = 2
       state.updatePatentList(index, patent)
     },
     collapseAbstract (index) {
       let patent = this.patentList[index]
-      patent.abstractExpand = false
+      patent.abstractExpand = 1
       state.updatePatentList(index, patent)
     },
     changeSearchParams (field, query) {

@@ -15,6 +15,7 @@
   height: 30px;
 }
 .button {
+  height: 30px;
   padding: 5px 10px!important;
 }
 .toolbox-button {
@@ -22,9 +23,11 @@
   padding-right: 5px!important;
 }
 .sortSelection {
-  width: 120px;
   margin-left: 10px;
   margin-right: 10px;
+  & input {
+    height: 30px!important;
+  }
 }
 .listPanel {
   background: #fff;
@@ -135,6 +138,7 @@
 }
 .recommend__category {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   padding-bottom: 10px;
   font-size: 14px;

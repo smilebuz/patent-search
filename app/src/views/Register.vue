@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <div class="formContainer">
+    <div class="register-formContainer">
       <el-form
         status-icon
         ref="registerForm"
@@ -186,11 +186,17 @@ export default {
         if (valid) {
           for (let prop in this.registerParams) {
             if (this.registerParams.hasOwnProperty(prop)) {
-              this.registerParams[prop] = this.form[prop]
+              this.registerParams[prop] = this.registerForm[prop]
             }
           }
           sendRequest.register.post(this.registerParams).then(data => {
-            this.$router.push('Login')
+            if (data) {
+              this.$message({
+                message: '注册成功',
+                type: 'success'
+              })
+              this.$router.push('Login')
+            }
           })
         } else {
           this.$message({
@@ -200,15 +206,6 @@ export default {
           return false
         }
       })
-      // sendRequest.register.post(this.registerParams).then(data => {
-      //   if (data) {
-      //     this.$message({
-      //       message: '注册成功',
-      //       type: 'success'
-      //     })
-      //     this.$router.push('Login')
-      //   }
-      // })
     }
   }
 }

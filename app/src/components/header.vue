@@ -100,7 +100,7 @@ export default {
     logout () {
       sendRequest.logout.get().then((data) => {
         userState.set('isLogin', false)
-        this.$router.push('/ValueDegree')
+        this.$router.push('/Login')
       })
     },
     clickUserMenu (command) {
@@ -110,6 +110,9 @@ export default {
           break
         case 'favor':
           this.$router.push('/Favor')
+          break
+        case 'logout':
+          this.logout()
           break
         default:
           break
