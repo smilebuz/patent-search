@@ -292,7 +292,7 @@ export default {
   },
   created () {
     // this.currentMenu = this.navGroup[0].value
-    this.currentMenu = this.navGroup[2].value
+    this.currentMenu = this.navGroup[0].value
     this.navType = 'ipc'
   }
 }

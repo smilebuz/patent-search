@@ -40,7 +40,12 @@ export default new Vue({
       loadingPatentList: false,
       patentList: [],
       filterList: [],
-      recommendList: {},
+      recommendList: {
+        keyword_list: [],
+        ipc_main_classification_list: [],
+        applicant_list: [],
+        product_list: []
+      },
       pageInfo: {
         current_page: -1,
         total_page_number: -1,
@@ -89,6 +94,7 @@ export default new Vue({
         // bus.$emit('updateSearchParams', newParams)
         this.loadingData = true
         sendRequest.search.get(newParams).then(data => {
+          debugger
           let filterList = []
           this.set('patentList', data.patent_list)
           for (let patent of this.patentList) {
@@ -148,6 +154,7 @@ export default new Vue({
             }
             patent.abstractExpand = !(patent.abstract_info.length > 140)
             patent.selected = false
+            patent.value_degree.value = Math.floor(patent.value_degree.value)
           }
           this.loadingPatentList = false
         })

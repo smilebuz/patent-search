@@ -20,7 +20,7 @@
           @change="submitSortParams">
           <el-option
             v-for="(option, index) in sortOptions"
-            :key="option.label"
+            :key="index"
             :label="option.label"
             :value="index">
             <img :src="option.imgUrl" alt="排序方向">
@@ -29,7 +29,7 @@
         </el-select>
         <el-button class="toolbox button toolbox-button"
           v-for="(button, index) in buttons"
-          :key="button.value"
+          :key="index"
           :style="buttonStyle(button.imgUrl)"
           @click="clickToolButton(button.value)">
           {{ button.name }}
@@ -84,7 +84,7 @@
           v-show="displayType === 'list'">
           <div class="patent"
             v-for="(patent, index) in patentList"
-            :key="patent.patent_id">
+            :key="index">
             <el-checkbox
               :value="patent.selected"
               @change="selectSinglePatent(patent.selected, index)">
@@ -128,7 +128,7 @@
                 <div class="info__item">发明人:
                   <span class="info__link"
                     v-for="(inventor, index) in patent.inventor_list"
-                    :key="inventor"
+                    :key="index"
                     @click="changeSearchParams('inventor', inventor)"
                     >{{ inventor }}
                   </span>
@@ -184,7 +184,7 @@
               <template slot-scope="scope">
                 <span
                   v-for="(inventor, index) in scope.row.inventor_list"
-                  :key="inventor"
+                  :key="index"
                   >{{ inventor }}
                 </span>
               </template>
@@ -213,7 +213,7 @@
           <el-tag class="recommend__category-tag"
             type="primary"
             v-for="(keyword, index) in recommendList.keyword_list"
-            :key="keyword"
+            :key="index"
             @click.native="changeSearchParams('keywords', keyword)"
             >{{ keyword }}
           </el-tag>
@@ -223,7 +223,7 @@
           <el-tag class="recommend__category-tag"
             type="primary"
             v-for="(ipc, index) in recommendList.ipc_main_classification_list"
-            :key="ipc"
+            :key="index"
             @click.native="changeSearchParams('ipc_main_classification_no', ipc)"
             >{{ ipc }}
           </el-tag>
@@ -233,7 +233,7 @@
           <el-tag class="recommend__category-tag"
             type="primary"
             v-for="(applicant, index) in recommendList.applicant_list"
-            :key="applicant"
+            :key="index"
             @click.native="changeSearchParams('applicant', applicant)"
             >{{ applicant }}
           </el-tag>
@@ -243,7 +243,7 @@
           <el-tag class="recommend__category-tag"
             type="primary"
             v-for="(product, index) in recommendList.product_list"
-            :key="product"
+            :key="index"
             @click.native="changeSearchParams('keywords', product)"
             >{{ applicant }}
           </el-tag>
@@ -534,6 +534,7 @@ export default {
       this.$router.push('/PatentInfo/' + infoType + '/' + patentId)
     },
     checkRelatedInfo (infoType, patent) {
+      debugger
       this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/' + patent.applicant_id)
       // this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/778929080')
     },
