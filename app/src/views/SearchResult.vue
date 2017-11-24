@@ -175,7 +175,7 @@
               </div>
               <div class="patentInfo__abstract patentInfo__abstract-collapse"
                 v-if="patent.abstractExpand === '3'">
-                摘要: {{ patent.abstract_info.substr(0,140) }}
+                摘要: {{ patent.abstract_info }}
               </div>
               <div class="patentInfo__links">
                 <span class="info__link"
@@ -561,12 +561,12 @@ export default {
     },
     expandAbstract (index) {
       let patent = this.patentList[index]
-      patent.abstractExpand = 2
+      patent.abstractExpand = '2'
       state.updatePatentList(index, patent)
     },
     collapseAbstract (index) {
       let patent = this.patentList[index]
-      patent.abstractExpand = 1
+      patent.abstractExpand = '1'
       state.updatePatentList(index, patent)
     },
     changeSearchParams (field, query) {

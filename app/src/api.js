@@ -15,9 +15,9 @@ export const Api = {
   'patentInfo': '/api/patents/{patentId}', // get
   'legalStatus': '/api/patents/{patentId}/legal_statuses', // get
   'similarPatent': '/api/patents/{patentId}/similarities', // get
+  'potentialBuyer': '/api/patents/{patentId}/potential_buyers', // get
   'applicant': '/api/applicants/{applicantId}', // get
   'valuedegree': '/api/patents/{patentId}/values', // get
-  'potentialBuyer': '/api/patents/{patentId}/potential_buyers', // get
 
   'recentSearch': '/api/recent_queries', // get
   'userPatent': '/api/users/{userId}/applicants?per_page=3&page=1', // get
@@ -72,14 +72,16 @@ export const sendRequest = ((apilist) => {
       },
       get: (params, ids) => {
         let idkeys = apilist[api].match(apiReg)
+        let apiTemp = apilist[api]
         if (idkeys) {
           for (let idkey of idkeys) {
-            apilist[api] = apilist[api].replace(idkey, ids[idkey.substring(1, idkey.length - 1)])
+            // apilist[api] = apilist[api].replace(idkey, ids[idkey.substring(1, idkey.length - 1)])
+            apiTemp = apilist[api].replace(idkey, ids[idkey.substring(1, idkey.length - 1)])
           }
         }
-        console.log('api get:', apilist[api])
+        console.log('api get:', apiTemp)
         if (params) {
-          return axios.get(apilist[api], {params: params})
+          return axios.get(apiTemp, {params: params})
             .then(response => {
               return Promise.resolve(response.data.result)
             })
@@ -87,7 +89,7 @@ export const sendRequest = ((apilist) => {
               console.log(error)
             })
         } else {
-          return axios.get(apilist[api])
+          return axios.get(apiTemp)
             .then(response => {
               return Promise.resolve(response.data.result)
             })
@@ -98,14 +100,15 @@ export const sendRequest = ((apilist) => {
       },
       put: (params, ids) => {
         let idkeys = apilist[api].match(apiReg)
+        let apiTemp = apilist[api]
         if (idkeys) {
           for (let idkey of idkeys) {
-            apilist[api] = apilist[api].replace(idkey, ids[idkey.substring(1, idkey.length - 1)])
+            apiTemp = apilist[api].replace(idkey, ids[idkey.substring(1, idkey.length - 1)])
           }
         }
-        console.log('api put:', apilist[api])
+        console.log('api put:', apiTemp)
         if (params) {
-          return axios.put(apilist[api], params)
+          return axios.put(apiTemp, params)
             .then(response => {
               return Promise.resolve(response.data.result)
             })
@@ -113,7 +116,7 @@ export const sendRequest = ((apilist) => {
               console.log(error)
             })
         } else {
-          return axios.put(apilist[api])
+          return axios.put(apiTemp)
             .then(response => {
               return Promise.resolve(response.data.result)
             })
@@ -124,13 +127,14 @@ export const sendRequest = ((apilist) => {
       },
       delete: ids => {
         let idkeys = apilist[api].match(apiReg)
+        let apiTemp = apilist[api]
         if (idkeys) {
           for (let idkey of idkeys) {
-            apilist[api] = apilist[api].replace(idkey, ids[idkey.substring(1, idkey.length - 1)])
+            apiTemp = apilist[api].replace(idkey, ids[idkey.substring(1, idkey.length - 1)])
           }
         }
-        console.log('api delete:', apilist[api])
-        return axios.delete(apilist[api])
+        console.log('api delete:', apiTemp)
+        return axios.delete(apiTemp)
           .then(response => {
             return Promise.resolve(response.data.result) // 将response.data.result转成Promise对象
           })
