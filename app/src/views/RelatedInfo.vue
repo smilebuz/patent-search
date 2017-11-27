@@ -114,7 +114,7 @@
               <el-table-column prop="product_classification_list" label="产品分类"></el-table-column>
               <el-table-column prop="neic_name_List" label="国民经济分类"></el-table-column>
             </el-table>
-            <div class="pagination">
+            <div class="pagination" v-if="similarityTable.length">
               <span class="pagination__info">总计{{ similarityPageInfo.total_item_number }}条记录</span>
               <el-pagination class="pagination__page"
                 :key="pageKeys[0]"
@@ -141,13 +141,13 @@
               @cell-click="checkPatentInfo">
               <el-table-column prop="applicant_name" label="买家名称" width="230"></el-table-column>
               <el-table-column prop="area" label="所在地" width="75"></el-table-column>
-              <el-table-column prop="fount_year" label="成立时间" width="100"></el-table-column>
+              <el-table-column prop="found_year" label="成立时间" width="100"></el-table-column>
               <el-table-column prop="registration_capital" label="注册资金" width="100"></el-table-column>
               <el-table-column prop="annual_revenue" label="年营业额" width="100"></el-table-column>
               <el-table-column prop="owned_patents_number" label="拥有专利数" width="95"></el-table-column>
               <el-table-column prop="main_product_list" label="主营产品"></el-table-column>
             </el-table>
-            <div class="pagination">
+            <div class="pagination" v-if="buyerTable.length">
               <span class="pagination__info">总计{{ buyerPageInfo.total_item_number }}条记录</span>
               <el-pagination class="pagination__page"
                 :key="pageKeys[1]"

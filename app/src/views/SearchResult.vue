@@ -214,7 +214,7 @@
             <el-table-column prop="publish_date" label="公开日" width="100"></el-table-column>
           </el-table>
         </div>
-        <div class="pagination">
+        <div class="pagination" v-if="patentList.length">
           <span class="pagination__info">搜索结果: {{ pageInfo.total_hits }}条 搜索时间: 约{{ pageInfo.took }}ms</span>
           <el-pagination class="pagination__page"
             :page-size="10"
@@ -231,43 +231,51 @@
         <span class="panel__title">相关推荐</span>
         <div class="recommend__category" v-if="recommendList.keyword_list.length">
           <span class="recommend__category-name">关键词</span>
-          <el-tag class="recommend__category-tag"
-            type="primary"
-            v-for="(keyword, index) in recommendList.keyword_list"
-            :key="index"
-            @click.native="changeSearchParams('keywords', keyword)"
-            >{{ keyword }}
-          </el-tag>
+          <div class="recommend__category-tags">
+            <el-tag class="recommend__category-tag"
+              type="primary"
+              v-for="(keyword, index) in recommendList.keyword_list"
+              :key="index"
+              @click.native="changeSearchParams('keywords', keyword)"
+              >{{ keyword }}
+            </el-tag>
+          </div>
         </div>
         <div class="recommend__category" v-if="recommendList.ipc_main_classification_list.length">
           <span class="recommend__category-name">IPC</span>
-          <el-tag class="recommend__category-tag"
-            type="primary"
-            v-for="(ipc, index) in recommendList.ipc_main_classification_list"
-            :key="index"
-            @click.native="changeSearchParams('ipc_main_classification_no', ipc)"
-            >{{ ipc }}
-          </el-tag>
+          <div class="recommend__category-tags">
+            <el-tag class="recommend__category-tag"
+              type="primary"
+              v-for="(ipc, index) in recommendList.ipc_main_classification_list"
+              :key="index"
+              @click.native="changeSearchParams('ipc_main_classification_no', ipc)"
+              >{{ ipc }}
+            </el-tag>
+          </div>
         </div>
         <div class="recommend__category" v-if="recommendList.applicant_list.length">
           <span class="recommend__category-name">申请人</span>
-          <el-tag class="recommend__category-tag"
-            type="primary"
-            v-for="(applicant, index) in recommendList.applicant_list"
-            :key="index"
-            @click.native="changeSearchParams('applicant', applicant)"
-            >{{ applicant }}
-          </el-tag>
+          <div class="recommend__category-tags">
+            <el-tag class="recommend__category-tag"
+              type="primary"
+              v-for="(applicant, index) in recommendList.applicant_list"
+              :key="index"
+              @click.native="changeSearchParams('applicant', applicant)"
+              >{{ applicant }}
+            </el-tag>
+          </div>
         </div>
         <div class="recommend__category" v-if="recommendList.product_list.length">
           <span class="recommend__category-name">产品</span>
-          <el-tag class="recommend__category-tag"
-            type="primary"
-            v-for="(product, index) in recommendList.product_list"
-            :key="index"
-            @click.native="changeSearchParams('keywords', product)"
-            >{{ applicant }}
-          </el-tag>
+          <div class="recommend__category-tags">
+            <el-tag class="recommend__category-tag"
+              type="primary"
+              v-for="(product, index) in recommendList.product_list"
+              :key="index"
+              @click.native="changeSearchParams('keywords', product)"
+              >{{ product }}
+            </el-tag>
+          </div>
         </div>
       </div>
     </div>

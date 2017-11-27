@@ -138,15 +138,24 @@
 }
 .recommend__category {
   display: flex;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
   align-items: center;
-  padding-bottom: 10px;
   font-size: 14px;
   .recommend__category-name {
-    flex-basis: 70px;
+    display: inline-block;
+    align-self: flex-start;
+    height: 32px;
+    line-height: 32px;
+    flex-basis: 60px;
+  }
+  .recommend__category-tags {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: calc(100% - 60px);
   }
   .recommend__category-tag {
     margin-right: 10px;
+    margin-bottom: 10px;
     cursor: pointer;
   }
 }

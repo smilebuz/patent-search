@@ -87,11 +87,11 @@
           :key="content.description"
           >
           <span class="navContent__item-span"
-            @click="submitSearchParams('ipc_main_classification_no', content.symbol)"
+            @click="nextLevel(content.symbol)"
             >{{ content.description }}
           </span>
           <span class="navContent__item-span"
-            @click="nextLevel(content.symbol)"
+            @click="submitSearchParams('ipc_main_classification_no', content.symbol)"
             >({{ content.child_count }})
           </span>
         </div>
