@@ -116,12 +116,12 @@ export default {
           activate: false
         },
         {
-          name: '最近搜索',
+          name: '最近',
           value: 'recentSearch',
           activate: false
         },
         {
-          name: '分类导航',
+          name: '导航',
           value: 'categoryNav',
           activate: false
         }
@@ -207,6 +207,7 @@ export default {
     submitSearchParams (field, query) {
       state.setSearchParams('field', field)
       state.setSearchParams('query', query)
+      state.setSearchParams('search_mode', 'user_click')
     },
     backLevel () {
       switch (this.navType) {

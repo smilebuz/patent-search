@@ -9,7 +9,8 @@ export default new Vue({
       applicantId: '', // 不同的申请人ID
 
       searchParams: {
-        apply_type: 'inventions',
+        // apply_type: 'inventions',
+        search_mode: '',
         search_type: 'common',
         field: 'keywords',
         query: '',
@@ -124,6 +125,8 @@ export default new Vue({
             }
           }
           this.loadingData = false
+
+          bus.$emit('updateSearchParams', newParams.query)
         })
       },
       deep: true

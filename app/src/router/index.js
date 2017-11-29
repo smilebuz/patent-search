@@ -3,9 +3,7 @@ import Router from 'vue-router'
 
 import Login from '@/views/Login'
 import Register from '@/views/Register'
-import Home from '@/views/Home'
 import AdvancedSearch from '@/views/AdvancedSearch'
-import Search from '@/views/Search'
 import PatentInfo from '@/views/PatentInfo'
 import Favor from '@/views/Favor'
 import UserManagement from '@/views/UserManagement'
@@ -36,21 +34,9 @@ let router = new Router({
       component: Register
     },
     {
-      path: '/Home',
-      name: 'Home',
-      component: Home,
-      meta: { requiresAuth: true }
-    },
-    {
       path: '/AdvancedSearch',
       name: 'AdvancedSearch',
       component: AdvancedSearch,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/Search',
-      name: 'Search',
-      component: Search,
       meta: { requiresAuth: true }
     },
     {

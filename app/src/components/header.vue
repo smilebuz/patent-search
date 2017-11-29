@@ -19,7 +19,7 @@
       <div class="userDropdown__header"
         @mouseover="showUserMenu = true">
         <img :src="userInfo.avatar" alt="avatar"></img>
-        <span>{{ userInfo.userName }}</span>
+        <span>{{ userInfo.username }}</span>
       </div>
       <div class="userDropdown__menu" v-if="showUserMenu">
         <div class="userDropdownMenu__item"
@@ -60,7 +60,7 @@ export default {
       keywordInput: '',
       userInfo: {
         avatar: require('../assets/images/user.png'),
-        userName: 'ZZZZ'
+        username: ''
       },
       showUserMenu: false,
       userMenu: [
@@ -89,10 +89,22 @@ export default {
       }
     }
   },
+  created () {
+    this.userInfo.username = userState.get('username')
+    this.keyword = ''
+    this.submitKeyword()
+  },
   methods: {
     submitKeyword () {
-      state.setSearchParams('field', 'keywords')
-      state.setSearchParams('query', this.keywordInput)
+      if (this.keywordInput === '') {
+        state.setSearchParams('field', '')
+        state.setSearchParams('query', '')
+        state.setSearchParams('search_mode', 'default')
+      } else {
+        state.setSearchParams('field', 'keywords')
+        state.setSearchParams('query', this.keywordInput)
+        state.setSearchParams('search_mode', 'user_input')
+      }
       if (this.$route.name !== 'SearchResult') {
         this.$router.push('/SearchResult')
       }
@@ -100,6 +112,8 @@ export default {
     logout () {
       sendRequest.logout.get().then((data) => {
         userState.set('isLogin', false)
+        userState.set('username', '')
+        userState.set('userId', '')
         this.$router.push('/Login')
       })
     },
@@ -118,10 +132,6 @@ export default {
           break
       }
     }
-  },
-  created () {
-    this.keyword = '设备'
-    this.submitKeyword()
   }
 }
 </script>

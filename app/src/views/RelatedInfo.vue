@@ -75,7 +75,7 @@
               element-loading-text="加载中"
               :data="applicantTable"
               :key="tableKeys[0]">
-              <el-table-column prop="title" label="信息名称" class="table-row-title"></el-table-column>
+              <el-table-column prop="title" label="信息名称" class="table-row-title" width="120"></el-table-column>
               <el-table-column prop="text" label="信息内容"></el-table-column>
             </el-table>
           </div>
@@ -107,7 +107,7 @@
                 prop="invention_title"
                 label="相似专利名称">
               </el-table-column>
-              <el-table-column prop="publish_date" label="公开号" width="100"></el-table-column>
+              <el-table-column prop="patent_id" label="公开号" width="100"></el-table-column>
               <el-table-column prop="applicant_name" label="申请人"></el-table-column>
               <el-table-column prop="inventor_list" label="发明人"></el-table-column>
               <el-table-column prop="ipc_main_classification_no" label="分类号" width="100"></el-table-column>

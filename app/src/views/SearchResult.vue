@@ -15,7 +15,6 @@
         </el-button-group>
         <el-select class="sortSelection toolbox"
           size="small"
-          clearable
           v-model="sortSelected"
           @change="submitSortParams">
           <el-option
@@ -289,6 +288,7 @@ import SearchList from '../components/SearchList'
 // import bus from '../bus.js'
 import { sendRequest } from '../Api'
 import state from '../state/searchResult/state.js'
+import bus from '../bus.js'
 
 require('../assets/scss/result.scss')
 
@@ -401,6 +401,17 @@ export default {
       let textCount = containerWidth / textSize
       return parseInt(textCount * 1.8)
     }
+  },
+  created () {
+    bus.$on('updateSearchParams', (query) => {
+      if (!query) {
+        // 为空
+        this.sortSelected = 0
+      } else {
+        // 有输入
+        this.sortSelected = 2
+      }
+    })
   },
   methods: {
     buttonStyle (imgUrl) {
@@ -581,14 +592,17 @@ export default {
       document.documentElement.scrollTop = 0
       state.setSearchParams('field', field)
       state.setSearchParams('query', query)
+      state.setSearchParams('search_mode', 'user_click')
       this.selectedPatentIds = []
     },
     changePageSize (pageSize) {
       state.setSearchParams('per_page', pageSize)
+      state.setSearchParams('search_mode', 'user_click')
       this.selectedPatentIds = []
     },
     changePageNum (pageNum) {
       state.setSearchParams('page', pageNum)
+      state.setSearchParams('search_mode', 'user_click')
       this.selectedPatentIds = []
     }
   },

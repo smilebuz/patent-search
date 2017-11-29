@@ -15,9 +15,9 @@
         >登录</el-button>
       </div>
       <div class="login__options login__item">
-        <el-checkbox v-model="loginForm.rememberPw">记住密码</el-checkbox>
+        <!-- <el-checkbox v-model="loginForm.rememberPw">记住密码</el-checkbox> -->
         <div class="login__links">
-          <router-link to="" id="forgetpw" tag="span" class="login__link">忘记密码</router-link>
+          <!-- <router-link to="" id="forgetpw" tag="span" class="login__link">忘记密码</router-link> -->
           <router-link to="/Register" tag="span" class="login__link">立即注册</router-link>
         </div>
       </div>
@@ -57,6 +57,7 @@ export default {
       sendRequest.login.post(this.loginParams).then(data => {
         userState.set('isLogin', true)
         userState.set('userId', data.user_id)
+        userState.set('username', data.username)
         this.$router.push('SearchResult')
       }).catch(errorInfo => {
         console.log('error:', errorInfo.message)

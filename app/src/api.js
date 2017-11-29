@@ -19,7 +19,7 @@ export const Api = {
   'applicant': '/api/applicants/{applicantId}', // get
   'valuedegree': '/api/patents/{patentId}/values', // get
 
-  'recentSearch': '/api/recent_queries', // get
+  'recentSearch': '/api/recent_queries', // get 最近搜索
   'userPatent': '/api/users/{userId}/applicants?per_page=3&page=1', // get
 
   // 收藏api
