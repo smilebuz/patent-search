@@ -55,7 +55,16 @@
     .checkbox {
       margin-left: 0!important;
       .el-checkbox__label {
+        display: inline-flex;
+        align-items: center;
         font-size: 12px;
+        .checkbox__text {
+          max-width: 150px;
+          display: inline-block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
       }
     }
   }
@@ -102,12 +111,20 @@
   padding-top: 0;
   .navContent__item {
     padding-bottom: 5px;
+    display: flex;
+    align-items: center;
     &-span {
       cursor: pointer;
       &:hover {
         color: #46b6e9;
         text-decoration: underline;
       }
+    }
+    &-description {
+      max-width: 150px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 }

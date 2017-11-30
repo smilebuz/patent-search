@@ -25,7 +25,10 @@
           <el-checkbox class="checkbox"
             v-for="(item, index) in filterList[key]"
             :key="index"
-            :label="item.item">{{ item.item }}({{item.frequency}})
+            :label="item.item"
+            :title="item.item">
+            <span class="checkbox__text">{{ item.item }}</span>
+            <span class="checkbox__frequency">({{ item.frequency }})</span>
           </el-checkbox>
         </el-checkbox-group>
         <!--el-checkbox-group class="checkboxgroup"
@@ -86,7 +89,8 @@
           v-for="(content, index) in navList"
           :key="content.description"
           >
-          <span class="navContent__item-span"
+          <span class="navContent__item-span navContent__item-description"
+            :title="content.description"
             @click="nextLevel(content.symbol)"
             >{{ content.description }}
           </span>
