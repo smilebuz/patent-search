@@ -84,11 +84,12 @@
             <el-table class="tab__content-table"
               border
               aligh="left"
+              v-loading="loadingValueTable"
               :data="valueTable"
               :key="tableKeys[1]">
-              <el-table-column prop="similarity_score" label="评估项"></el-table-column>
-              <el-table-column prop="invention_title" label="得分值"></el-table-column>
-              <el-table-column prop="publish_date" label="总分"></el-table-column>
+              <el-table-column prop="name" label="评估项" width="280"></el-table-column>
+              <el-table-column prop="definition" label="释义"></el-table-column>
+              <el-table-column prop="score" label="总分" width="80"></el-table-column>
             </el-table>
           </div>
 
@@ -183,11 +184,11 @@ export default {
           label: '申请人经营信息',
           activate: false
         },
-        // {
-        //   name: 'value',
-        //   label: '综合价值评估',
-        //   activate: false
-        // },
+        {
+          name: 'value',
+          label: '综合价值评估',
+          activate: false
+        },
         {
           name: 'similarity',
           label: '相似专利',
@@ -365,6 +366,7 @@ export default {
           key: ''
         }
       ],
+      loadingValueTable: false,
       valueTable: [],
       loadingSimilarityTable: false,
       similarityTable: [],
@@ -522,6 +524,14 @@ export default {
           })
           break
         case 'value':
+          ids = {
+            patentId: this.patentId
+          }
+          this.loadingValueTable = true
+          sendRequest.valuedegree.get(null, ids).then(data => {
+            this.valueTable = data
+            this.loadingValueTable = false
+          })
           break
         case 'similarity':
           ids = {

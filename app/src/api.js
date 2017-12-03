@@ -16,8 +16,8 @@ export const Api = {
   'legalStatus': '/api/patents/{patentId}/legal_statuses', // get
   'similarPatent': '/api/patents/{patentId}/similarities', // get
   'potentialBuyer': '/api/patents/{patentId}/potential_buyers', // get
-  'applicant': '/api/applicants/{applicantId}', // get
-  'valuedegree': '/api/patents/{patentId}/values', // get
+  'applicant': '/api/applicants/{applicantId}', // get 申请人信息
+  'valuedegree': '/api/patents/{patentId}/values', // get 价值度
 
   'recentSearch': '/api/recent_queries', // get 最近搜索
   'userPatent': '/api/users/{userId}/applicants?per_page=3&page=1', // get

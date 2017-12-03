@@ -115,6 +115,7 @@
                     </div>
                   </el-tag> -->
                   <el-tag class="header__tag header__tag-value"
+                    @click.native="checkRelatedInfo('value', patent)"
                     >价值度: {{ patent.value_degree.value }}
                     <img
                       src="../assets/images/star-full.png"
@@ -406,10 +407,10 @@ export default {
     bus.$on('updateSearchParams', (query) => {
       if (!query) {
         // 为空
-        this.sortSelected = 0
+        this.sortSelected = 2
       } else {
         // 有输入
-        this.sortSelected = 2
+        this.sortSelected = 0
       }
     })
   },

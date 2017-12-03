@@ -50,7 +50,7 @@
       </div>
     </div>
     <div class="" v-if="currentMenu === 'categoryNav'">
-      <div class="navSelect sideMenu__select">
+      <!-- <div class="navSelect sideMenu__select">
         <el-select size="small" v-model="navType">
           <el-option
             v-for="(option, index) in navOptions"
@@ -59,21 +59,13 @@
             :value="option.value">{{ option.label }}
           </el-option>
         </el-select>
-      </div>
+      </div> -->
       <div class="navToolbox">
         <img class="navToolbox-backLevel"
           src="../assets/images/back-level.png"
           alt="返回上一级"
           @click="backLevel">
-        <!--div class="navToolbox__pagination">
-          <span class="navToolbox__item"
-            @click="navParams.navPage += 1">上一页
-          </span>
-          <span class="navToolbox__item"
-            @click="navParams.navPage -= 1">下一页
-          </span>
-        </div-->
-        <div class="pagination sidemenu-pagination">
+        <!-- <div class="pagination sidemenu-pagination">
           <el-pagination
             small
             layout="prev, next"
@@ -82,7 +74,7 @@
             :page-count="navPageInfo.total_page_number"
             @current-change="changeNavPageNum">
           </el-pagination>
-      </div>
+        </div> -->
       </div>
       <div class="navContent">
         <div class="navContent__item"
@@ -171,12 +163,10 @@ export default {
       navList: [],
       navType: '',
       navParams: {
-        symbol: '',
-        per_page: 5,
-        page: 1 // 当前导航页数
+        symbol: ''
       },
       // nav搜索记录栈
-      navParamsStack: [],
+      navParamsStack: []
       // navIpcParams: {
       //   preQuery: '',
       //   preField: '',
@@ -195,11 +185,6 @@ export default {
       //   query: '',
       //   field: ''
       // },
-      navPageInfo: {
-        total_page_number: -1,
-        total_item_number: -1,
-        current_page: -1
-      }
     }
   },
   computed: {
@@ -238,10 +223,10 @@ export default {
     },
     nextLevel (symbol) {
       this.navParams.symbol = symbol
-    },
-    changeNavPageNum (pageNum) {
-      this.navParams.page = pageNum
     }
+    // changeNavPageNum (pageNum) {
+    //   this.navParams.page = pageNum
+    // }
   },
   watch: {
     currentMenu: {
@@ -295,7 +280,7 @@ export default {
       handler: function (newParams) {
         // 请求
         sendRequest.categoryNav.get(this.navParams).then(data => {
-          this.navList = data.current_page_item_list
+          this.navList = data
           for (let prop in this.navPageInfo) {
             if (this.navPageInfo.hasOwnProperty(prop)) {
               this.navPageInfo[prop] = data[prop]
