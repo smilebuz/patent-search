@@ -129,5 +129,8 @@
       white-space: nowrap;
       text-overflow: ellipsis;
     }
+    &-number {
+      color: red;
+    }
   }
 }
