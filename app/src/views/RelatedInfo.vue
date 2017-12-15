@@ -69,6 +69,7 @@
 
           <div class="tab__content-container" v-if="currentTab === 'applicant'">
             <el-table class="tab__content-table"
+              v-if="applicantId !== 'null'"
               border
               align="left"
               v-loading="loadingApplicantTable"
@@ -78,6 +79,7 @@
               <el-table-column prop="title" label="信息名称" class="table-row-title" width="120"></el-table-column>
               <el-table-column prop="text" label="信息内容"></el-table-column>
             </el-table>
+            <div v-if="applicantId === 'null'">很遗憾 当前没有申请人信息</div>
           </div>
 
           <div class="tab__content-container" v-if="currentTab === 'value'">
@@ -511,6 +513,10 @@ export default {
       let ids = {}
       switch (tabName) {
         case 'applicant':
+          if (this.applicantId === 'null') {
+            return
+          }
+
           ids = {
             applicantId: this.applicantId
           }
@@ -617,9 +623,9 @@ export default {
     this.applicantId = this.$route.params.applicantId
     this.patentId = this.$route.params.patentId
     this.currentTab = this.$route.params.infoType
-    if (this.applicantId === 'null') {
-      this.tabs.shift()
-    }
+    // if (this.applicantId === 'null') {
+    //   this.tabs.shift()
+    // }
   }
 }
 </script>

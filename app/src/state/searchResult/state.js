@@ -118,6 +118,7 @@ export default new Vue({
           filterList.product_type_list = data.filter_sidebar_list.filter_item_map.product_type
           filterList.applicant_name_list = data.filter_sidebar_list.filter_item_map.applicant_name
           filterList.area_list = data.filter_sidebar_list.filter_item_map.area
+          filterList.ipc_list = data.filter_sidebar_list.filter_item_map.ipc || []
           this.set('filterList', filterList)
           for (let prop in this.pageInfo) {
             if (this.pageInfo.hasOwnProperty(prop)) {

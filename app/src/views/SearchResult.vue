@@ -178,8 +178,11 @@
                 摘要: {{ patent.abstract_info }}
               </div>
               <div class="patentInfo__links">
-                <span class="info__link"
+                <!-- <span class="info__link"
                   v-if="patent.applicant_id"
+                  @click="checkRelatedInfo('applicant', patent)">申请人经营信息
+                </span> -->
+                <span class="info__link"
                   @click="checkRelatedInfo('applicant', patent)">申请人经营信息
                 </span>
                 <span class="info__link" @click="checkRelatedInfo('similarity', patent)">相似专利</span>

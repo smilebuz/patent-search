@@ -126,15 +126,15 @@ export default {
       filterCollapse: '',
       filterPairs: {
         apply_type_list: '专利类型',
-        // ipc_list: 'IPC分类',
-        product_type_list: '产品类型',
+        ipc_list: 'IPC分类',
+        product_type_list: '国民经济产品类型',
         national_economy_industry_list: '国民经济产业',
         applicant_name_list: '申请人',
         area_list: '地区'
       },
       filterParams: {
         apply_type_list: [],
-        // ipc_list: [],
+        ipc_list: [],
         product_type_list: [],
         national_economy_industry_list: [],
         applicant_name_list: [],
@@ -156,7 +156,7 @@ export default {
           value: 'national_economy'
         },
         {
-          label: '产品类型',
+          label: '国民经济产品类型',
           value: 'product_type'
         }
       ],
@@ -280,6 +280,14 @@ export default {
       handler: function (newParams) {
         // 请求
         sendRequest.categoryNav.get(this.navParams).then(data => {
+          if (!data.length) {
+            this.$message({
+              message: '已达到最后一级',
+              type: 'warning'
+            })
+            return
+          }
+
           this.navList = data
           for (let prop in this.navPageInfo) {
             if (this.navPageInfo.hasOwnProperty(prop)) {
