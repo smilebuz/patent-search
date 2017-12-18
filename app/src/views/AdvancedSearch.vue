@@ -1,22 +1,73 @@
 <template lang="html">
   <div class="advancedSearch">
-    <el-checkbox-group v-model="application_type" class="checkboxgroup">
+    <!-- <el-checkbox-group v-model="application_type" class="checkboxgroup">
       <el-checkbox
         v-for="(type, index) in applicationTypes"
         :key="index"
         :label="type.value"
         >{{ type.label }}
       </el-checkbox>
-    </el-checkbox-group>
+    </el-checkbox-group> -->
     <div class="formContainer">
       <el-form ref="form" :model="form" label-width="90px">
-        <el-form-item label="申请号: " class="form__item">
+        <div class="form-row">
+          <div class="form-item">
+            <span class="form-item-label" @click="addFormulaQuery('申请号: ' + form.number)">申请号: </span>
+            <el-input v-model="form.number" size="small"></el-input>
+          </div>
+          <div class="form-item">
+            <span class="form-item-label" @click="addFormulaQuery('关键词: ' + form.keyword_list)">关键词: </span>
+            <el-input v-model="form.keyword_list" size="small"></el-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-item">
+            <span class="form-item-label" @click="addFormulaQuery('发明名称: ' + form.invention_title)">发明名称: </span>
+            <el-input v-model="form.invention_title" size="small"></el-input>
+          </div>
+          <div class="form-item">
+            <span class="form-item-label" @click="addFormulaQuery('分类号: ' + form.ipc_main_classification_no)">分类号: </span>
+            <el-input v-model="form.ipc_main_classification_no" size="small"></el-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-item">
+            <span class="form-item-label" @click="addFormulaQuery('申请人: ' + form.applicant)">申请人: </span>
+            <el-input v-model="form.applicant" size="small"></el-input>
+          </div>
+          <div class="form-item">
+            <span class="form-item-label" @click="addFormulaQuery('发明人: ' + form.inventor_list)">发明人: </span>
+            <el-input v-model="form.inventor_list" size="small"></el-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-item">
+            <span class="form-item-label" @click="addFormulaQuery('地址: ' + form.address)">地址: </span>
+            <el-input v-model="form.address" size="small"></el-input>
+          </div>
+          <div class="form-item">
+            <span class="form-item-label" @click="addFormulaQuery('国省代码: ' + form.provinces)">国省代码: </span>
+            <el-input v-model="form.provinces" size="small"></el-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-item">
+            <span class="form-item-label" @click="addFormulaQuery('代理人: ' + form.agent)">代理人: </span>
+            <el-input v-model="form.agent" size="small"></el-input>
+          </div>
+          <div class="form-item">
+            <span class="form-item-label" @click="addFormulaQuery('代理机构: ' + form.agency)">代理机构: </span>
+            <el-input v-model="form.agency" size="small"></el-input>
+          </div>
+        </div>
+        <!-- <el-form-item class="form__item">
+          <span @click="addFormulaQuery('申请号: ' + form.number)">申请号: </span>
           <el-input v-model="form.number" size="small"></el-input>
         </el-form-item>
         <el-form-item label="关键词: " class="form__item">
           <el-input v-model="form.keyword_list" size="small"></el-input>
-        </el-form-item>
-        <el-form-item label="发明名称: " class="form__item">
+        </el-form-item> -->
+        <!-- <el-form-item label="发明名称: " class="form__item">
           <el-input v-model="form.invention_title" size="small"></el-input>
         </el-form-item>
         <el-form-item label="分类号: " class="form__item">
@@ -39,8 +90,8 @@
         </el-form-item>
         <el-form-item label="代理机构: " class="form__item">
           <el-input v-model="form.agency" size="small"></el-input>
-        </el-form-item>
-        <el-form-item label="权利要求书: " class="form__item">
+        </el-form-item> -->
+        <!-- <el-form-item label="权利要求书: " class="form__item">
           <el-input v-model="form.claim" size="small"></el-input>
         </el-form-item>
         <el-form-item label="说明书: " class="form__item">
@@ -59,13 +110,13 @@
               <el-option v-for="item in form.relations" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-input>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <div class="operator-container">
         <div class="operator"
           v-for="operator in operators"
           :key="operator.value"
-          @click="addFormulaoperator(operator.value)"
+          @click="addFormulaOperator(operator.value)"
           >{{ operator.value }}
         </div>
       </div>
@@ -75,7 +126,7 @@
         v-model="formula">
       </el-input>
       <div class="buttons">      
-        <el-button type="button" class="button-generate button">生成检索式</el-button>
+        <!-- <el-button type="button" class="button-generate button">生成检索式</el-button> -->
         <el-button type="button" @click="search" class="button-search button">检索</el-button>
       </div>
     </div>
@@ -88,9 +139,7 @@
 </template>
 
 <script>
-import bus from '../bus.js'
 import state from '../state/searchResult/state.js'
-import { sendRequest } from '../Api'
 
 require('../assets/scss/advanced-search.scss')
 
@@ -161,52 +210,53 @@ export default {
     }
   },
   methods: {
-    addFormulaoperator (operator) {
-      this.formula += (' ' + operator + ' ')
+    addFormulaQuery (query) {
+      this.formula += query + ' '
+    },
+    addFormulaOperator (operator) {
+      this.formula += operator + ' '
     },
     search () {
       if (this.formula) {
         console.log('检索式内容', this.formula)
-        let params = {
-          query: this.formula,
-          apply_type: '',
-          search_type: '',
-          field: '',
-          session_id: state.get('session_id')
-          // per_page: state.get('per_page'),
-          // page: state.get('page')
-        }
-        state.set('searchParams', params)
-        sendRequest.search.post(params).then(data => {
-          bus.$emit('search', data)
-          this.$router.push('Search')
-        })
+        state.setSearchParams('search_mode', 'user_input')
+        state.setSearchParams('search_type', 'advanced')
+        state.setSearchParams('field', 'expression')
+        state.setSearchParams('query', this.formula)
+        state.setSearchParams('per_page', 10)
+        state.setSearchParams('page', 1)
+        this.$router.push('/SearchResult')
       } else {
-        let params = {
-          keyword_list: this.form.keyword_list.split(' '),
-          invention_title: this.form.invention_title,
-          ipc_main_classification_no: this.form.ipc_main_classification_no,
-          applicant: this.form.applicant,
-          inventor_list: this.form.inventor_list,
-          address: this.form.address,
-          state_province_code: this.form.state_province_code,
-          agent: this.form.agent,
-          agency: this.form.agency,
-          claim: this.form.claim,
-          description: this.form.description,
-          registration_capital: {
-            capital: parseInt(this.form.registration_capital),
-            operator: this.form.fundRelation
-          },
-          revenue: {
-            capital: parseInt(this.form.revenue),
-            operator: this.form.revenueRelation
-          }
-        }
-        sendRequest.search.post(params).then(data => {
-          bus.$emit('search', data)
-          this.$router.push('Search')
+        this.$message({
+          message: '请输入检索式',
+          type: 'warning'
         })
+        return
+        // let params = {
+        //   keyword_list: this.form.keyword_list.split(' '),
+        //   invention_title: this.form.invention_title,
+        //   ipc_main_classification_no: this.form.ipc_main_classification_no,
+        //   applicant: this.form.applicant,
+        //   inventor_list: this.form.inventor_list,
+        //   address: this.form.address,
+        //   state_province_code: this.form.state_province_code,
+        //   agent: this.form.agent,
+        //   agency: this.form.agency,
+        //   claim: this.form.claim,
+        //   description: this.form.description,
+        //   registration_capital: {
+        //     capital: parseInt(this.form.registration_capital),
+        //     operator: this.form.fundRelation
+        //   },
+        //   revenue: {
+        //     capital: parseInt(this.form.revenue),
+        //     operator: this.form.revenueRelation
+        //   }
+        // }
+        // sendRequest.search.post(params).then(data => {
+        //   bus.$emit('search', data)
+        //   this.$router.push('Search')
+        // })
       }
     }
   }

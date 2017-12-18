@@ -20,7 +20,6 @@
         :key="key"
         :title="value">
         <el-checkbox-group class="checkboxgroup"
-          v-if="key !== 'ipc_list'"
           v-model="filterParams[key]">
           <el-checkbox class="checkbox"
             v-for="(item, index) in filterList[key]"
@@ -31,21 +30,24 @@
             <span class="checkbox__frequency">({{ item.frequency }})</span>
           </el-checkbox>
         </el-checkbox-group>
-        <!--el-checkbox-group class="checkboxgroup"
+        <!-- <el-checkbox-group class="checkboxgroup"
           v-else
           v-model="filterParams[key]">
           <el-checkbox class="checkbox"
             v-for="(ipc, index) in filterList[key]"
-            :key="ipc.section"
-            :label="ipc.section">{{ ipc.description }}
+            :key="index"
+            :label="ipc.section"
+            :title="ipc.item">
+            <span class="checkbox__text">{{ item.item }}</span>
+            <span class="checkbox__frequency">({{ item.frequency }})</span>
           </el-checkbox>
-        </el-checkbox-group-->
+        </el-checkbox-group> -->
       </el-collapse-item>
     </el-collapse>
     <div class="recentSearch__container" v-if="currentMenu === 'recentSearch'">
       <div class="recentSearch__item"
         v-for="(item, index) in recentSearchList"
-        :key="item.timestamp"
+        :key="index"
         @click="submitSearchParams(item.field, item.query)">{{item.query}}
       </div>
     </div>

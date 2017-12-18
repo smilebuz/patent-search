@@ -9,7 +9,7 @@
 .formContainer {
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  margin: 20px auto;
   border: 2px solid #cdcdcd;
   width: 60%;
   height: 70%;
@@ -29,10 +29,24 @@
     }
   }
 }
-.form__item {
-  margin-bottom: 0;
-  float: left;
-  flex-basis: 40%;
+.form-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  .form-item {
+    margin-bottom: 20px;
+    margin-right: 20px;
+    flex-basis: 40%;
+    display: flex;
+    align-items: center;
+    &-label {
+      flex-basis: 100px;
+      text-align: right;
+      padding-right: 10px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
 }
 .operator-container {
   display: flex;
