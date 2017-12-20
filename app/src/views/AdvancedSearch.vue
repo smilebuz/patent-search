@@ -12,51 +12,51 @@
       <el-form ref="form" :model="form" label-width="90px">
         <div class="form-row">
           <div class="form-item">
-            <span class="form-item-label" @click="addFormulaQuery('申请号: ' + form.number)">申请号: </span>
+            <span class="form-item-label" @click="addFormulaQuery('申请号: ', form.number)">申请号: </span>
             <el-input v-model="form.number" size="small"></el-input>
           </div>
           <div class="form-item">
-            <span class="form-item-label" @click="addFormulaQuery('关键词: ' + form.keyword_list)">关键词: </span>
+            <span class="form-item-label" @click="addFormulaQuery('关键词: ', form.keyword_list)">关键词: </span>
             <el-input v-model="form.keyword_list" size="small"></el-input>
           </div>
         </div>
         <div class="form-row">
           <div class="form-item">
-            <span class="form-item-label" @click="addFormulaQuery('发明名称: ' + form.invention_title)">发明名称: </span>
+            <span class="form-item-label" @click="addFormulaQuery('发明名称: ', form.invention_title)">发明名称: </span>
             <el-input v-model="form.invention_title" size="small"></el-input>
           </div>
           <div class="form-item">
-            <span class="form-item-label" @click="addFormulaQuery('分类号: ' + form.ipc_main_classification_no)">分类号: </span>
+            <span class="form-item-label" @click="addFormulaQuery('分类号: ', form.ipc_main_classification_no)">分类号: </span>
             <el-input v-model="form.ipc_main_classification_no" size="small"></el-input>
           </div>
         </div>
         <div class="form-row">
           <div class="form-item">
-            <span class="form-item-label" @click="addFormulaQuery('申请人: ' + form.applicant)">申请人: </span>
+            <span class="form-item-label" @click="addFormulaQuery('申请人: ', form.applicant)">申请人: </span>
             <el-input v-model="form.applicant" size="small"></el-input>
           </div>
           <div class="form-item">
-            <span class="form-item-label" @click="addFormulaQuery('发明人: ' + form.inventor_list)">发明人: </span>
+            <span class="form-item-label" @click="addFormulaQuery('发明人: ', form.inventor_list)">发明人: </span>
             <el-input v-model="form.inventor_list" size="small"></el-input>
           </div>
         </div>
         <div class="form-row">
           <div class="form-item">
-            <span class="form-item-label" @click="addFormulaQuery('地址: ' + form.address)">地址: </span>
+            <span class="form-item-label" @click="addFormulaQuery('地址: ', form.address)">地址: </span>
             <el-input v-model="form.address" size="small"></el-input>
           </div>
           <div class="form-item">
-            <span class="form-item-label" @click="addFormulaQuery('国省代码: ' + form.provinces)">国省代码: </span>
+            <span class="form-item-label" @click="addFormulaQuery('国省代码: ', form.provinces)">国省代码: </span>
             <el-input v-model="form.provinces" size="small"></el-input>
           </div>
         </div>
         <div class="form-row">
           <div class="form-item">
-            <span class="form-item-label" @click="addFormulaQuery('代理人: ' + form.agent)">代理人: </span>
+            <span class="form-item-label" @click="addFormulaQuery('代理人: ', form.agent)">代理人: </span>
             <el-input v-model="form.agent" size="small"></el-input>
           </div>
           <div class="form-item">
-            <span class="form-item-label" @click="addFormulaQuery('代理机构: ' + form.agency)">代理机构: </span>
+            <span class="form-item-label" @click="addFormulaQuery('代理机构: ', form.agency)">代理机构: </span>
             <el-input v-model="form.agency" size="small"></el-input>
           </div>
         </div>
@@ -210,8 +210,17 @@ export default {
     }
   },
   methods: {
-    addFormulaQuery (query) {
-      this.formula += query + ' '
+    addFormulaQuery (key, value) {
+      if (!value) {
+        this.$message({
+          message: '请输入检索值',
+          type: 'warning'
+        })
+        return
+      } else {
+        let query = key + value
+        this.formula += query + ' '
+      }
     },
     addFormulaOperator (operator) {
       this.formula += operator + ' '
@@ -232,31 +241,6 @@ export default {
           type: 'warning'
         })
         return
-        // let params = {
-        //   keyword_list: this.form.keyword_list.split(' '),
-        //   invention_title: this.form.invention_title,
-        //   ipc_main_classification_no: this.form.ipc_main_classification_no,
-        //   applicant: this.form.applicant,
-        //   inventor_list: this.form.inventor_list,
-        //   address: this.form.address,
-        //   state_province_code: this.form.state_province_code,
-        //   agent: this.form.agent,
-        //   agency: this.form.agency,
-        //   claim: this.form.claim,
-        //   description: this.form.description,
-        //   registration_capital: {
-        //     capital: parseInt(this.form.registration_capital),
-        //     operator: this.form.fundRelation
-        //   },
-        //   revenue: {
-        //     capital: parseInt(this.form.revenue),
-        //     operator: this.form.revenueRelation
-        //   }
-        // }
-        // sendRequest.search.post(params).then(data => {
-        //   bus.$emit('search', data)
-        //   this.$router.push('Search')
-        // })
       }
     }
   }
