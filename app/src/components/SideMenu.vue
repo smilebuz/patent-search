@@ -128,7 +128,7 @@ export default {
       filterCollapse: '',
       filterPairs: {
         apply_type_list: '专利类型',
-        ipc_list: 'IPC分类',
+        ipc_classification_cn_name_list: 'IPC分类',
         product_type_list: '国民经济产品类型',
         national_economy_industry_list: '国民经济产业',
         applicant_name_list: '申请人',
@@ -136,8 +136,8 @@ export default {
       },
       filterParams: {
         apply_type_list: [],
-        ipc_list: [],
         product_type_list: [],
+        ipc_classification_cn_name_list: [],
         national_economy_industry_list: [],
         applicant_name_list: [],
         area_list: [],

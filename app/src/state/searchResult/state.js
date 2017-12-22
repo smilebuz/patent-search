@@ -25,8 +25,8 @@ export default new Vue({
       },
       filterParams: {
         apply_type_list: [],
-        // ipc_list: [],
         product_type_list: [],
+        ipc_classification_cn_name_list: [],
         national_economy_industry_list: [],
         applicant_name_list: [],
         area_list: [],
@@ -118,7 +118,7 @@ export default new Vue({
           filterList.product_type_list = data.filter_sidebar_list.filter_item_map.product_type
           filterList.applicant_name_list = data.filter_sidebar_list.filter_item_map.applicant_name
           filterList.area_list = data.filter_sidebar_list.filter_item_map.area
-          filterList.ipc_list = data.filter_sidebar_list.filter_item_map.ipc_section || []
+          filterList.ipc_classification_cn_name_list = data.filter_sidebar_list.filter_item_map.ipc_section || []
           this.set('filterList', filterList)
           for (let prop in this.pageInfo) {
             if (this.pageInfo.hasOwnProperty(prop)) {
