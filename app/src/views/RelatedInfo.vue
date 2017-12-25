@@ -89,9 +89,10 @@
               v-loading="loadingValueTable"
               :data="valueTable"
               :key="tableKeys[1]">
+              <el-table-column type="index" width="50"></el-table-column>
               <el-table-column prop="name" label="评估项" width="280"></el-table-column>
               <el-table-column prop="definition" label="释义"></el-table-column>
-              <el-table-column prop="score" label="总分" width="80"></el-table-column>
+              <el-table-column prop="score" label="分数" width="80"></el-table-column>
             </el-table>
           </div>
 
