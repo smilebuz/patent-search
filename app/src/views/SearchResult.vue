@@ -142,6 +142,7 @@
                 <div class="info__item">发明人:
                   <span class="info__link"
                     v-for="(inventor, index) in patent.inventor_list"
+                    :class="{ 'info__link-light': inventor === queryInventor}"
                     :key="index"
                     @click="changeSearchParams('inventor', inventor)"
                     >{{ inventor }}
@@ -218,7 +219,7 @@
           </el-table>
         </div>
         <div class="pagination" v-if="patentList.length">
-          <span class="pagination__info">搜索结果: {{ pageInfo.total_hits }}条 搜索时间: 约{{ pageInfo.took }}ms</span>
+          <span class="pagination__info">搜索结果: {{ pageInfo.total_item_number }}条 搜索时间: 约{{ pageInfo.took }}ms</span>
           <el-pagination class="pagination__page"
             :page-size="10"
             :page-sizes="[10, 20, 30]"
@@ -404,6 +405,9 @@ export default {
       let textSize = parseInt(getComputedStyle(container, null).fontSize)
       let textCount = containerWidth / textSize
       return parseInt(textCount * 1.8)
+    },
+    queryInventor: function () {
+      return state.get('searchParams').field === 'inventor' ? state.get('searchParams').query : ''
     }
   },
   created () {

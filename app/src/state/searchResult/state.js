@@ -120,11 +120,14 @@ export default new Vue({
           filterList.area_list = data.filter_sidebar_list.filter_item_map.area
           filterList.ipc_classification_cn_name_list = data.filter_sidebar_list.filter_item_map.ipc_section || []
           this.set('filterList', filterList)
+
+          // 更新分页信息
           for (let prop in this.pageInfo) {
             if (this.pageInfo.hasOwnProperty(prop)) {
               this.pageInfo[prop] = data[prop]
             }
           }
+
           this.loadingData = false
 
           bus.$emit('updateSearchParams', newParams.query)
@@ -182,6 +185,14 @@ export default new Vue({
             patent.fullStarNum = Math.floor(patent.value_degree.value / 2)
             patent.blankStarNum = Math.floor((10 - patent.value_degree.value) / 2)
           }
+
+          // 更新分页信息
+          for (let prop in this.pageInfo) {
+            if (this.pageInfo.hasOwnProperty(prop)) {
+              this.pageInfo[prop] = data[prop]
+            }
+          }
+
           this.loadingPatentList = false
         })
       },

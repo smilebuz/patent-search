@@ -615,6 +615,7 @@ export default {
         infoType = 'info'
         this.$router.push('/PatentInfo/' + infoType + '/' + patentId)
       } else if (column.property === 'applicant_name') {
+        debugger
         infoType = 'applicant'
         this.$router.push('/RelatedInfo/' + infoType + '/' + patentId + '/' + applicantId)
       }
