@@ -1,7 +1,7 @@
 <template>
   <div class="relatedInfo">
     <div class="info__title">
-      <img src="../assets/images/back.png" alt="返回上一页" class="title__prev" @click="prev"></img>
+      <img src="../assets/images/back.png" alt="返回上一页" class="title__prev" @click="prev"/>
       <span class="title__id">{{ patentId }}</span>
       <span class="title__name">{{ inventionTitle }}</span>
     </div>
@@ -179,7 +179,7 @@ require('../assets/scss/related-info.scss')
 export default {
   data () {
     return {
-      patentId: '1',
+      patentId: '',
       inventionTitle: '',
       tabs: [
         {
@@ -615,7 +615,6 @@ export default {
         infoType = 'info'
         this.$router.push('/PatentInfo/' + infoType + '/' + patentId)
       } else if (column.property === 'applicant_name') {
-        debugger
         infoType = 'applicant'
         this.$router.push('/RelatedInfo/' + infoType + '/' + patentId + '/' + applicantId)
       }
@@ -625,6 +624,7 @@ export default {
     this.applicantId = this.$route.params.applicantId
     this.patentId = this.$route.params.patentId
     this.currentTab = this.$route.params.infoType
+    this.inventionTitle = window.inventionTitle
     // if (this.applicantId === 'null') {
     //   this.tabs.shift()
     // }

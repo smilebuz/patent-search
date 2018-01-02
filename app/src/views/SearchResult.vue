@@ -135,14 +135,14 @@
               </div>
               <div class="patentInfo__info">
                 <div class="info__item">申请人:  
-                  <span class="info__link info__link-light"
+                  <span class="info__link"
                     @click="changeSearchParams('applicant', patent.applicant_name)">{{ patent.applicant_name }}
                   </span>
                 </div>
                 <div class="info__item">发明人:
                   <span class="info__link"
                     v-for="(inventor, index) in patent.inventor_list"
-                    :class="{ 'info__link-light': inventor === queryInventor}"
+                    :class="{ 'info__link-light': inventor === queryInventor }"
                     :key="index"
                     @click="changeSearchParams('inventor', inventor)"
                     >{{ inventor }}
@@ -151,6 +151,7 @@
                 <div class="info__item">IPC分类号:
                   <span class="info__link"
                     @click="changeSearchParams('ipc_main_classification_no', patent.ipc_main_classification_no)"
+                    :class="{ 'info__link-light': patent.ipc_main_classification_no === queryIPC }"
                     >{{ patent.ipc_main_classification_no }}</span>
                 </div>
               </div>
@@ -219,7 +220,7 @@
           </el-table>
         </div>
         <div class="pagination" v-if="patentList.length">
-          <span class="pagination__info">搜索结果: {{ pageInfo.total_item_number }}条 搜索时间: 约{{ pageInfo.took }}ms</span>
+          <span class="pagination__info">搜索结果: {{ pageInfo.total_hits }}条 搜索时间: 约{{ pageInfo.took }}ms</span>
           <el-pagination class="pagination__page"
             :page-size="10"
             :page-sizes="[10, 20, 30]"
@@ -408,6 +409,9 @@ export default {
     },
     queryInventor: function () {
       return state.get('searchParams').field === 'inventor' ? state.get('searchParams').query : ''
+    },
+    queryIPC: function () {
+      return state.get('searchParams').field === 'ipc_main_classification_no' ? state.get('searchParams').query : ''
     }
   },
   created () {
@@ -583,6 +587,7 @@ export default {
       this.$router.push('/PatentInfo/' + infoType + '/' + patentId)
     },
     checkRelatedInfo (infoType, patent) {
+      window.inventionTitle = patent.invention_title
       this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/' + patent.applicant_id)
       // this.$router.push('/RelatedInfo/' + infoType + '/' + patent.patent_id + '/778929080')
     },
