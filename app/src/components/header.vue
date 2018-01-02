@@ -100,10 +100,12 @@ export default {
         state.setSearchParams('field', '')
         state.setSearchParams('query', '')
         state.setSearchParams('search_mode', 'default')
+        state.setSearchParams('search_type', 'common')
       } else {
         state.setSearchParams('field', 'keywords')
         state.setSearchParams('query', this.keywordInput)
         state.setSearchParams('search_mode', 'user_input')
+        state.setSearchParams('search_type', 'common')
       }
       if (this.$route.name !== 'SearchResult') {
         this.$router.push('/SearchResult')
