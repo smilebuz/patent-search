@@ -93,6 +93,7 @@
               <div class="patentInfo__header">
                 <span class="header__title"
                   @click="checkPatentInfo('info', patent.patent_id)"
+                  :class="{ 'info__link-light': patent.invention_title.includes(query) }"
                   >{{ patent.invention_title }}
                 </span>
                 <div class="header__tags">
@@ -412,6 +413,11 @@ export default {
     },
     queryIPC: function () {
       return state.get('searchParams').field === 'ipc_main_classification_no' ? state.get('searchParams').query : ''
+    },
+    query: function () {
+      return state.get('searchParams').search_type === 'common' && state.get('searchParams').query !== ''
+        ? state.get('searchParams').query
+        : ' '
     }
   },
   created () {
