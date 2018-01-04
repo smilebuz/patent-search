@@ -662,7 +662,9 @@ export default {
       let ids = {
         favorId: favor.id
       }
-      sendRequest.addFavors.put(this.selectedPatentIds, ids).then(data => {
+      let patentIds = []
+      patentIds.push(this.patentId)
+      sendRequest.addFavors.put(patentIds, ids).then(data => {
         this.$message({
           message: '收藏成功',
           type: 'success'

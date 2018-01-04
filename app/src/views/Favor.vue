@@ -125,7 +125,7 @@
         </div>
       </div>
       <div v-if="!this.favorList.length">
-        <p>没有收藏夹</p>
+        <p class="favor__tip">尚未添加收藏夹</p>
       </div>
     </div>
   </div>
