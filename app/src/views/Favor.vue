@@ -216,7 +216,7 @@ export default {
         this.patentPageInfo.current_page = this.patentParams.page
         this.patentPageInfo.total_item_number = data.patent_list.length
         this.patentPageInfo.current_page_item_number = this.patentParams.per_page
-        this.patentPageInfo.total_page_number = Math.round(data.patent_list.length / this.patentParams.per_page)
+        this.patentPageInfo.total_page_number = Math.ceil(data.patent_list.length / this.patentParams.per_page)
         this.patentListAfterPage = this.filterPatentList()
         this.loadingPatentTable = false
       })
