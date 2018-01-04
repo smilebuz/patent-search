@@ -48,18 +48,30 @@
   display: flex;
   height: 25px;
 }
+.folder__create {
+  margin-top: 5px;
+}
 .folder__img {
+  margin-top: 4px;
   margin-right: 5px;
   width: 16px;
   height: 12px;
 }
 .folder__img-tool {
-  cursor: pointer;
+  margin-top: 0;
   height: 16px;
+  cursor: pointer;
 }
 .folder__name {
   cursor: pointer;
 }
 .folder__name-input {
   height: 10px;
+}
+
+/*element*/
+.favor__createItems {
+  .el-input--small .el-input__inner {
+    height: 30px;
+  }
 }

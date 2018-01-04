@@ -7,7 +7,7 @@
           v-if="showCreateItems"
           v-model="createFavorParams.name">
         </el-input>
-        <div>
+        <div class="folder__create">
           <img class="folder__img folder__img-tool"
             src="../assets/images/right.png"
             alt="创建收藏夹"
@@ -58,12 +58,12 @@
             </img>
           </div>
           <div class="folder__toolimg">
-            <img class="folder__img folder__img-tool"
+            <!-- <img class="folder__img folder__img-tool"
               src="../assets/images/write.png"
               alt="编辑"
               v-if="!favor.editStatus"
               @click="showNameInput(index)">
-            </img>
+            </img> -->
             <img class="folder__img folder__img-tool"
               src="../assets/images/delete.png"
               alt="删除"
@@ -86,17 +86,19 @@
       </div>
     </div>
     <div class="resultPanel">
-      <div>
+      <div v-if="this.favorList.length">
         <el-table
           border
           align="left"
           :data="patentListAfterPage"
+          v-loading="loadingPatentTable"
           key="patentTable">
-          <el-table-column type="selection"></el-table-column>
-          <el-table-column prop="apply_type" label="专利类型" width="80"></el-table-column>
+          <!-- <el-table-column type="selection"></el-table-column> -->
+          <el-table-column type="index" width="50"></el-table-column>
+          <el-table-column prop="apply_type" label="专利类型" width="120"></el-table-column>
           <el-table-column prop="publish_no" label="公开号" width="100"></el-table-column>
           <el-table-column prop="invention_title" label="专利名称"></el-table-column>
-          <el-table-column prop="applicant_name" label="专利权人" width="165"></el-table-column>
+          <el-table-column prop="applicant_name" label="专利权人" width="200"></el-table-column>
           <el-table-column label="发明人" width="180">
             <template slot-scope="scope">
               <span
@@ -121,6 +123,9 @@
             layout="total, sizes, prev, pager, next, jumper">
           </el-pagination>
         </div>
+      </div>
+      <div v-if="!this.favorList.length">
+        <p>没有收藏夹</p>
       </div>
     </div>
   </div>
@@ -155,6 +160,7 @@ export default {
         total_item_number: -1
       },
 
+      loadingPatentTable: false,
       patentParams: {
         per_page: 10,
         page: 1
@@ -201,6 +207,7 @@ export default {
       this.$set(this.favorList, index, favor)
     },
     getFavorPatents (favorId) {
+      this.loadingPatentTable = true
       let ids = {
         favorId: favorId
       }
@@ -211,6 +218,7 @@ export default {
         this.patentPageInfo.current_page_item_number = this.patentParams.per_page
         this.patentPageInfo.total_page_number = Math.round(data.patent_list.length / this.patentParams.per_page)
         this.patentListAfterPage = this.filterPatentList()
+        this.loadingPatentTable = false
       })
     },
     changeFavorPageNum (pageNum) {
@@ -233,9 +241,7 @@ export default {
             message: '删除成功',
             type: 'success'
           })
-          // debugger
           sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
-            // debugger
             this.favorList = data.favorite_list
             for (let prop in this.favorPageInfo) {
               if (this.favorPageInfo.hasOwnProperty(prop)) {
@@ -247,6 +253,10 @@ export default {
                 nameEdit: favor.name,
                 editStatus: false
               })
+            }
+
+            if (this.favorList.length) {
+              this.getFavorPatents(this.favorList[0].id)
             }
           })
         })
@@ -281,7 +291,6 @@ export default {
   },
   created () {
     sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
-      // debugger
       this.favorList = data.favorite_list
       for (let prop in this.favorPageInfo) {
         if (this.favorPageInfo.hasOwnProperty(prop)) {
@@ -293,6 +302,10 @@ export default {
           nameEdit: favor.name,
           editStatus: false
         })
+      }
+
+      if (this.favorList.length) {
+        this.getFavorPatents(this.favorList[0].id)
       }
     })
     // for (let favor of this.favorList) {
