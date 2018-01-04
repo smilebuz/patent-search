@@ -137,7 +137,9 @@
               <div class="patentInfo__info">
                 <div class="info__item">申请人:  
                   <span class="info__link"
-                    @click="changeSearchParams('applicant', patent.applicant_name)">{{ patent.applicant_name }}
+                    @click="changeSearchParams('applicant', patent.applicant_name)"
+                    :class="{ 'info__link-light': patent.applicant_name === queryApplicant }"
+                    >{{ patent.applicant_name }}
                   </span>
                 </div>
                 <div class="info__item">发明人:
@@ -408,11 +410,20 @@ export default {
       let textCount = containerWidth / textSize
       return parseInt(textCount * 1.8)
     },
+    queryApplicant: function () {
+      return state.get('searchParams').field === 'applicant'
+        ? state.get('searchParams').query
+        : ''
+    },
     queryInventor: function () {
-      return state.get('searchParams').field === 'inventor' ? state.get('searchParams').query : ''
+      return state.get('searchParams').field === 'inventor'
+        ? state.get('searchParams').query
+        : ''
     },
     queryIPC: function () {
-      return state.get('searchParams').field === 'ipc_main_classification_no' ? state.get('searchParams').query : ''
+      return state.get('searchParams').field === 'ipc_main_classification_no'
+        ? state.get('searchParams').query
+        : ''
     },
     query: function () {
       return state.get('searchParams').search_type === 'common' && state.get('searchParams').query !== ''
