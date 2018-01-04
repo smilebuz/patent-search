@@ -151,6 +151,7 @@
               <el-table-column prop="owned_patents_number" label="拥有专利数" width="95"></el-table-column>
               <el-table-column prop="main_product_list" label="主营产品"></el-table-column>
             </el-table>
+
             <div class="pagination" v-if="buyerTable.length">
               <span class="pagination__info">总计{{ buyerPageInfo.total_item_number }}条记录</span>
               <el-pagination class="pagination__page"
@@ -165,6 +166,16 @@
               </el-pagination>
             </div>
           </div>
+
+          <el-dialog title="申请人信息" :visible.sync="showApplicantDialog">
+            <el-table border
+              align="left"
+              :data="applicantDialogTable">
+              <el-table-column prop="title" label="信息名称" class="table-row-title" width="120"></el-table-column>
+              <el-table-column prop="text" label="信息内容"></el-table-column>
+            </el-table>
+          </el-dialog>
+
         </div>
       </div>
     </div>
@@ -396,6 +407,155 @@ export default {
       pageKeys: ['similarityPage', 'buyerPage'],
       tableKeys: ['applicantTable', 'valueTable', 'similarityTable', 'buyerTable'],
 
+      showApplicantDialog: false, // 申请人信息弹窗
+      applicantDialogTable: [
+        {
+          title: '申请人名称',
+          text: '',
+          key: 'name'
+        },
+        {
+          title: '注册号',
+          text: '',
+          key: 'registration_number'
+        },
+        {
+          title: '社会信用代码',
+          text: '',
+          key: 'social_credit_code'
+        },
+        {
+          title: '组织机构代码',
+          text: '',
+          key: 'organization_code'
+        },
+        {
+          title: '公司法人',
+          text: '',
+          key: 'legal_person'
+        },
+        {
+          title: '成立日期',
+          text: '',
+          key: 'establishment_date'
+        },
+        {
+          title: '注册资本',
+          text: '',
+          key: 'registered_capital'
+        },
+        {
+          title: '一般经营范围',
+          text: '',
+          key: 'general_business_scope'
+        },
+        {
+          title: '企业类型',
+          text: '',
+          key: 'enterprise_type'
+        },
+        {
+          title: '股东信息',
+          text: '',
+          key: 'shareholder_information'
+        },
+        {
+          title: '主要成员',
+          text: '',
+          key: 'main_members_info'
+        },
+        {
+          title: '电话',
+          text: '',
+          key: 'main_members_info'
+        },
+        {
+          title: '最新年报电话',
+          text: '',
+          key: 'phone_number_info'
+        },
+        {
+          title: '邮箱',
+          text: '',
+          key: 'email'
+        },
+        {
+          title: '地址',
+          text: '',
+          key: 'address'
+        },
+        {
+          title: '网址',
+          text: '',
+          key: 'website'
+        },
+        {
+          title: '行业大类',
+          text: '',
+          key: 'industry_big_category'
+        },
+        {
+          title: '行业小类',
+          text: '',
+          key: 'industry_small_category'
+        },
+        {
+          title: '分支机构',
+          text: '',
+          key: 'branch'
+        },
+        {
+          title: '状态',
+          text: '',
+          key: 'management_status'
+        },
+        {
+          title: '历史名称',
+          text: '',
+          key: 'history_name'
+        },
+        {
+          title: '省份',
+          text: '',
+          key: 'province'
+        },
+        {
+          title: '城市',
+          text: '',
+          key: 'city'
+        },
+        {
+          title: '地区',
+          text: '',
+          key: 'district'
+        },
+        {
+          title: '营业期限',
+          text: '',
+          key: 'business_term'
+        },
+        {
+          title: '发照日期',
+          text: '',
+          key: 'issue_date'
+        },
+        {
+          title: '登记机关',
+          text: '',
+          key: 'registration_authority'
+        },
+        {
+          title: '变更记录',
+          text: '',
+          key: 'change_record'
+        },
+        {
+          title: '主营产品',
+          text: '',
+          key: ''
+        }
+      ],
+
       favorPopover: false,
       getFavorParams: {
         per_page: 5,
@@ -615,8 +775,25 @@ export default {
         infoType = 'info'
         this.$router.push('/PatentInfo/' + infoType + '/' + patentId)
       } else if (column.property === 'applicant_name') {
-        infoType = 'applicant'
-        this.$router.push('/RelatedInfo/' + infoType + '/' + patentId + '/' + applicantId)
+        if (!applicantId) {
+          this.$message({
+            message: '申请人信息不全 无法显示详细信息',
+            type: 'warning'
+          })
+        } else {
+          let ids = {
+            applicantId: applicantId
+          }
+          sendRequest.applicant.get(null, ids).then(data => {
+            for (let row of this.applicantDialogTable) {
+              let key = row.key
+              row.text = data[key]
+            }
+            this.showApplicantDialog = true
+          })
+        }
+        // infoType = 'applicant'
+        // this.$router.push('/RelatedInfo/' + infoType + '/' + patentId + '/' + applicantId)
       }
     }
   },
