@@ -25,10 +25,10 @@
           v-if="!showCreateItems"
           @click="showCreateItems = true">新建
         </el-button>
-        <el-button class="button button-search"
+        <!-- <el-button class="button button-search"
           v-if="!showCreateItems"
           @click="">搜索
-        </el-button>
+        </el-button> -->
       </div>
       <div class="folder__list">
         <div class="folder__item"
