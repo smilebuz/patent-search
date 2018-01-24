@@ -47,11 +47,17 @@
   padding: 10px 0;
   border-bottom: 2px solid #e5e5e5;
 }
-.thumbnail {
-  width: 110px;
-  height: 160px;
+.thumbnail-container {
+  border: 1px solid #e5e5e5;
   margin-left: 5px;
   margin-right: 5px;
+  .thumbnail {
+    width: 110px;
+    height: 160px;
+  }
+  .thumbnail-empty {
+    opacity: 0;
+  }
 }
 .patentInfo {
   flex: 1;

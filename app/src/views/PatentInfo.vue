@@ -139,7 +139,14 @@
           </div>
 
           <div class="tab__content-container" v-if="currentTab === 'picture'">
-            <img v-for="url in imgUrls" :src="url" alt="附图"></img>
+            <template v-if="imgUrls.length">
+              <img v-for="url in imgUrls"
+                :src="url"
+                alt="附图"
+                class="attached-img">
+              </img>
+            </template>
+            <p v-else>很遗憾 当前专利没有附图信息</p>
           </div>
 
         </div>
@@ -180,12 +187,12 @@ export default {
           name: 'legal',
           label: '法律状态',
           activate: false
+        },
+        {
+          name: 'picture',
+          label: '附图',
+          activate: false
         }
-        // {
-        //   name: 'pic',
-        //   label: '附图',
-        //   activate: false
-        // }
       ],
       buttons: [
         // {

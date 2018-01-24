@@ -88,8 +88,10 @@
               :value="patent.selected"
               @change="selectSinglePatent(patent.selected, index)">
             </el-checkbox>
-            <img :src="patent.main_drawing_url" class="thumbnail" v-if="patent.main_drawing_url"></img>
-            <img class="thumbnail" v-else>
+            <div class="thumbnail-container">
+              <img :src="patent.main_drawing_url" class="thumbnail" v-if="patent.main_drawing_url"></img>
+              <img class="thumbnail thumbnail-empty" v-else>
+            </div>
             <div class="patentInfo">
               <div class="patentInfo__header">
                 <span class="header__title"
