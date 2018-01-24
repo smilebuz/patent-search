@@ -81,6 +81,10 @@
   font-weight: 700;
   border-bottom: 1px solid #e6ebf5;
   cursor: pointer;
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   &:hover {
     background: #e6ebf5;
   }
