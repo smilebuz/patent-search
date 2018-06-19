@@ -172,7 +172,9 @@ export default {
         total_page_number: -1,
         current_page_item_number: -1,
         total_item_number: -1
-      }
+      },
+
+      currentFavorId: ''
     }
   },
   methods: {
@@ -184,7 +186,6 @@ export default {
           type: 'success'
         })
         sendRequest.getAllFavor.get(this.getFavorParams).then(data => {
-          // debugger
           this.favorList = data.favorite_list
           for (let prop in this.favorPageInfo) {
             if (this.favorPageInfo.hasOwnProperty(prop)) {
@@ -207,11 +208,14 @@ export default {
       this.$set(this.favorList, index, favor)
     },
     getFavorPatents (favorId) {
+      debugger
+      this.currentFavorId = favorId
       this.loadingPatentTable = true
       let ids = {
         favorId: favorId
       }
       sendRequest.getFavorInfo.get(null, ids).then(data => {
+        debugger
         this.patentList = data.patent_list
         this.patentPageInfo.current_page = this.patentParams.page
         this.patentPageInfo.total_item_number = data.patent_list.length
@@ -256,7 +260,19 @@ export default {
             }
 
             if (this.favorList.length) {
+              // 删除后自动跳到第一个收藏夹
               this.getFavorPatents(this.favorList[0].id)
+            } else {
+              // 当前没有收藏夹 清空专利信息
+              this.patentList = []
+              this.patentListAfterPage = []
+              this.patentPageInfo = {
+                current_page: -1,
+                total_page_number: -1,
+                current_page_item_number: -1,
+                total_item_number: -1
+              }
+              this.currentFavorId = ''
             }
           })
         })
