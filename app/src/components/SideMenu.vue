@@ -203,8 +203,9 @@ export default {
     backLevel () {
       switch (this.navType) {
         case 'ipc':
-          let lastSymbol = this.navParamsStack.pop()
-          lastSymbol = this.navParamsStack.pop()
+          let lastSymbol = this.navParamsStack.pop() // 当前级别
+          lastSymbol = this.navParamsStack.pop() // 上一级
+          debugger
           // 需要判断是不是最高级
           if (!lastSymbol) {
             this.$message({
@@ -224,6 +225,9 @@ export default {
       }
     },
     nextLevel (symbol) {
+      if (this.navParamsStack.length === 0) {
+        this.navParamsStack.push('IPC')
+      }
       this.navParams.symbol = symbol
     }
     // changeNavPageNum (pageNum) {
