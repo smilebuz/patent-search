@@ -275,6 +275,7 @@ export default {
       })
     },
     changePatentPageSize (pageSize) {
+      this.patentPageInfo.total_page_number = Math.ceil(this.patentPageInfo.total_item_number / pageSize)
       this.patentParams.per_page = pageSize
     },
     changePatentPageNum (pageNum) {

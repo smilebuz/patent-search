@@ -205,7 +205,6 @@ export default {
         case 'ipc':
           let lastSymbol = this.navParamsStack.pop() // 当前级别
           lastSymbol = this.navParamsStack.pop() // 上一级
-          debugger
           // 需要判断是不是最高级
           if (!lastSymbol) {
             this.$message({
