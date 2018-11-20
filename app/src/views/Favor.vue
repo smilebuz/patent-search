@@ -208,14 +208,12 @@ export default {
       this.$set(this.favorList, index, favor)
     },
     getFavorPatents (favorId) {
-      debugger
       this.currentFavorId = favorId
       this.loadingPatentTable = true
       let ids = {
         favorId: favorId
       }
       sendRequest.getFavorInfo.get(null, ids).then(data => {
-        debugger
         this.patentList = data.patent_list
         this.patentPageInfo.current_page = this.patentParams.page
         this.patentPageInfo.total_item_number = data.patent_list.length

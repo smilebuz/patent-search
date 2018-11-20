@@ -66,7 +66,7 @@
         <el-form-item label="所属地区:" class="form__item">
           <el-input v-model="registerForm.area" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="手机:" class="form__item">
+        <el-form-item label="手机:" prop="cell_phone_number" class="form__item">
           <el-input v-model="registerForm.cell_phone_number" size="small"></el-input>
         </el-form-item>
         <el-form-item label="采购计划:" class="form__item">
@@ -166,13 +166,18 @@ export default {
           { min: 6, max: 20, message: '长度在6到20个字符', trigger: 'blur' }
         ],
         password: [
-          {validator: validatorPassword, trigger: 'blur'}
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { validator: validatorPassword, trigger: 'blur' }
         ],
         password_confirm: [
-          {validator: validatePwConfirm, trigger: 'blur'}
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { validator: validatePwConfirm, trigger: 'blur' }
         ],
         fullname: [
           { required: true, message: '请输入姓名', trigger: 'blur' }
+        ],
+        cell_phone_number: [
+          { required: true, message: '请输入手机号', trigger: 'blur' }
         ],
         email: [
           { required: true, message: '请输入邮箱', trigger: 'blur' }

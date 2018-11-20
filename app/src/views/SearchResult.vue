@@ -206,6 +206,8 @@
             ref="patentTable"
             :data="patentList"
             key="patentTable"
+            @cell-click="clickPatentCell"
+            :cell-class-name="cellClass"
             @selection-change="tableSelectionChange">
             <el-table-column type="selection"></el-table-column>
             <el-table-column prop="apply_type" label="专利类型" width="80"></el-table-column>
@@ -602,6 +604,17 @@ export default {
         // 清空
         state.setSortParams('target', this.sortOptions[0].value)
       }
+    },
+    cellClass (cellInfo) {
+      let column = cellInfo.column
+      if (column.property === 'invention_title') {
+        return 'cell-link'
+      } else {
+        return ''
+      }
+    },
+    clickPatentCell (row, column, cell, event) {
+      this.checkPatentInfo('info', row.patent_id)
     },
     checkPatentInfo (infoType, patentId) {
       this.$router.push('/PatentInfo/' + infoType + '/' + patentId)
